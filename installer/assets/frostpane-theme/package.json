@@ -1,0 +1,30 @@
+{
+  "name": "frostpane-theme",
+  "displayName": "Frostpane",
+  "description": "Frostpane — a frosted-glass dark theme. Base color theme, paired with the Custom UI Style glass layer. Built on Islands Dark (bwya77, MIT).",
+  "version": "1.0.0",
+  "publisher": "frostpane",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "dark",
+    "glass",
+    "frosted",
+    "theme",
+    "color theme"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Frostpane",
+        "uiTheme": "vs-dark",
+        "path": "./themes/frostpane-color-theme.json"
+      }
+    ]
+  }
+}

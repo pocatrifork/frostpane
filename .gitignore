@@ -1,0 +1,14 @@
+# personal / dev-only — kept out of the public repo
+settings.snapshot.json
+PLAN.md
+screenshot.png
+# root working copies of the scripts (published copies live in installer/assets/scripts/)
+/menu-glass.js
+/panel-anim.js
+/theme-customizer.js
+/sidebar-fade.js
+/sticky-cut.js
+# backups
+*.backup
+*.frostpane-backup-*
+*.before-*
