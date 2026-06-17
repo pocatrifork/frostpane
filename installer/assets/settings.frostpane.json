@@ -6,7 +6,7 @@
       "focusBorder": "#6cb4ff",
       "editorCursor.foreground": "#6cb4ff",
       "terminalCursor.foreground": "#6cb4ff",
-      "terminal.selectionBackground": "#6cb4ff33",
+      "terminal.selectionBackground": "#162433",
       "terminal.ansiBlue": "#6cb4ff",
       "terminal.ansiBrightBlue": "#8fc7ff",
       "terminal.ansiBrightGreen": "#ffffff",
@@ -103,6 +103,7 @@
   "editor.fontSize": 15,
   "terminal.integrated.fontFamily": "'FiraCode Nerd Font Mono', Consolas, 'Courier New', monospace",
   "terminal.integrated.gpuAcceleration": "off",
+  "terminal.integrated.minimumContrastRatio": 1,
   "editor.lineHeight": 0,
   "breadcrumbs.enabled": false,
   "workbench.tree.indent": 16,
@@ -1034,6 +1035,9 @@
       "box-shadow": "var(--frostpane-accent) 0 -1px 0 inset !important"
     },
     ".terminal .xterm-selection div": {
+      "background-color": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important"
+    },
+    ".terminal .xterm-rows span[style*=\"#162433\"]": {
       "background-color": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important"
     },
     ".monaco-workbench .terminal-initial-hint, .monaco-workbench .terminal-initial-hint a, .monaco-workbench .terminal-initial-hint .detail": {
