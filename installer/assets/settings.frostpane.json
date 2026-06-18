@@ -459,6 +459,10 @@
       "margin-right": "20px !important",
       "width": "calc(100% - 20px) !important"
     },
+    ".split-view-view:has(.terminal-tabs-entry) .monaco-list-row.selected, .split-view-view:has(.terminal-tabs-entry) .monaco-list-row.focused": {
+      "background": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
+      "outline": "none !important"
+    },
     ".viewpane-filter .monaco-inputbox": {
       "border-radius": "var(--frostpane-input-radius) !important",
       "background-color": "rgba(0,0,0,0.3) !important"
