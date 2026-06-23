@@ -7,6 +7,7 @@
       "editorCursor.foreground": "#6cb4ff",
       "terminalCursor.foreground": "#6cb4ff",
       "terminal.selectionBackground": "#162433",
+      "terminal.inactiveSelectionBackground": "#162433",
       "terminal.ansiBlue": "#6cb4ff",
       "terminal.ansiBrightBlue": "#8fc7ff",
       "terminal.ansiBrightGreen": "#ffffff",

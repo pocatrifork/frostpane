@@ -276,6 +276,7 @@
     "terminal.ansiBrightCyan": "#42c6d2",
     "terminal.ansiBrightWhite": "#d4d5d9",
     "terminal.selectionBackground": "#6cb4ff66",
+    "terminal.inactiveSelectionBackground": "#6cb4ff33",
     "terminalCursor.foreground": "#bcbec4",
     "gitDecoration.addedResourceForeground": "#73b00a",
     "gitDecoration.modifiedResourceForeground": "#548af7",
