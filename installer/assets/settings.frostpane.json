@@ -192,6 +192,19 @@
     ".monaco-workbench .monaco-button.secondary:hover, .monaco-workbench .monaco-text-button.secondary:hover": {
       "background-color": "color-mix(in srgb, var(--frostpane-bg-surface), #ffffff 16%) !important"
     },
+    ".monaco-workbench .interactive-session a.chat-scroll-down, .monaco-workbench .chat-todo-list-widget-container .monaco-button, .monaco-workbench .chat-used-context-label .monaco-button, .monaco-workbench .chat-confirmation-widget-title.monaco-button, .monaco-workbench .chat-editing-session-overview .monaco-button": {
+      "background-color": "transparent !important",
+      "border-color": "transparent !important"
+    },
+    ".monaco-workbench .interactive-session a.chat-scroll-down:hover, .monaco-workbench .chat-todo-list-widget-container .monaco-button:hover, .monaco-workbench .chat-used-context-label .monaco-button:hover, .monaco-workbench .chat-confirmation-widget-title.monaco-button:hover, .monaco-workbench .chat-editing-session-overview .monaco-button:hover": {
+      "background-color": "var(--vscode-toolbar-hoverBackground) !important"
+    },
+    ".monaco-workbench .interactive-session .monaco-list-row.request:hover, .monaco-workbench .interactive-session .monaco-list-row.response:hover": {
+      "background-color": "transparent !important"
+    },
+    ".monaco-workbench .interactive-session .chat-editing-session-container": {
+      "background-color": "transparent !important"
+    },
     ".monaco-workbench .monaco-progress-container .progress-bit": {
       "background-color": "var(--frostpane-accent) !important"
     },
@@ -930,6 +943,33 @@
       "border-radius": "0 0 var(--frostpane-panel-radius) var(--frostpane-panel-radius) !important",
       "clip-path": "inset(0 18px var(--frostpane-panel-gap) var(--frostpane-panel-gap) round 0 0 var(--frostpane-panel-radius) var(--frostpane-panel-radius)) !important"
     },
+    ".interactive-session": {
+        "--vscode-focusBorder": "rgba(255,255,255,0.25) !important",
+        "--vscode-list-focusOutline": "rgba(255,255,255,0.25) !important",
+        "--vscode-list-highlightForeground": "#ffffff !important",
+        "--vscode-list-focusHighlightForeground": "#ffffff !important",
+        "--vscode-editorSuggestWidget-highlightForeground": "#ffffff !important",
+        "--vscode-editorSuggestWidget-focusHighlightForeground": "#ffffff !important",
+        "--vscode-editorSuggestWidget-selectedBackground": "rgba(255,255,255,0.08) !important",
+        "--vscode-pickerGroup-foreground": "#bcbec4 !important",
+        "--vscode-textLink-foreground": "#e6e9ee !important",
+        "--vscode-textLink-activeForeground": "#ffffff !important",
+        "--vscode-progressBar-background": "rgba(255,255,255,0.35) !important",
+        "--vscode-badge-background": "#3c3f41 !important",
+        "--vscode-badge-foreground": "#bcbec4 !important",
+        "--vscode-inputOption-activeBorder": "rgba(255,255,255,0.25) !important",
+        "--vscode-inputOption-activeForeground": "#bcbec4 !important",
+        "--vscode-inputOption-activeBackground": "rgba(255,255,255,0.08) !important",
+        "--vscode-inputValidation-infoBorder": "rgba(255,255,255,0.25) !important",
+        "--vscode-textBlockQuote-border": "rgba(255,255,255,0.18) !important",
+        "--vscode-editorInfo-foreground": "#7a7e85 !important",
+        "--vscode-chat-slashCommandForeground": "#bcbec4 !important",
+        "--vscode-chat-slashCommandBackground": "rgba(255,255,255,0.06) !important",
+        "--vscode-chat-avatarBackground": "#2b2d30 !important",
+        "--vscode-chat-requestBorder": "rgba(255,255,255,0.10) !important",
+        "--vscode-chat-requestBubbleBackground": "rgba(0,0,0,0.3) !important",
+        "--vscode-chat-requestBubbleHoverBackground": "var(--vscode-chat-requestBubbleBackground) !important"
+    },
     ".chat-editing-session-container": {
       "border-radius": "var(--frostpane-input-radius) !important",
       "overflow": "hidden !important"
@@ -945,6 +985,7 @@
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
       "border-right": "1px solid rgba(255,255,255,0.02) !important",
+      "--chat-input-working-border-color1": "transparent !important",
       "overflow": "visible !important"
     },
     ".chat-input-container .monaco-inputbox, .chat-input-container .interactive-input-editor .monaco-editor, .chat-input-container .interactive-input-editor .monaco-editor .monaco-editor-background": {
