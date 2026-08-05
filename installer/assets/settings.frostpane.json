@@ -6,8 +6,13 @@
       "focusBorder": "#6cb4ff",
       "editorCursor.foreground": "#6cb4ff",
       "terminalCursor.foreground": "#6cb4ff",
-      "terminal.selectionBackground": "#162433",
-      "terminal.inactiveSelectionBackground": "#162433",
+      "terminal.selectionBackground": "#6cb4ff33",
+      "terminal.inactiveSelectionBackground": "#6cb4ff33",
+      "editorGroup.dropBackground": "#6cb4ff33",
+      "list.dropBackground": "#6cb4ff33",
+      "sideBar.dropBackground": "#6cb4ff33",
+      "terminal.dropBackground": "#6cb4ff33",
+      "panelSection.dropBackground": "#6cb4ff33",
       "terminal.ansiBlue": "#6cb4ff",
       "terminal.ansiBrightBlue": "#8fc7ff",
       "terminal.ansiBrightGreen": "#ffffff",
@@ -149,6 +154,11 @@
       "--vscode-textBlockQuote-border": "var(--frostpane-accent) !important",
       "--vscode-peekView-border": "var(--frostpane-accent) !important",
       "--vscode-panel-dropBorder": "var(--frostpane-accent) !important",
+      "--vscode-list-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
+      "--vscode-sideBar-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
+      "--vscode-terminal-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
+      "--vscode-editorGroup-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
+      "--vscode-panelSection-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
       "--vscode-notebook-focusedCellBorder": "var(--frostpane-accent) !important",
       "--vscode-notebook-selectedCellBorder": "var(--frostpane-accent) !important",
       "--vscode-settings-modifiedItemIndicator": "var(--frostpane-accent) !important",
@@ -1080,10 +1090,13 @@
     ".terminal .xterm-cursor-underline": {
       "box-shadow": "var(--frostpane-accent) 0 -1px 0 inset !important"
     },
-    ".terminal .xterm-selection div": {
+    "// terminal selection now painted by theme-customizer.js via xterm options.theme - no CSS rule can catch the per-cell blend hexes": "",
+    "// drag-drop feedback: editor-group overlay is inline-JS-painted so the element rule must out-important it": "",
+    ".monaco-workbench .editor-group-overlay-indicator": {
       "background-color": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important"
     },
-    ".terminal .xterm-rows span[style*=\"#162433\"]": {
+    "// list drop rules are runtime-injected with important + per-instance class - double class beats their specificity": "",
+    ".monaco-workbench .monaco-list.monaco-list.drop-target, .monaco-workbench .monaco-list.monaco-list .monaco-list-rows.drop-target, .monaco-workbench .monaco-list.monaco-list .monaco-list-row.drop-target": {
       "background-color": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important"
     },
     ".monaco-workbench .terminal-initial-hint, .monaco-workbench .terminal-initial-hint a, .monaco-workbench .terminal-initial-hint .detail": {

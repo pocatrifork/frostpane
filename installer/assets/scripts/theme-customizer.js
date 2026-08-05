@@ -228,7 +228,39 @@
       wb.style.removeProperty("--frostpane-bg-image");
       wb.style.removeProperty("--frostpane-window-blur");
       wb.classList.remove("itc-bg-image");
+      paintTerminalSelection();
     } catch (e) {  }
+  }
+
+  // Terminal selection cannot follow the accent through CSS alone: xterm
+  // resolves selection colors from its theme object and, for cells that carry
+  // their own background, BLENDS the two into a fresh hex that no attribute
+  // selector can anticipate. VSCode exposes the raw xterm instance on each
+  // .terminal-wrapper element, so the reliable path is to write the accent
+  // wash straight into every live terminal theme. VSCode occasionally
+  // reassigns options.theme itself (color theme or config changes), so this
+  // is re-asserted from applyState and from a slow guard interval; the
+  // equality check makes the repeat calls free.
+  var TERM_SEL_ALPHA = "33";
+
+  function paintTerminalSelection() {
+    try {
+      var wash = clampHex(state.accent);
+      if (!wash) return;
+      wash = wash + TERM_SEL_ALPHA;
+      var wrappers = document.querySelectorAll(".terminal-wrapper");
+      for (var i = 0; i < wrappers.length; i++) {
+        var term = wrappers[i].xterm;
+        if (!term || !term.options) continue;
+        var th = term.options.theme || {};
+        if (th.selectionBackground === wash && th.selectionInactiveBackground === wash) continue;
+        var next = {};
+        for (var k in th) next[k] = th[k];
+        next.selectionBackground = wash;
+        next.selectionInactiveBackground = wash;
+        term.options.theme = next;
+      }
+    } catch (e) {}
   }
 
   var BTN_ID = "itc-button";
@@ -594,6 +626,10 @@
 
   try { scrubLegacyImageState(); } catch (e) {}
   try { loadState(); } catch (e) {}
+
+  // Guard interval: catches terminals created after boot and any VSCode-side
+  // options.theme reassignment. Cheap when nothing changed (equality check).
+  try { setInterval(paintTerminalSelection, 2500); } catch (e) {}
 
   function reloadIfSettled() {
     try { if (!popupOpen) { loadState(); applyState(); } } catch (e) {}
