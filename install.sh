@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 # Frostpane theme installer (Linux / macOS).
 # Usage:
-#   bash install.sh                 # from a cloned repo (uses local assets)
+#   bash install.sh                 # colours only - VSCode is never patched
+#   bash install.sh --blur          # also install the optional frosted-glass layer
 #   curl -fsSL https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.sh | bash
 # Windows users: use install.ps1 instead (irm https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.ps1 | iex).
 set -euo pipefail
 
 REPO="${FROSTPANE_REPO:-https://raw.githubusercontent.com/pocatrifork/frostpane/main}"
-EXT_VERSION="subframe7536.custom-ui-style"
-THEME_DIRNAME="frostpane.frostpane-theme-1.0.0"
+CUI_EXT="subframe7536.custom-ui-style"
+THEME_DIRNAME="frostpane.frostpane-theme-2.0.0"
+
+BLUR="${FROSTPANE_BLUR:-0}"
+for arg in "$@"; do
+  case "$arg" in
+    --blur) BLUR=1 ;;
+    --no-blur) BLUR=0 ;;
+    -h|--help) sed -n '2,6p' "$0"; exit 0 ;;
+    *) printf 'unknown option: %s\n' "$arg" >&2; exit 2 ;;
+  esac
+done
 
 say(){ printf '\033[36m[frostpane]\033[0m %s\n' "$*"; }
 warn(){ printf '\033[33m[frostpane] WARN:\033[0m %s\n' "$*"; }
@@ -24,11 +35,22 @@ EXT_DIR="${FROSTPANE_EXT_DIR:-$HOME/.vscode/extensions}"
 [ -d "$USER_DIR" ] || die "VS Code user dir not found: $USER_DIR (set FROSTPANE_USER_DIR)"
 mkdir -p "$EXT_DIR"
 CUI_DIR="$USER_DIR/custom-ui-style"
-mkdir -p "$CUI_DIR"
 
 command -v python3 >/dev/null 2>&1 || die "python3 is required for the settings merge."
 
 # --- resolve assets: local clone next to this script, else download ---
+ASSETS="settings.frostpane.json
+frostpane-theme/package.json
+frostpane-theme/extension.js
+frostpane-theme/palette.js
+frostpane-theme/media/picker.html
+frostpane-theme/themes/frostpane-color-theme.json"
+if [ "$BLUR" = "1" ]; then
+  ASSETS="$ASSETS
+settings.frostpane.blur.json
+scripts/menu-glass.js"
+fi
+
 SRC=""
 if [ -n "${BASH_SOURCE:-}" ] && [ -f "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/installer/assets/settings.frostpane.json" ]; then
   SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/installer/assets"
@@ -36,42 +58,56 @@ if [ -n "${BASH_SOURCE:-}" ] && [ -f "$(cd "$(dirname "${BASH_SOURCE[0]}")" && p
 else
   SRC="$(mktemp -d)"
   say "Downloading assets from $REPO ..."
-  mkdir -p "$SRC/scripts" "$SRC/frostpane-theme/themes"
-  for f in settings.frostpane.json scripts/theme-customizer.js \
-           frostpane-theme/package.json frostpane-theme/themes/frostpane-color-theme.json; do
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    mkdir -p "$SRC/$(dirname "$f")"
     curl -fsSL "$REPO/installer/assets/$f" -o "$SRC/$f" || die "download failed: $f"
-  done
+  done <<< "$ASSETS"
 fi
 
-# --- 1. Custom UI Style extension ---
-if command -v code >/dev/null 2>&1; then
-  say "Installing Custom UI Style extension ..."
-  code --install-extension "$EXT_VERSION" --force >/dev/null || warn "could not install $EXT_VERSION (install it manually)"
+# --- 1. the theme extension (theme + colour picker; no app patching) ---
+say "Installing Frostpane -> $EXT_DIR/$THEME_DIRNAME"
+# Any earlier version has to go, or VSCode registers two themes both called
+# "Frostpane" and the colorTheme setting resolves to whichever it saw first.
+for old in "$EXT_DIR"/frostpane.frostpane-theme-*; do
+  [ -e "$old" ] || continue
+  [ "$(basename "$old")" = "$THEME_DIRNAME" ] || say "  removing older install: $(basename "$old")"
+  rm -rf "$old"
+done
+TGT="$EXT_DIR/$THEME_DIRNAME"
+mkdir -p "$TGT/themes" "$TGT/media"
+cp "$SRC/frostpane-theme/package.json" "$SRC/frostpane-theme/extension.js" "$SRC/frostpane-theme/palette.js" "$TGT/"
+cp "$SRC/frostpane-theme/themes/frostpane-color-theme.json" "$TGT/themes/"
+cp "$SRC/frostpane-theme/media/picker.html" "$TGT/media/"
+
+# --- 2. the optional blur layer (this is the part that patches VSCode) ---
+if [ "$BLUR" = "1" ]; then
+  mkdir -p "$CUI_DIR"
+  if command -v code >/dev/null 2>&1; then
+    say "Installing Custom UI Style (required for blur) ..."
+    code --install-extension "$CUI_EXT" --force >/dev/null || warn "could not install $CUI_EXT (install it manually)"
+  else
+    warn "'code' CLI not found - install the '$CUI_EXT' extension manually from the Marketplace."
+  fi
+  say "Copying blur script -> $CUI_DIR"
+  cp "$SRC/scripts/menu-glass.js" "$CUI_DIR/"
 else
-  warn "'code' CLI not found — install the '$EXT_VERSION' extension manually from the Marketplace."
+  # Superseded by the extension; an old copy would keep injecting a picker.
+  rm -f "$CUI_DIR/theme-customizer.js" "$CUI_DIR/panel-anim.js" "$CUI_DIR/menu-glass.js" 2>/dev/null || true
 fi
 
-# --- 2. Frostpane color theme (folder extension) ---
-say "Installing Frostpane theme -> $EXT_DIR/$THEME_DIRNAME"
-rm -rf "${EXT_DIR:?}/$THEME_DIRNAME"
-mkdir -p "$EXT_DIR/$THEME_DIRNAME/themes"
-cp "$SRC/frostpane-theme/package.json" "$EXT_DIR/$THEME_DIRNAME/"
-cp "$SRC/frostpane-theme/themes/frostpane-color-theme.json" "$EXT_DIR/$THEME_DIRNAME/themes/"
-
-# --- 3. injected script ---
-say "Copying injected script -> $CUI_DIR"
-cp "$SRC/scripts/theme-customizer.js" "$CUI_DIR/"
-
-# --- 4. merge settings (back up first; compute external.imports) ---
+# --- 3. merge settings (back up first) ---
 SETTINGS="$USER_DIR/settings.json"
 if [ -f "$SETTINGS" ]; then
   BK="$SETTINGS.frostpane-backup-$(date +%Y%m%d-%H%M%S)"
   cp "$SETTINGS" "$BK"; say "Backed up settings -> $BK"
 fi
 say "Merging Frostpane settings ..."
-FRAG="$SRC/settings.frostpane.json" CUI="$CUI_DIR" SET="$SETTINGS" python3 - <<'PY'
+FRAG="$SRC/settings.frostpane.json" BLURFRAG="$SRC/settings.frostpane.blur.json" \
+BLUR="$BLUR" CUI="$CUI_DIR" SET="$SETTINGS" python3 - <<'PY'
 import json, os, sys
-frag_path=os.environ["FRAG"]; cui=os.environ["CUI"]; settings=os.environ["SET"]
+frag_path=os.environ["FRAG"]; settings=os.environ["SET"]
+blur=os.environ["BLUR"]=="1"; blur_path=os.environ["BLURFRAG"]; cui=os.environ["CUI"]
 
 def _strip(s, mode):
     # string-aware pass over JSONC; mode 'c' removes // and /* */ comments,
@@ -113,30 +149,66 @@ def parse_jsonc(p):
 
 cur=parse_jsonc(settings)
 frag=json.load(open(frag_path,encoding="utf-8"))
-imports=["file://%s/%s" % (cui, n) for n in ("theme-customizer.js",)]
-frag["custom-ui-style.external.imports"]=imports
 cur.update(frag)
+written=len(frag)
 
-# Frostpane no longer ships a colorCustomizations block (the theme extension
-# carries the static colours now), so drop a stale one left by an older install
-# while leaving any other theme's overrides alone.
+# The colours are derived by the extension now, so a block written by an older
+# Frostpane would fight it. Other themes' overrides are left alone.
 cc=cur.get("workbench.colorCustomizations")
 if isinstance(cc,dict) and "[Frostpane]" in cc:
     del cc["[Frostpane]"]
     if not cc: cur.pop("workbench.colorCustomizations",None)
-    print("  removed the stale [Frostpane] colorCustomizations block")
+    print("  removed the [Frostpane] block an older version wrote (the extension derives it now)")
+
+OURS=("theme-customizer.js","menu-glass.js","panel-anim.js")
+def imports_are_ours():
+    v=cur.get("custom-ui-style.external.imports")
+    items=v if isinstance(v,list) else ([v] if isinstance(v,str) else [])
+    return bool(items) and all(any(name in str(i) for name in OURS) for i in items)
+
+if blur:
+    bfrag=json.load(open(blur_path,encoding="utf-8"))
+    bfrag["custom-ui-style.external.imports"]=["file://%s/menu-glass.js" % cui]
+    cur.update(bfrag)
+    written+=len(bfrag)
+    print("  blur layer enabled (%d CSS rules)" % len(bfrag["custom-ui-style.stylesheet"]))
+else:
+    if imports_are_ours():
+        cur.pop("custom-ui-style.stylesheet",None)
+        cur.pop("custom-ui-style.external.imports",None)
+        print("  removed the Custom UI Style keys an older Frostpane wrote")
+    elif "custom-ui-style.stylesheet" in cur or "custom-ui-style.external.imports" in cur:
+        print("  NOTE: custom-ui-style keys are present but are not Frostpane's - left untouched")
 
 open(settings,"w",encoding="utf-8").write(json.dumps(cur,indent=2)+"\n")
-print("  wrote %d keys; external.imports -> %s" % (len(frag), cui))
+print("  wrote %d keys" % written)
 PY
 
 say "Done."
+if [ "$BLUR" = "1" ]; then
 cat <<EOF
 
 Next steps:
   1. Restart VS Code.
   2. Run 'Custom UI Style: Reload' (Ctrl+Shift+P) and confirm the restart.
-     (Custom UI Style patches the app; you may see an 'installation corrupt'
-      banner once — that is expected, click the gear and 'Don't show again'.)
-  3. Theme is set to 'Frostpane'; the customizer button is on the status bar.
+     The blur layer patches the app, so VS Code shows an 'installation appears
+     to be corrupt' banner - dismiss it with the gear, 'Don't show again'.
+     It can come back after a VS Code update, which is the cost of the blur.
+  3. Theme is set to 'Frostpane'; the picker button is on the status bar.
 EOF
+else
+cat <<EOF
+
+Next steps:
+  1. Restart VS Code. That is it - nothing was patched, so there is no
+     'installation appears to be corrupt' banner and nothing to redo after a
+     VS Code update.
+  2. Theme is set to 'Frostpane'; the picker button is on the status bar
+     (or run 'Frostpane: Pick Colours').
+
+  Want the frosted dropdowns and top bar back? Re-run with --blur.
+  If a previous version left the '$CUI_EXT' extension installed, uninstall it
+  and run 'Custom UI Style: Restore' - it re-patches the app after every
+  VS Code update on its own.
+EOF
+fi

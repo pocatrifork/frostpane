@@ -1,49 +1,60 @@
 # Frostpane
 
-A dark colour theme for VS Code with two live knobs: an **accent colour** and a
-**background colour**, picked from a button on the status bar and applied without
-a reload.
+A dark colour theme for VS Code with two live knobs — an **accent colour** and a
+**background colour** — picked from a button on the status bar.
 
-That is the whole scope. Frostpane does not touch corner radii, spacing, blur,
-animation or layout — VS Code owns its chrome, so UI changes upstream do not
-break the theme.
+Frostpane does not touch corner radii, spacing, animation or layout. VS Code owns
+its chrome, so UI changes upstream do not break the theme.
 
-It is two layers:
+It comes in two layers, and the second one is optional:
 
-- **Frostpane** — the colour theme itself (syntax and workbench colours), shipped
-  as a small bundled extension (forked from
-  [Islands Dark](https://github.com/bwya77/vscode-dark-islands), MIT). It carries
-  the static defaults, so it looks right on its own.
-- **The colour layer** — one CSS block plus one injected script, delivered through
-  the [Custom UI Style](https://marketplace.visualstudio.com/items?itemName=subframe7536.custom-ui-style)
-  extension (`subframe7536.custom-ui-style`). This is what makes the two knobs
-  live.
+| Layer | What it does | Patches VS Code? |
+|-------|--------------|------------------|
+| **Colours** (default) | The theme, the picker, and every workbench colour derived from your two picks | **No** |
+| **Blur** (`--blur`) | Frosted glass on dropdowns, menus, the command palette, notifications and the top bar | **Yes** |
+
+The colour layer is a plain extension writing plain settings, so there is no
+"installation appears to be corrupt" banner and nothing to redo after a VS Code
+update. Blur needs `backdrop-filter`, which only exists in injected CSS — see
+[The blur layer](#the-blur-layer) for that trade.
 
 ## How the two knobs work
 
-The CSS block defines exactly two variables and maps them onto the `--vscode-*`
-colour variables the workbench paints from:
+Two settings hold everything:
 
-| Variable | Drives |
-|----------|--------|
-| `--frostpane-accent` | buttons, badges, links, focus borders, selection, find matches, cursors, progress, modified-file marks |
-| `--frostpane-bg` | editor, sidebar, panel, tabs, title bar, status bar, and — mixed lighter or darker — menus, widgets, quick input, the tab strip |
+```jsonc
+"frostpane.accent": "#6cb4ff",
+"frostpane.background": "#181a1d"
+```
 
-`theme-customizer.js` writes those two variables onto `<html>` when you pick a
-colour and stores the pick in `localStorage` (globally, or per project folder).
-Hovers and selections are white washes rather than fixed greys, so they keep the
-hue of whatever background you choose.
+The extension expands them into a `workbench.colorCustomizations["[Frostpane]"]`
+block — 125 colour keys — and rewrites it whenever either setting changes.
+Colour customizations apply instantly, so a pick lands without a reload.
 
-The terminal is the one surface CSS cannot reach — xterm resolves its own
-colours — so the script writes the accent and the background straight into each
-live terminal instead.
+| Knob | Drives |
+|------|--------|
+| `frostpane.accent` | buttons, badges, links, focus borders, selection, find matches, cursors, progress, modified-file marks, terminal selection |
+| `frostpane.background` | editor, sidebar, panel, tabs, title bar, status bar, and — mixed lighter or darker — menus, widgets, quick input, the tab strip |
+
+Three things fall out of deriving colours rather than injecting CSS:
+
+- **Text on the accent picks itself.** A yellow accent gets dark button text, an
+  indigo one gets white. CSS cannot do this — `color-contrast()` is not shipped.
+- **Canvas-painted surfaces follow.** The terminal, minimap and overview ruler
+  read theme colours directly, so they need no special handling.
+- **The background is held dark.** A light pick is pulled back into the dark
+  range, since every foreground colour in the theme assumes a dark canvas.
+
+Picks are stored in your user settings by default. Choose **This project** in the
+picker and they move to the project's `.vscode/settings.json` instead, while your
+global pick keeps applying everywhere else.
 
 ## Requirements
 
-- VS Code **desktop** (Custom UI Style patches the app, so it cannot work on
-  vscode.dev / web).
-- The **Custom UI Style** extension, for the live picker. Without it the theme
-  still installs and works; the colours are just fixed at the defaults.
+- VS Code **1.75+** desktop.
+- Nothing else for the colour layer. The blur layer additionally needs the
+  [Custom UI Style](https://marketplace.visualstudio.com/items?itemName=subframe7536.custom-ui-style)
+  extension (the installer installs it).
 
 ## Install
 
@@ -64,48 +75,83 @@ curl -fsSL https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.
 **From a clone (either OS):**
 ```bash
 git clone https://github.com/pocatrifork/frostpane && cd frostpane
-bash install.sh        # or:  .\install.ps1  on Windows
+bash install.sh                    # colours only
+bash install.sh --blur             # colours + the frosted glass layer
 ```
 
-The installer: installs Custom UI Style, installs the Frostpane theme, copies
-`theme-customizer.js` into `…/Code/User/custom-ui-style/`, and **merges** four
-keys into your `settings.json` (backing it up first, keeping your other settings,
-and computing the script path for your machine).
+The installer installs the Frostpane extension and merges two keys into your
+`settings.json` (backing it up first and keeping your other settings). It also
+clears anything an older Frostpane left behind: previous extension versions, the
+old injected scripts, and the settings keys they used.
 
 ### After installing
 
-1. Restart VS Code.
-2. Run **`Custom UI Style: Reload`** (Ctrl/Cmd+Shift+P) and confirm the restart.
-   Custom UI Style modifies the app; a one-time "installation corrupt" banner is
-   expected — dismiss it (gear → "Don't show again").
-3. The theme is set to **Frostpane**; the picker button sits on the status bar.
+Restart VS Code. The theme is set to **Frostpane** and the picker button sits on
+the status bar — or run **`Frostpane: Pick Colours`**.
+
+> **WSL → Windows VS Code:** run the **PowerShell** installer; it targets Windows
+> paths. From a WSL shell that means
+> `powershell.exe -ExecutionPolicy Bypass -File ./install.ps1`, because scripts on
+> the `\\wsl.localhost\…` share are unsigned and blocked by default. The bash
+> installer targets native Linux/macOS VS Code.
+
+## The blur layer
+
+Opt in with `--blur` (bash) / `-Blur` (PowerShell), or `FROSTPANE_BLUR=1` when
+piping to a shell. It frosts eight surfaces, and only ever sets a translucent
+background plus `backdrop-filter` — no radii, borders or geometry:
+
+- the command palette and quick input
+- menus and context menus, including the editor right-click menu
+- select dropdowns
+- notification toasts and the notification centre
+- the find widget
+- the debug toolbar
+- the diff/modal editor
+- the command centre and agent pill in the top bar
+
+Translucency is read from the active `--vscode-*` colour, so the frost follows
+whatever the picker last derived.
+
+**The trade.** Blur exists only as injected CSS, which means Custom UI Style, which
+means patched app files. `product.json` carries a checksum for each file it
+patches, so VS Code shows an "installation appears to be corrupt" banner —
+dismissible, but it can return after a VS Code update, since the extension
+re-patches the app on its own. If that annoys you, re-run the installer without
+`--blur` and uninstall Custom UI Style.
+
+Two notes on what blur can and cannot do:
+
+- The editor right-click menu renders in a shadow root that stylesheets cannot
+  reach, so it is frosted by `menu-glass.js`, the one injected script.
+- The top bar has nothing behind it but a flat colour, so there is no blur to
+  see. Those two pills get the frosted white fill that produced the look.
 
 ## What gets installed where
 
 | Item | Location |
 |------|----------|
-| Frostpane theme extension | `<extensions>/frostpane.frostpane-theme-1.0.0/` |
-| Injected script | `<user>/custom-ui-style/theme-customizer.js` |
+| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.0.0/` |
+| Blur script (`--blur` only) | `<user>/custom-ui-style/menu-glass.js` |
 | Settings (merged) | `<user>/settings.json` (backup: `settings.json.frostpane-backup-<ts>`) |
 
-The four merged keys: `workbench.colorTheme`,
-`terminal.integrated.minimumContrastRatio`, `custom-ui-style.stylesheet`,
-`custom-ui-style.external.imports`. No fonts, no layout, no editor settings.
+Merged keys: `workbench.colorTheme` and
+`terminal.integrated.minimumContrastRatio` (so VS Code does not rewrite terminal
+colours for contrast). With `--blur`, also `custom-ui-style.stylesheet` and
+`custom-ui-style.external.imports`. The extension owns
+`workbench.colorCustomizations["[Frostpane]"]` and writes it only once you pick
+something other than the defaults.
 
 `<user>` = `%APPDATA%\Code\User` (Windows) · `~/.config/Code/User` (Linux) ·
 `~/Library/Application Support/Code/User` (macOS). Override with
 `FROSTPANE_USER_DIR` / `FROSTPANE_EXT_DIR`.
 
-> **WSL → Windows VS Code:** run the **PowerShell** installer (it targets Windows
-> paths and builds correct `file:///C:/…` script URLs). The bash installer targets
-> native Linux/macOS VS Code.
-
 ## Uninstall
 
-Reverts to the default VS Code theme (`Default Dark Modern`): removes the
-Frostpane theme and script and the Frostpane settings keys (backing up
-`settings.json` first; your other settings are kept, including
-`workbench.colorCustomizations` blocks for other themes).
+Reverts to `Default Dark Modern`, removes the extension, the blur script and
+every Frostpane settings key — backing up `settings.json` first and keeping your
+other settings, including `workbench.colorCustomizations` blocks for other
+themes.
 
 **Windows:**
 ```powershell
@@ -116,16 +162,26 @@ irm https://raw.githubusercontent.com/pocatrifork/frostpane/main/uninstall.ps1 |
 curl -fsSL https://raw.githubusercontent.com/pocatrifork/frostpane/main/uninstall.sh | bash
 ```
 
-Then run **`Custom UI Style: Restore`** (or disable/uninstall the extension) and
-reload to unpatch VS Code.
+If you had installed the blur layer, also uninstall the Custom UI Style extension
+and run **`Custom UI Style: Restore`** to unpatch VS Code — the uninstaller cannot
+do that for you, and left installed it keeps re-patching after updates.
 
 ## Repo layout
 
 ```
 install.ps1 / install.sh          installers (entry points)
 installer/assets/
-  settings.frostpane.json         the four settings keys, including the CSS block
-  scripts/theme-customizer.js     the injected picker
-  frostpane-theme/                the bundled colour-theme extension
-theme-customizer.js               working copy of the script (dev)
+  settings.frostpane.json         the two merged settings keys
+  settings.frostpane.blur.json    the optional blur stylesheet
+  scripts/menu-glass.js           blur for the shadow-DOM editor menu
+  frostpane-theme/
+    package.json                  theme + picker + the two settings
+    extension.js                  picker, status bar item, settings sync
+    palette.js                    two colours -> 125 colour keys
+    media/picker.html             the picker webview
+    themes/                       the colour theme itself
+test/extension.test.js            run with: node test/extension.test.js
 ```
+
+The theme is a fork of [Islands Dark](https://github.com/bwya77/vscode-dark-islands)
+(bwya77, MIT).

@@ -2,11 +2,11 @@
   "name": "frostpane-theme",
   "displayName": "Frostpane",
   "description": "Frostpane - a dark colour theme with a pickable accent and background colour. Built on Islands Dark (bwya77, MIT).",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "publisher": "frostpane",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.75.0"
   },
   "categories": [
     "Themes"
@@ -17,12 +17,52 @@
     "color theme",
     "accent"
   ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "contributes": {
     "themes": [
       {
         "label": "Frostpane",
         "uiTheme": "vs-dark",
         "path": "./themes/frostpane-color-theme.json"
+      }
+    ],
+    "configuration": {
+      "title": "Frostpane",
+      "properties": {
+        "frostpane.accent": {
+          "type": "string",
+          "default": "#6cb4ff",
+          "pattern": "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+          "patternErrorMessage": "Use a hex colour, for example #6cb4ff.",
+          "markdownDescription": "Accent colour. Drives buttons, badges, links, focus borders, selection, find matches and cursors."
+        },
+        "frostpane.background": {
+          "type": "string",
+          "default": "#181a1d",
+          "pattern": "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+          "patternErrorMessage": "Use a hex colour, for example #181a1d.",
+          "markdownDescription": "Background colour. Drives the editor, sidebar, panel, tabs, title bar and status bar, and is mixed lighter or darker for menus, widgets and the tab strip. Held in the dark range so the theme stays readable."
+        },
+        "frostpane.statusBarButton": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the Frostpane button on the status bar."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "frostpane.pickColors",
+        "title": "Frostpane: Pick Colours",
+        "category": "Frostpane"
+      },
+      {
+        "command": "frostpane.reset",
+        "title": "Frostpane: Reset Colours to Defaults",
+        "category": "Frostpane"
       }
     ]
   }

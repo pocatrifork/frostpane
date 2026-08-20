@@ -344,8 +344,7 @@
     "quickInput.foreground": "#bcbec4",
     "quickInputList.focusBackground": "#25324d",
     "quickInputList.focusForeground": "#bcbec4",
-    "quickInputTitle.background": "#1e1f22",
-    "minimap.background": "#00000000"
+    "quickInputTitle.background": "#1e1f22"
   },
   "tokenColors": [
     {

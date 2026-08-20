@@ -1,7 +1,7 @@
 # Frostpane uninstaller (Windows) — reverts to the default VS Code theme.
 #   irm https://raw.githubusercontent.com/pocatrifork/frostpane/main/uninstall.ps1 | iex
 $ErrorActionPreference = "Stop"
-$ThemeDir      = "frostpane.frostpane-theme-1.0.0"
+$ThemeGlob = "frostpane.frostpane-theme-*"
 $DefaultTheme  = "Default Dark Modern"
 
 function Say ($m){ Write-Host "[frostpane] $m" -ForegroundColor Cyan }
@@ -38,13 +38,14 @@ function ConvertFrom-Jsonc($p) {
 $UserDir = if ($env:FROSTPANE_USER_DIR) { $env:FROSTPANE_USER_DIR } else { Join-Path $env:APPDATA "Code\User" }
 $ExtDir  = if ($env:FROSTPANE_EXT_DIR)  { $env:FROSTPANE_EXT_DIR }  else { Join-Path $env:USERPROFILE ".vscode\extensions" }
 
-# 1. theme extension
-$t = Join-Path $ExtDir $ThemeDir
-if (Test-Path $t) { Remove-Item -Recurse -Force $t; Say "Removed theme extension." }
+# 1. theme extension (any version)
+Get-ChildItem $ExtDir -Directory -Filter $ThemeGlob -ErrorAction SilentlyContinue | ForEach-Object {
+  Remove-Item -Recurse -Force $_.FullName; Say "Removed $($_.Name)."
+}
 # 2. injected scripts
 $cui = Join-Path $UserDir "custom-ui-style"
-# menu-glass.js and panel-anim.js are only shipped by older versions
-foreach ($s in "menu-glass.js","panel-anim.js","theme-customizer.js") {
+# menu-glass.js is the blur layer; the other two are only shipped by older versions
+foreach ($s in "menu-glass.js","theme-customizer.js","panel-anim.js") {
   $p = Join-Path $cui $s; if (Test-Path $p) { Remove-Item -Force $p }
 }
 if ((Test-Path $cui) -and -not (Get-ChildItem $cui -Force)) { Remove-Item -Force $cui }
@@ -56,6 +57,7 @@ if (Test-Path $settings) {
   # Current keys first, then the ones older Frostpane versions also wrote, so an
   # uninstall from any version leaves nothing behind.
   $managed = @("terminal.integrated.minimumContrastRatio",
+    "frostpane.accent","frostpane.background","frostpane.statusBarButton",
     "custom-ui-style.stylesheet","custom-ui-style.external.imports",
     "window.titleBarStyle","editor.fontFamily",
     "editor.fontSize","terminal.integrated.fontFamily","terminal.integrated.gpuAcceleration",
@@ -83,4 +85,7 @@ To fully remove the injected layer (Custom UI Style patches the app):
      'subframe7536.custom-ui-style' extension and run 'Custom UI Style: Restore',
      then reload to unpatch VS Code.
   2. Restart VS Code. You are back on '$DefaultTheme'.
+
+Project-scoped picks live in each project's .vscode\settings.json; remove
+'frostpane.accent' / 'frostpane.background' there if you used 'This project'.
 "@ | Write-Host

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'nonce-__NONCE__'; script-src 'nonce-__NONCE__';">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frostpane</title>
+<style nonce="__NONCE__">
+  :root { color-scheme: dark light; }
+  body {
+    margin: 0; padding: 24px;
+    font-family: var(--vscode-font-family); font-size: var(--vscode-font-size);
+    color: var(--vscode-foreground); background: var(--vscode-editor-background);
+  }
+  .wrap { max-width: 420px; }
+  h1 { font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+  .lede { margin: 0 0 24px; opacity: 0.7; line-height: 1.5; }
+  section { margin-bottom: 24px; }
+  h2 {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; opacity: 0.7; margin: 0 0 8px;
+  }
+  .swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sw {
+    width: 26px; height: 26px; padding: 0; border-radius: 4px; cursor: pointer;
+    border: 1px solid rgba(127, 127, 127, 0.4); box-sizing: border-box;
+  }
+  .bg-swatches .sw { width: 46px; }
+  .sw.sel { outline: 2px solid var(--vscode-focusBorder); outline-offset: 2px; }
+  .sw.custom {
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(127, 127, 127, 0.18); color: var(--vscode-foreground);
+    font-size: 15px; line-height: 1;
+  }
+  .sw.custom:hover { background: rgba(127, 127, 127, 0.3); }
+  .hidden-input {
+    position: absolute; width: 1px; height: 1px;
+    opacity: 0; pointer-events: none; border: 0; padding: 0; margin: 0;
+  }
+  .row { display: flex; gap: 8px; align-items: center; }
+  button.action {
+    font: inherit; color: var(--vscode-button-secondaryForeground, inherit);
+    background: var(--vscode-button-secondaryBackground, rgba(127, 127, 127, 0.2));
+    border: 1px solid transparent; border-radius: 2px;
+    padding: 5px 12px; cursor: pointer;
+  }
+  button.action:hover {
+    background: var(--vscode-button-secondaryHoverBackground, rgba(127, 127, 127, 0.3));
+  }
+  button.action.sel {
+    background: var(--vscode-button-background); color: var(--vscode-button-foreground);
+  }
+  button.action:disabled { opacity: 0.4; cursor: default; }
+  .hint { margin: 8px 0 0; font-size: 11px; opacity: 0.65; }
+  code {
+    font-family: var(--vscode-editor-font-family); font-size: 11px;
+    background: rgba(127, 127, 127, 0.16); padding: 1px 4px; border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Frostpane</h1>
+  <p class="lede">Two colours drive the whole theme. Picks are written to
+  <code>frostpane.accent</code> and <code>frostpane.background</code>, and the
+  workbench colours are derived from them.</p>
+
+  <section>
+    <h2>Accent</h2>
+    <div class="swatches" id="accent-swatches"></div>
+  </section>
+
+  <section>
+    <h2>Background</h2>
+    <div class="swatches bg-swatches" id="background-swatches"></div>
+    <p class="hint">Swatches are shown brighter than they apply: the background
+    is held in the dark range so the theme stays readable.</p>
+  </section>
+
+  <section>
+    <h2>Scope</h2>
+    <div class="row">
+      <button class="action" id="scope-global" type="button">Global</button>
+      <button class="action" id="scope-workspace" type="button">This project</button>
+    </div>
+    <p class="hint" id="scope-hint"></p>
+  </section>
+
+  <section>
+    <div class="row">
+      <button class="action" id="reset" type="button">Reset to defaults</button>
+    </div>
+  </section>
+</div>
+
+<input type="color" id="accent-input" class="hidden-input">
+<input type="color" id="background-input" class="hidden-input">
+
+<script nonce="__NONCE__">
+(function () {
+  "use strict";
+  var api = acquireVsCodeApi();
+  var state = null;
+
+  var els = {
+    accent: document.getElementById("accent-swatches"),
+    background: document.getElementById("background-swatches"),
+    accentInput: document.getElementById("accent-input"),
+    backgroundInput: document.getElementById("background-input"),
+    global: document.getElementById("scope-global"),
+    workspace: document.getElementById("scope-workspace"),
+    scopeHint: document.getElementById("scope-hint"),
+    reset: document.getElementById("reset"),
+  };
+
+  function send(msg) { api.postMessage(msg); }
+
+  // A drag across the native colour input fires continuously; trailing-edge
+  // debounce keeps that from writing settings.json on every frame.
+  function debounce(fn, ms) {
+    var t = null;
+    return function () {
+      var args = arguments;
+      if (t) clearTimeout(t);
+      t = setTimeout(function () { t = null; fn.apply(null, args); }, ms);
+    };
+  }
+
+  var setAccent = function (hex) { send({ type: "set", accent: hex }); };
+  var setBackground = function (hex) { send({ type: "set", background: hex }); };
+  var setAccentLive = debounce(setAccent, 200);
+  var setBackgroundLive = debounce(setBackground, 200);
+
+  els.accentInput.addEventListener("input", function () { setAccentLive(els.accentInput.value); });
+  els.backgroundInput.addEventListener("input", function () { setBackgroundLive(els.backgroundInput.value); });
+  els.global.addEventListener("click", function () { send({ type: "scope", value: "global" }); });
+  els.workspace.addEventListener("click", function () { send({ type: "scope", value: "workspace" }); });
+  els.reset.addEventListener("click", function () { send({ type: "reset" }); });
+
+  function swatch(fill, title, selected, onClick) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "sw" + (selected ? " sel" : "");
+    b.style.background = fill;
+    b.title = title;
+    b.addEventListener("click", onClick);
+    return b;
+  }
+
+  function customSwatch(input, current, isCustom) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "sw custom" + (isCustom ? " sel" : "");
+    b.title = "Custom colour";
+    b.textContent = isCustom ? "✎" : "+";
+    if (isCustom) b.style.background = current;
+    b.addEventListener("click", function () { input.value = current; input.click(); });
+    return b;
+  }
+
+  function render() {
+    if (!state) return;
+
+    els.accent.textContent = "";
+    var accentKnown = false;
+    state.accentPresets.forEach(function (hex) {
+      var sel = hex.toLowerCase() === state.accent.toLowerCase();
+      if (sel) accentKnown = true;
+      els.accent.appendChild(swatch(hex, hex, sel, function () { setAccent(hex); }));
+    });
+    els.accent.appendChild(customSwatch(els.accentInput, state.accent, !accentKnown));
+
+    els.background.textContent = "";
+    var bgKnown = false;
+    state.backgroundPresets.forEach(function (p) {
+      var sel = p.value.toLowerCase() === state.background.toLowerCase();
+      if (sel) bgKnown = true;
+      els.background.appendChild(swatch(p.display, p.value, sel, function () { setBackground(p.value); }));
+    });
+    els.background.appendChild(customSwatch(els.backgroundInput, state.background, !bgKnown));
+
+    els.global.classList.toggle("sel", state.scope === "global");
+    els.workspace.classList.toggle("sel", state.scope === "workspace");
+    els.workspace.disabled = !state.hasWorkspace;
+    els.scopeHint.textContent = !state.hasWorkspace
+      ? "No folder open, so the pick applies globally."
+      : (state.scope === "workspace"
+          ? "Stored in this project's .vscode/settings.json (" + state.folder + ")."
+          : "Stored in your user settings, so it applies everywhere.");
+    els.reset.disabled = !!state.isDefault;
+  }
+
+  window.addEventListener("message", function (e) {
+    if (e.data && e.data.type === "state") { state = e.data.state; render(); }
+  });
+
+  send({ type: "ready" });
+})();
+</script>
+</body>
+</html>

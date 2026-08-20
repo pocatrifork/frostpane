@@ -3,7 +3,7 @@
 #   bash uninstall.sh   |   curl -fsSL https://raw.githubusercontent.com/pocatrifork/frostpane/main/uninstall.sh | bash
 set -euo pipefail
 
-THEME_DIRNAME="frostpane.frostpane-theme-1.0.0"
+THEME_GLOB="frostpane.frostpane-theme-*"
 DEFAULT_THEME="Default Dark Modern"
 
 say(){ printf '\033[36m[frostpane]\033[0m %s\n' "$*"; }
@@ -18,13 +18,15 @@ USER_DIR="${FROSTPANE_USER_DIR:-$DEF_USER}"
 EXT_DIR="${FROSTPANE_EXT_DIR:-$HOME/.vscode/extensions}"
 command -v python3 >/dev/null 2>&1 || die "python3 is required to edit settings."
 
-# 1. theme extension
-if [ -d "$EXT_DIR/$THEME_DIRNAME" ]; then
-  rm -rf "${EXT_DIR:?}/$THEME_DIRNAME"; say "Removed theme extension."
-fi
+# 1. theme extension (any version)
+for d in "${EXT_DIR:?}"/$THEME_GLOB; do
+  [ -e "$d" ] || continue
+  rm -rf "$d"; say "Removed $(basename "$d")."
+done
 # 2. injected scripts
 CUI="$USER_DIR/custom-ui-style"
-for s in menu-glass.js panel-anim.js theme-customizer.js; do rm -f "$CUI/$s"; done  # the first two are only shipped by older versions
+# menu-glass.js is the blur layer; the other two are only shipped by older versions
+for s in menu-glass.js theme-customizer.js panel-anim.js; do rm -f "$CUI/$s"; done
 [ -d "$CUI" ] && rmdir "$CUI" 2>/dev/null || true
 say "Removed injected scripts."
 # 3. settings
@@ -37,6 +39,7 @@ settings=os.environ["SET"]; deftheme=os.environ["DEFTHEME"]
 # Current keys first, then the ones older Frostpane versions also wrote, so an
 # uninstall from any version leaves nothing behind.
 MANAGED=["terminal.integrated.minimumContrastRatio",
+ "frostpane.accent","frostpane.background","frostpane.statusBarButton",
  "custom-ui-style.stylesheet","custom-ui-style.external.imports",
  "window.titleBarStyle","editor.fontFamily",
  "editor.fontSize","terminal.integrated.fontFamily","terminal.integrated.gpuAcceleration",
@@ -95,4 +98,7 @@ To fully remove the injected layer (Custom UI Style patches the app):
      disable/uninstall the 'subframe7536.custom-ui-style' extension and run
      'Custom UI Style: Restore' (then reload) to unpatch VS Code.
   2. Restart VS Code. You are back on '$DEFAULT_THEME'.
+
+Project-scoped picks live in each project's .vscode/settings.json; remove
+'frostpane.accent' / 'frostpane.background' there if you used 'This project'.
 EOF
