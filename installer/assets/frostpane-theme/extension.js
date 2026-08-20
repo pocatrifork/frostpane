@@ -164,7 +164,7 @@ function refreshStatusItem() {
   }
   if (!statusItem) {
     statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0);
-    statusItem.command = "frostpane.pickColors";
+    statusItem.command = "frostpane.openPicker";
     statusItem.name = "Frostpane";
   }
   statusItem.text = "$(symbol-color) Frostpane";
@@ -202,6 +202,21 @@ function postState() {
   if (panel) panel.webview.postMessage({ type: "state", state: pickerState() });
 }
 
+// The picker is a webview editor, and VSCode can move an editor into an
+// auxiliary window - so opening it and then moving it is the closest thing to a
+// floating popup that needs no patching. The move is asked for once, on the
+// webview's first "ready", because before that the editor is not yet the active
+// one and the command would move whatever was.
+function floatPanel() {
+  if (vscode.workspace.getConfiguration(SECTION).get("floatingPicker") === false) return;
+  Promise.resolve(vscode.commands.executeCommand("workbench.action.moveEditorToNewWindow"))
+    .then(null, function (err) {
+      // Older VSCode, or a build without auxiliary windows: the tab stays put,
+      // which still works.
+      console.warn("[frostpane] could not float the picker", err);
+    });
+}
+
 function openPicker(context) {
   if (panel) { panel.reveal(); postState(); return; }
   var mediaRoot = vscode.Uri.file(path.join(context.extensionPath, "media"));
@@ -217,11 +232,16 @@ function openPicker(context) {
   var html = fs.readFileSync(path.join(context.extensionPath, "media", "picker.html"), "utf8");
   panel.webview.html = html.replace(/__NONCE__/g, n);
 
+  var floated = false;
   panel.onDidDispose(function () { panel = null; });
   panel.onDidChangeViewState(function () { if (panel && panel.visible) postState(); });
   panel.webview.onDidReceiveMessage(function (msg) {
     if (!msg) return;
-    if (msg.type === "ready") { postState(); return; }
+    if (msg.type === "ready") {
+      postState();
+      if (!floated) { floated = true; floatPanel(); }
+      return;
+    }
     if (msg.type === "set") {
       var patch = {};
       if (msg.accent) patch.accent = palette.normalizeHex(msg.accent) || undefined;
@@ -233,6 +253,9 @@ function openPicker(context) {
     }
     if (msg.type === "scope") { setScope(msg.value).then(postState); return; }
     if (msg.type === "reset") { reset().then(postState); return; }
+    // Escape in the webview: a popup should close on Escape, and disposing the
+    // panel closes the auxiliary window with it.
+    if (msg.type === "close") { if (panel) panel.dispose(); return; }
   });
   postState();
 }
@@ -383,7 +406,7 @@ function openMenu(context) {
         : "No folder open, so global is the only option",
       action: "scope",
     },
-    { label: "$(layout) Grid picker", description: "in a tab, with a colour wheel", action: "grid" },
+    { label: "$(layout) Picker window", description: "swatch grid and a colour wheel", action: "grid" },
     { label: "$(discard) Reset to defaults", action: "reset" },
   ];
   vscode.window.showQuickPick(items, {

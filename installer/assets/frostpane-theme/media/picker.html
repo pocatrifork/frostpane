@@ -7,64 +7,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Frostpane</title>
 <style nonce="__NONCE__">
+  /* Sized as a popup, not a page: the picker is meant to sit in its own small
+     floating window, so nothing here grows to fill an editor tab. */
   :root { color-scheme: dark light; }
   body {
-    margin: 0; padding: 24px;
-    font-family: var(--vscode-font-family); font-size: var(--vscode-font-size);
+    margin: 0; padding: 14px 16px 16px;
+    font-family: var(--vscode-font-family); font-size: 12px;
     color: var(--vscode-foreground); background: var(--vscode-editor-background);
   }
-  .wrap { max-width: 420px; }
-  h1 { font-size: 15px; font-weight: 600; margin: 0 0 4px; }
-  .lede { margin: 0 0 24px; opacity: 0.7; line-height: 1.5; }
-  section { margin-bottom: 24px; }
+  .wrap { max-width: 302px; }
+  h1 { font-size: 12px; font-weight: 600; margin: 0 0 12px; letter-spacing: 0.01em; }
+  h1 .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 2px;
+    background: var(--vscode-focusBorder); margin-right: 7px; vertical-align: 1px;
+  }
+  section { margin-bottom: 14px; }
   h2 {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.08em; opacity: 0.7; margin: 0 0 8px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.09em; opacity: 0.6; margin: 0 0 6px;
   }
-  .swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+  .swatches { display: flex; flex-wrap: wrap; gap: 4px; }
   .sw {
-    width: 26px; height: 26px; padding: 0; border-radius: 4px; cursor: pointer;
-    border: 1px solid rgba(127, 127, 127, 0.4); box-sizing: border-box;
+    width: 22px; height: 22px; padding: 0; border-radius: 3px; cursor: pointer;
+    border: 1px solid rgba(127, 127, 127, 0.35); box-sizing: border-box;
   }
-  .bg-swatches .sw { width: 46px; }
-  .sw.sel { outline: 2px solid var(--vscode-focusBorder); outline-offset: 2px; }
+  .bg-swatches .sw { width: 32px; }
+  .sw.sel { outline: 1px solid var(--vscode-focusBorder); outline-offset: 2px; }
   .sw.custom {
     display: flex; align-items: center; justify-content: center;
     background: rgba(127, 127, 127, 0.18); color: var(--vscode-foreground);
-    font-size: 15px; line-height: 1;
+    font-size: 13px; line-height: 1;
   }
   .sw.custom:hover { background: rgba(127, 127, 127, 0.3); }
   .hidden-input {
     position: absolute; width: 1px; height: 1px;
     opacity: 0; pointer-events: none; border: 0; padding: 0; margin: 0;
   }
-  .row { display: flex; gap: 8px; align-items: center; }
-  button.action {
-    font: inherit; color: var(--vscode-button-secondaryForeground, inherit);
-    background: var(--vscode-button-secondaryBackground, rgba(127, 127, 127, 0.2));
-    border: 1px solid transparent; border-radius: 2px;
-    padding: 5px 12px; cursor: pointer;
+  /* One segmented control, so the two scopes read as one choice. */
+  .seg { display: flex; }
+  .seg button {
+    font: inherit; font-size: 11px; flex: 1;
+    color: var(--vscode-button-secondaryForeground, inherit);
+    background: var(--vscode-button-secondaryBackground, rgba(127, 127, 127, 0.16));
+    border: 1px solid rgba(127, 127, 127, 0.2); border-right-width: 0;
+    padding: 4px 8px; cursor: pointer;
   }
-  button.action:hover {
-    background: var(--vscode-button-secondaryHoverBackground, rgba(127, 127, 127, 0.3));
+  .seg button:last-child { border-right-width: 1px; }
+  .seg button:hover:not(:disabled):not(.sel) {
+    background: var(--vscode-button-secondaryHoverBackground, rgba(127, 127, 127, 0.28));
   }
-  button.action.sel {
+  .seg button.sel {
     background: var(--vscode-button-background); color: var(--vscode-button-foreground);
+    border-color: var(--vscode-button-background);
+  }
+  .seg button:disabled { opacity: 0.4; cursor: default; }
+  button.action {
+    font: inherit; font-size: 11px;
+    color: var(--vscode-button-secondaryForeground, inherit);
+    background: var(--vscode-button-secondaryBackground, rgba(127, 127, 127, 0.16));
+    border: 1px solid rgba(127, 127, 127, 0.2);
+    padding: 4px 10px; cursor: pointer;
+  }
+  button.action:hover:not(:disabled) {
+    background: var(--vscode-button-secondaryHoverBackground, rgba(127, 127, 127, 0.28));
   }
   button.action:disabled { opacity: 0.4; cursor: default; }
-  .hint { margin: 8px 0 0; font-size: 11px; opacity: 0.65; }
-  code {
-    font-family: var(--vscode-editor-font-family); font-size: 11px;
-    background: rgba(127, 127, 127, 0.16); padding: 1px 4px; border-radius: 3px;
-  }
+  .foot { display: flex; align-items: center; gap: 10px; margin: 0; }
+  .hint { margin: 6px 0 0; font-size: 10px; opacity: 0.6; line-height: 1.4; }
+  .foot .hint { margin: 0; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Frostpane</h1>
-  <p class="lede">Two colours drive the whole theme. Picks are written to
-  <code>frostpane.accent</code> and <code>frostpane.background</code>, and the
-  workbench colours are derived from them.</p>
+  <h1><span class="dot" id="dot"></span>Frostpane</h1>
 
   <section>
     <h2>Accent</h2>
@@ -74,24 +89,23 @@
   <section>
     <h2>Background</h2>
     <div class="swatches bg-swatches" id="background-swatches"></div>
-    <p class="hint">Swatches are shown brighter than they apply: the background
-    is held in the dark range so the theme stays readable.</p>
+    <p class="hint">Shown brighter than they apply - the background is held dark
+    so the theme stays readable.</p>
   </section>
 
   <section>
     <h2>Scope</h2>
-    <div class="row">
-      <button class="action" id="scope-global" type="button">Global</button>
-      <button class="action" id="scope-workspace" type="button">This project</button>
+    <div class="seg">
+      <button id="scope-global" type="button">Global</button>
+      <button id="scope-workspace" type="button">This project</button>
     </div>
     <p class="hint" id="scope-hint"></p>
   </section>
 
-  <section>
-    <div class="row">
-      <button class="action" id="reset" type="button">Reset to defaults</button>
-    </div>
-  </section>
+  <div class="foot">
+    <button class="action" id="reset" type="button">Reset</button>
+    <p class="hint">Escape closes</p>
+  </div>
 </div>
 
 <input type="color" id="accent-input" class="hidden-input">
@@ -180,6 +194,7 @@
     });
     els.background.appendChild(customSwatch(els.backgroundInput, state.background, !bgKnown));
 
+    document.getElementById("dot").style.background = state.accent;
     els.global.classList.toggle("sel", state.scope === "global");
     els.workspace.classList.toggle("sel", state.scope === "workspace");
     els.workspace.disabled = !state.hasWorkspace;
@@ -190,6 +205,10 @@
           : "Stored in your user settings, so it applies everywhere.");
     els.reset.disabled = !!state.isDefault;
   }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") send({ type: "close" });
+  });
 
   window.addEventListener("message", function (e) {
     if (e.data && e.data.type === "state") { state = e.data.state; render(); }

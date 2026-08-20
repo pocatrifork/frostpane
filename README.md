@@ -63,18 +63,26 @@ because in this build its dark default is already `null`.
 
 ### Changing them
 
-Click **Frostpane** on the status bar, or run **`Frostpane: Pick Colours`**. A
-popup offers accent, background, scope and reset; choosing accent or background
-lists every preset **with its colour swatch** — `QuickPickItem.iconPath` takes a
-generated one-rect SVG per colour, written once into the extension's storage.
+Click **Frostpane** on the status bar, or run **`Frostpane: Open Picker`**. The
+picker is a small panel — accent swatches, background swatches, scope, reset —
+and it opens **in its own floating window**, so it sits over the workbench
+instead of taking an editor tab. Escape closes it.
 
-**Arrow through the list and the workbench repaints as you go.** Applying *is*
-the preview, since these are only settings — Enter keeps the colour, Escape puts
-back the one you started with, and `Custom hex...` takes anything you type.
+That window is a plain VS Code auxiliary window: the picker is a webview editor,
+and the command moves it out on first paint. On a build without auxiliary
+windows the move fails harmlessly and the picker stays a tab. Set
+`"frostpane.floatingPicker": false` to keep it a tab on purpose.
 
-Prefer swatches? **`Frostpane: Open Grid Picker`** is the same thing as a tab
-with a colour grid and a native colour input. Its background swatches are drawn
-*brighter than they apply*, because a grid of near-black squares is unreadable.
+Background swatches are drawn *brighter than they apply*, because a grid of
+near-black squares is unreadable.
+
+Prefer the keyboard? **`Frostpane: Pick Colours (List)`** is the same controls as
+a quick pick, listing every preset **with its colour swatch** —
+`QuickPickItem.iconPath` takes a generated one-rect SVG per colour, written once
+into the extension's storage. **Arrow through the list and the workbench
+repaints as you go.** Applying *is* the preview, since these are only settings —
+Enter keeps the colour, Escape puts back the one you started with, and
+`Custom hex...` takes anything you type.
 
 Three things fall out of deriving colours rather than injecting CSS:
 
@@ -198,7 +206,7 @@ Two limits worth knowing:
 
 | Item | Location |
 |------|----------|
-| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.1.2/` |
+| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.2.0/` |
 | Blur script (`--blur` only) | `<user>/custom-ui-style/menu-glass.js` |
 | Settings (merged) | `<user>/settings.json` (backup: `settings.json.frostpane-backup-<ts>`) |
 
