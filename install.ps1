@@ -4,11 +4,15 @@
     .\install.ps1              # colours only - VS Code is never patched
     .\install.ps1 -Blur        # also install the optional frosted-glass layer
   Piping to iex cannot pass -Blur, so set $env:FROSTPANE_BLUR = '1' instead.
+  Installing from a branch: set $env:FROSTPANE_REF = 'simpler' as well.
 #>
 param([switch]$Blur)
 $ErrorActionPreference = "Stop"
 
-$Repo    = if ($env:FROSTPANE_REPO) { $env:FROSTPANE_REPO } else { "https://raw.githubusercontent.com/pocatrifork/frostpane/main" }
+# Assets are fetched per file, so a branch install needs the ref too or it would
+# mix this script with another branch's assets. FROSTPANE_REPO overrides both.
+$Ref     = if ($env:FROSTPANE_REF) { $env:FROSTPANE_REF } else { "main" }
+$Repo    = if ($env:FROSTPANE_REPO) { $env:FROSTPANE_REPO } else { "https://raw.githubusercontent.com/pocatrifork/frostpane/$Ref" }
 $CuiExt   = "subframe7536.custom-ui-style"
 $ThemeDir = "frostpane.frostpane-theme-2.0.0"
 $WantBlur = $Blur.IsPresent -or ($env:FROSTPANE_BLUR -eq '1')

@@ -7,7 +7,10 @@
 # Windows users: use install.ps1 instead (irm https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.ps1 | iex).
 set -euo pipefail
 
-REPO="${FROSTPANE_REPO:-https://raw.githubusercontent.com/pocatrifork/frostpane/main}"
+# Assets are fetched per file, so a branch install needs the ref too or it would
+# mix this script with another branch's assets. FROSTPANE_REPO overrides both.
+REF="${FROSTPANE_REF:-main}"
+REPO="${FROSTPANE_REPO:-https://raw.githubusercontent.com/pocatrifork/frostpane/$REF}"
 CUI_EXT="subframe7536.custom-ui-style"
 THEME_DIRNAME="frostpane.frostpane-theme-2.0.0"
 

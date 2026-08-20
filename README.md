@@ -58,9 +58,11 @@ global pick keeps applying everywhere else.
 
 ## Install
 
-> The one-liners fetch assets from this repo. Forking? Point the installer at
-> your copy with `FROSTPANE_REPO` (bash) / `$env:FROSTPANE_REPO` (PowerShell),
-> or just run from a clone — local files are used when present.
+> The one-liners fetch assets from this repo. Installing from a branch? Set
+> `FROSTPANE_REF` / `$env:FROSTPANE_REF` to the branch name, or the script and the
+> assets come from different refs. Forking? Point the installer at your copy with
+> `FROSTPANE_REPO` / `$env:FROSTPANE_REPO`. Running from a clone needs neither —
+> local files are used when present.
 
 **Windows (PowerShell):**
 ```powershell
