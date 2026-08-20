@@ -5,53 +5,84 @@
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)"
     },
+    ".quick-input-titlebar, .quick-input-header, .quick-input-description, .quick-input-message, .quick-input-list, .quick-input-tree, .quick-input-widget .monaco-list, .quick-input-widget .monaco-scrollable-element, .quick-input-widget .monaco-list-rows, .quick-input-widget .monaco-tree-sticky-container": {
+      "background": "transparent !important",
+      "background-color": "transparent !important"
+    },
+    ".quick-input-widget .quick-input-filter .monaco-inputbox, .quick-input-widget .quick-input-filter .monaco-inputbox input, .quick-input-widget .quick-input-filter .monaco-inputbox textarea": {
+      "background": "transparent !important",
+      "background-color": "transparent !important"
+    },
+
     ".monaco-menu-container": {
       "background-color": "color-mix(in srgb, var(--vscode-menu-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)",
       "overflow": "visible !important"
     },
-    ".monaco-menu-container .monaco-scrollable-element, .monaco-menu-container .monaco-menu, .monaco-menu-container .monaco-action-bar.vertical": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
     ".monaco-submenu": {
       "background-color": "color-mix(in srgb, var(--vscode-menu-background), #ffffff 4%) !important",
       "overflow": "visible !important"
     },
+    ".monaco-menu-container .monaco-scrollable-element, .monaco-menu-container .monaco-menu, .monaco-menu-container .monaco-action-bar, .monaco-menu-container .monaco-action-bar.vertical": {
+      "background": "transparent !important",
+      "background-color": "transparent !important"
+    },
+
     ".monaco-select-box-dropdown-container": {
       "background-color": "color-mix(in srgb, var(--vscode-dropdown-listBackground, var(--vscode-dropdown-background)) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)"
     },
-    ".monaco-select-box-dropdown-container .select-box-dropdown-list-container, .monaco-select-box-dropdown-container .monaco-list-rows": {
+    ".monaco-select-box-dropdown-container .select-box-dropdown-list-container, .monaco-select-box-dropdown-container .monaco-list, .monaco-select-box-dropdown-container .monaco-scrollable-element, .monaco-select-box-dropdown-container .monaco-list-rows, .monaco-select-box-dropdown-container .select-box-details-pane": {
       "background": "transparent !important",
       "background-color": "transparent !important"
     },
+
     ".notification-toast, .notifications-center": {
       "background-color": "color-mix(in srgb, var(--vscode-notifications-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)"
     },
-    ".notification-toast .notifications-list-container, .notifications-center .notifications-list-container, .notification-list-item": {
+    ".notification-toast .notifications-list-container, .notifications-center .notifications-list-container, .notifications-center .notifications-center-header, .notification-toast .monaco-list, .notifications-center .monaco-list, .notification-toast .monaco-scrollable-element, .notifications-center .monaco-scrollable-element, .notification-toast .monaco-list-rows, .notifications-center .monaco-list-rows, .notification-toast .notification-list-item, .notifications-center .notification-list-item": {
       "background": "transparent !important",
-      "background-color": "transparent !important"
+      "background-color": "transparent !important",
+      "box-shadow": "none !important"
     },
+
     ".monaco-editor .find-widget, .simple-find-part": {
       "background-color": "color-mix(in srgb, var(--vscode-editorWidget-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)"
     },
+    ".monaco-editor .find-widget .monaco-inputbox, .simple-find-part .monaco-inputbox": {
+      "background-color": "rgba(0,0,0,0.3) !important"
+    },
+    ".monaco-editor .find-widget .monaco-inputbox .input, .monaco-editor .find-widget .monaco-inputbox textarea, .simple-find-part .monaco-inputbox .input": {
+      "background": "transparent !important",
+      "background-color": "transparent !important"
+    },
+
     ".monaco-workbench .debug-toolbar": {
       "background-color": "color-mix(in srgb, var(--vscode-debugToolBar-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)"
     },
+    ".monaco-workbench .debug-toolbar .monaco-action-bar, .monaco-workbench .debug-toolbar .action-item": {
+      "background": "transparent !important",
+      "background-color": "transparent !important"
+    },
+
     ".monaco-modal-editor-block .modal-editor-part": {
       "background-color": "color-mix(in srgb, var(--vscode-editorWidget-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)"
     },
+    ".monaco-modal-editor-block .modal-editor-header, .monaco-modal-editor-block .modal-editor-sidebar, .monaco-modal-editor-block .modal-editor-part .monaco-editor, .monaco-modal-editor-block .modal-editor-part .monaco-editor .monaco-editor-background, .monaco-modal-editor-block .modal-editor-part .monaco-editor .margin": {
+      "background": "transparent !important",
+      "background-color": "transparent !important"
+    },
+
     ".command-center-center, .agent-status-pill": {
       "background": "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 55%) !important",
       "backdrop-filter": "blur(14px) saturate(1.6)",

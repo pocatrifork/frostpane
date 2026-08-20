@@ -98,8 +98,7 @@ the status bar — or run **`Frostpane: Pick Colours`**.
 ## The blur layer
 
 Opt in with `--blur` (bash) / `-Blur` (PowerShell), or `FROSTPANE_BLUR=1` when
-piping to a shell. It frosts eight surfaces, and only ever sets a translucent
-background plus `backdrop-filter` — no radii, borders or geometry:
+piping to a shell. Eight surfaces are frosted:
 
 - the command palette and quick input
 - menus and context menus, including the editor right-click menu
@@ -109,6 +108,12 @@ background plus `backdrop-filter` — no radii, borders or geometry:
 - the debug toolbar
 - the diff/modal editor
 - the command centre and agent pill in the top bar
+
+Each one gets a translucent background plus `backdrop-filter`, and a companion
+rule that keeps its own children from painting over the frost — a notification
+centre whose header and list rows stay opaque is a frosted panel you cannot see.
+The find widget's input keeps a dark wash so the field still reads against glass.
+Nothing here sets radii, borders or geometry.
 
 Translucency is read from the active `--vscode-*` colour, so the frost follows
 whatever the picker last derived.
