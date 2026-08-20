@@ -56,10 +56,14 @@ if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "installer\assets\set
 $Src = if ($local) { $local } else { Join-Path ([System.IO.Path]::GetTempPath()) ("frostpane-" + [guid]::NewGuid().ToString("N")) }
 if (-not $local) {
   Say "Downloading assets from $Repo ..."
+  # raw.githubusercontent caches each path for five minutes, so right after a
+  # push the script and its assets can come from different revisions. A varying
+  # query string sidesteps the edge cache and keeps the set consistent.
+  $cb = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
   foreach ($f in $assets) {
     $dst = Join-Path $Src ($f -replace '/','\')
     New-Item -ItemType Directory -Force -Path (Split-Path $dst) | Out-Null
-    irm "$Repo/installer/assets/$f" -OutFile $dst
+    irm "$Repo/installer/assets/$f`?cb=$cb" -OutFile $dst
   }
 }
 

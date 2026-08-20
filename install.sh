@@ -79,10 +79,14 @@ if [ -n "${BASH_SOURCE:-}" ] && [ -f "$(cd "$(dirname "${BASH_SOURCE[0]}")" && p
 else
   SRC="$(mktemp -d)"
   say "Downloading assets from $REPO ..."
+  # raw.githubusercontent caches each path for five minutes, so right after a
+  # push the script and its assets can come from different revisions. A varying
+  # query string sidesteps the edge cache and keeps the set consistent.
+  CB="$(date +%s)"
   while IFS= read -r f; do
     [ -n "$f" ] || continue
     mkdir -p "$SRC/$(dirname "$f")"
-    curl -fsSL "$REPO/installer/assets/$f" -o "$SRC/$f" || die "download failed: $f"
+    curl -fsSL "$REPO/installer/assets/$f?cb=$CB" -o "$SRC/$f" || die "download failed: $f"
   done <<< "$ASSETS"
 fi
 
