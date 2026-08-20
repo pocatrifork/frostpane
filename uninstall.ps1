@@ -43,6 +43,7 @@ $t = Join-Path $ExtDir $ThemeDir
 if (Test-Path $t) { Remove-Item -Recurse -Force $t; Say "Removed theme extension." }
 # 2. injected scripts
 $cui = Join-Path $UserDir "custom-ui-style"
+# menu-glass.js and panel-anim.js are only shipped by older versions
 foreach ($s in "menu-glass.js","panel-anim.js","theme-customizer.js") {
   $p = Join-Path $cui $s; if (Test-Path $p) { Remove-Item -Force $p }
 }
@@ -52,14 +53,23 @@ Say "Removed injected scripts."
 $settings = Join-Path $UserDir "settings.json"
 if (Test-Path $settings) {
   Copy-Item $settings ("$settings.frostpane-uninstall-" + (Get-Date -Format "yyyyMMdd-HHmmss"))
-  $managed = @("workbench.colorCustomizations","window.titleBarStyle","editor.fontFamily",
+  # Current keys first, then the ones older Frostpane versions also wrote, so an
+  # uninstall from any version leaves nothing behind.
+  $managed = @("terminal.integrated.minimumContrastRatio",
+    "custom-ui-style.stylesheet","custom-ui-style.external.imports",
+    "window.titleBarStyle","editor.fontFamily",
     "editor.fontSize","terminal.integrated.fontFamily","terminal.integrated.gpuAcceleration",
     "editor.lineHeight","breadcrumbs.enabled","workbench.tree.indent",
     "workbench.tree.renderIndentGuides","editor.minimap.showSlider","editor.minimap.enabled",
-    "workbench.iconTheme","workbench.activityBar.location",
-    "custom-ui-style.stylesheet","custom-ui-style.external.imports")
+    "workbench.iconTheme","workbench.activityBar.location")
   $d = ConvertFrom-Jsonc $settings
   foreach ($k in $managed) { if ($d.PSObject.Properties[$k]) { $d.PSObject.Properties.Remove($k) } }
+  # Only our own scoped block goes; overrides for other themes stay.
+  $cc = $d.'workbench.colorCustomizations'
+  if ($cc -and ($cc.PSObject.Properties.Name -contains '[Frostpane]')) {
+    $cc.PSObject.Properties.Remove('[Frostpane]')
+    if (-not $cc.PSObject.Properties.Name) { $d.PSObject.Properties.Remove('workbench.colorCustomizations') }
+  }
   $d | Add-Member -Force -NotePropertyName "workbench.colorTheme" -NotePropertyValue $DefaultTheme
   ($d | ConvertTo-Json -Depth 100) | Set-Content -Encoding UTF8 $settings
   Say "Settings reverted -> '$DefaultTheme' (backup written)."
@@ -68,7 +78,7 @@ if (Test-Path $settings) {
 Say "Done."
 @"
 
-To fully remove the glass layer (Custom UI Style patches the app):
+To fully remove the injected layer (Custom UI Style patches the app):
   1. Run 'Custom UI Style: Reload', OR disable/uninstall the
      'subframe7536.custom-ui-style' extension and run 'Custom UI Style: Restore',
      then reload to unpatch VS Code.

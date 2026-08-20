@@ -1,139 +1,84 @@
 {
   "workbench.colorTheme": "Frostpane",
-  "window.titleBarStyle": "custom",
-  "workbench.colorCustomizations": {
-    "[Frostpane]": {
-      "focusBorder": "#6cb4ff",
-      "editorCursor.foreground": "#6cb4ff",
-      "terminalCursor.foreground": "#6cb4ff",
-      "terminal.selectionBackground": "#6cb4ff33",
-      "terminal.inactiveSelectionBackground": "#6cb4ff33",
-      "editorGroup.dropBackground": "#6cb4ff33",
-      "list.dropBackground": "#6cb4ff33",
-      "sideBar.dropBackground": "#6cb4ff33",
-      "terminal.dropBackground": "#6cb4ff33",
-      "panelSection.dropBackground": "#6cb4ff33",
-      "terminal.ansiBlue": "#6cb4ff",
-      "terminal.ansiBrightBlue": "#8fc7ff",
-      "terminal.ansiBrightGreen": "#ffffff",
-      "terminal.background": "#00000000",
-      "activityBarBadge.background": "#6cb4ff",
-      "activityBarBadge.foreground": "#0a1416",
-      "activityBar.activeBorder": "#00000000",
-      "activityBarTop.activeBorder": "#00000000",
-      "activityBar.activeBackground": "#6cb4ff14",
-      "statusBarItem.prominentBackground": "#6cb4ff",
-      "statusBarItem.prominentForeground": "#0a1416",
-      "statusBarItem.remoteBackground": "#00000000",
-      "statusBarItem.remoteForeground": "#9a9ea5",
-      "tab.activeBorderTop": "#00000000",
-      "tab.activeForeground": "#ffffff",
-      "tab.hoverBackground": "#00000000",
-      "tab.unfocusedHoverBackground": "#00000000",
-      "tab.hoverBorder": "#00000000",
-      "tab.unfocusedHoverBorder": "#00000000",
-      "editorGroupHeader.tabsBorder": "#00000000",
-      "editorGroupHeader.border": "#00000000",
-      "editorGroupHeader.tabsBackground": "#00000000",
-      "panelTitle.activeBorder": "#00000000",
-      "panelTitle.activeForeground": "#eaf3ff",
-      "titleBar.activeBackground": "#111111",
-      "titleBar.inactiveBackground": "#111111",
-      "editor.background": "#00000000",
-      "editorStickyScroll.background": "#00000000",
-      "editorStickyScrollHover.background": "#00000000",
-      "editorGutter.background": "#00000000",
-      "editorHoverWidget.background": "#00000000",
-      "editorHoverWidget.statusBarBackground": "#00000000",
-      "sideBarSectionHeader.background": "#00000000",
-      "commandCenter.background": "#1f2227",
-      "commandCenter.activeBackground": "#1f2227",
-      "commandCenter.border": "#00000000",
-      "commandCenter.activeBorder": "#00000000",
-      "commandCenter.inactiveBorder": "#00000000",
-      "agentStatusIndicator.background": "#1f2227",
-      "textLink.foreground": "#6cb4ff",
-      "textLink.activeForeground": "#8fc7ff",
-      "editorLink.activeForeground": "#8fc7ff",
-      "progressBar.background": "#6cb4ff",
-      "editor.selectionBackground": "#6cb4ff33",
-      "editor.wordHighlightBackground": "#6cb4ff22",
-      "editor.findMatchBackground": "#6cb4ff55",
-      "editor.findMatchHighlightBackground": "#6cb4ff22",
-      "editor.lineHighlightBackground": "#ffffff0d",
-      "editor.lineHighlightBorder": "#00000001",
-      "diffEditor.removedTextBorder": "#00000000",
-      "diffEditor.insertedTextBorder": "#00000000",
-      "diffEditor.removedLineBorder": "#00000000",
-      "diffEditor.insertedLineBorder": "#00000000",
-      "list.highlightForeground": "#6cb4ff",
-      "button.background": "#6cb4ff",
-      "button.foreground": "#0a1416",
-      "button.hoverBackground": "#8fc7ff",
-      "notificationLink.foreground": "#6cb4ff",
-      "pickerGroup.foreground": "#6cb4ff",
-      "gitDecoration.modifiedResourceForeground": "#6cb4ff",
-      "menubar.selectionBackground": "#6cb4ff",
-      "menubar.selectionForeground": "#0a1416",
-      "menu.selectionBackground": "#6cb4ff2b",
-      "menu.selectionForeground": "#ffffff",
-      "editorSuggestWidget.selectedBackground": "#6cb4ff2b",
-      "editorSuggestWidget.selectedForeground": "#ffffff",
-      "textBlockQuote.border": "#6cb4ff",
-      "inputOption.activeBorder": "#6cb4ff",
-      "inputValidation.infoBorder": "#6cb4ff",
-      "badge.background": "#6cb4ff",
-      "badge.foreground": "#0a1416",
-      "extensionBadge.remoteBackground": "#6cb4ff",
-      "extensionButton.prominentBackground": "#6cb4ff",
-      "extensionButton.prominentForeground": "#0a1416",
-      "extensionButton.prominentHoverBackground": "#8fc7ff",
-      "peekView.border": "#6cb4ff",
-      "panel.dropBorder": "#6cb4ff",
-      "notebook.focusedCellBorder": "#6cb4ff",
-      "notebook.selectedCellBorder": "#6cb4ff",
-      "editorSuggestWidget.highlightForeground": "#6cb4ff",
-      "settings.modifiedItemIndicator": "#6cb4ff",
-      "notificationsInfoIcon.foreground": "#6cb4ff",
-      "notebookStatusRunningIcon.foreground": "#6cb4ff",
-      "editorInfo.foreground": "#6cb4ff",
-      "editorOverviewRuler.infoForeground": "#6cb4ff",
-      "minimap.findMatchHighlight": "#6cb4ff40",
-      "editorGutter.modifiedBackground": "#6cb4ff",
-      "minimapGutter.modifiedBackground": "#6cb4ff",
-      "editorOverviewRuler.modifiedForeground": "#6cb4ff80",
-      "gitDecoration.stageModifiedResourceForeground": "#6cb4ff"
-    }
-  },
-  "editor.fontFamily": "'IBM Plex Mono', Consolas, 'Courier New', monospace",
-  "editor.fontSize": 15,
-  "terminal.integrated.fontFamily": "'FiraCode Nerd Font Mono', Consolas, 'Courier New', monospace",
-  "terminal.integrated.gpuAcceleration": "off",
   "terminal.integrated.minimumContrastRatio": 1,
-  "editor.lineHeight": 0,
-  "breadcrumbs.enabled": false,
-  "workbench.tree.indent": 16,
-  "workbench.tree.renderIndentGuides": "always",
-  "editor.minimap.showSlider": "always",
-  "editor.minimap.enabled": false,
-  "workbench.iconTheme": "vs-seti-folder",
-  "workbench.activityBar.location": "top",
   "custom-ui-style.stylesheet": {
-    ".monaco-workbench": {
-      "--frostpane-panel-radius": "18px",
-      "--frostpane-widget-radius": "10px",
-      "--frostpane-input-radius": "8px",
-      "--frostpane-item-radius": "4px",
-      "--frostpane-panel-gap": "6px",
-      "--frostpane-panel-top": "6px",
-      "--frostpane-bg-canvas": "#111111",
-      "--frostpane-bg-surface": "#181a1d",
+    ":root": {
       "--frostpane-accent": "#6cb4ff",
-      "--vscode-menubar-selectionBackground": "var(--frostpane-accent) !important",
+      "--frostpane-bg": "#181a1d",
+      "--frostpane-bg-dim": "color-mix(in srgb, var(--frostpane-bg), #000000 20%)",
+      "--frostpane-bg-elev": "color-mix(in srgb, var(--frostpane-bg), #ffffff 8%)",
+      "--frostpane-accent-lift": "color-mix(in srgb, var(--frostpane-accent), #ffffff 18%)",
+      "--frostpane-accent-wash": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent)"
+    },
+    ".monaco-workbench": {
+      "background-color": "var(--frostpane-bg) !important",
+
+      "--vscode-editor-background": "var(--frostpane-bg) !important",
+      "--vscode-editorGutter-background": "var(--frostpane-bg) !important",
+      "--vscode-editorPane-background": "var(--frostpane-bg) !important",
+      "--vscode-editorStickyScroll-background": "var(--frostpane-bg) !important",
+      "--vscode-editorStickyScrollHover-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-sideBar-background": "var(--frostpane-bg) !important",
+      "--vscode-sideBarSectionHeader-background": "var(--frostpane-bg) !important",
+      "--vscode-activityBar-background": "var(--frostpane-bg) !important",
+      "--vscode-statusBar-background": "var(--frostpane-bg) !important",
+      "--vscode-statusBar-noFolderBackground": "var(--frostpane-bg) !important",
+      "--vscode-titleBar-activeBackground": "var(--frostpane-bg) !important",
+      "--vscode-titleBar-inactiveBackground": "var(--frostpane-bg) !important",
+      "--vscode-panel-background": "var(--frostpane-bg) !important",
+      "--vscode-terminal-background": "var(--frostpane-bg) !important",
+      "--vscode-breadcrumb-background": "var(--frostpane-bg) !important",
+      "--vscode-welcomePage-background": "var(--frostpane-bg) !important",
+      "--vscode-notebook-editorBackground": "var(--frostpane-bg) !important",
+      "--vscode-tab-activeBackground": "var(--frostpane-bg) !important",
+      "--vscode-tab-unfocusedActiveBackground": "var(--frostpane-bg) !important",
+
+      "--vscode-editorGroupHeader-tabsBackground": "var(--frostpane-bg-dim) !important",
+      "--vscode-editorGroupHeader-noTabsBackground": "var(--frostpane-bg-dim) !important",
+      "--vscode-tab-inactiveBackground": "var(--frostpane-bg-dim) !important",
+      "--vscode-tab-unfocusedInactiveBackground": "var(--frostpane-bg-dim) !important",
+
+      "--vscode-editorWidget-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-editorHoverWidget-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-editorHoverWidget-statusBarBackground": "var(--frostpane-bg-elev) !important",
+      "--vscode-editorSuggestWidget-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-editorMarkerNavigation-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-quickInput-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-quickInputTitle-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-dropdown-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-dropdown-listBackground": "var(--frostpane-bg-elev) !important",
+      "--vscode-input-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-menu-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-notifications-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-notificationCenterHeader-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-banner-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-peekViewEditor-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-peekViewResult-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-peekViewTitle-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-debugToolBar-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-commandCenter-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-commandCenter-activeBackground": "var(--frostpane-bg-elev) !important",
+      "--vscode-breadcrumbPicker-background": "var(--frostpane-bg-elev) !important",
+      "--vscode-agentStatusIndicator-background": "var(--frostpane-bg-elev) !important",
+
+      "--vscode-list-hoverBackground": "rgba(255,255,255,0.05) !important",
+      "--vscode-list-focusBackground": "rgba(255,255,255,0.09) !important",
+      "--vscode-list-activeSelectionBackground": "rgba(255,255,255,0.09) !important",
+      "--vscode-list-inactiveSelectionBackground": "rgba(255,255,255,0.06) !important",
+      "--vscode-quickInputList-focusBackground": "rgba(255,255,255,0.09) !important",
+      "--vscode-toolbar-hoverBackground": "rgba(255,255,255,0.07) !important",
+      "--vscode-statusBarItem-hoverBackground": "rgba(255,255,255,0.09) !important",
+      "--vscode-statusBarItem-activeBackground": "rgba(255,255,255,0.13) !important",
+      "--vscode-editor-lineHighlightBackground": "rgba(255,255,255,0.05) !important",
+      "--vscode-scrollbarSlider-background": "rgba(255,255,255,0.10) !important",
+      "--vscode-scrollbarSlider-hoverBackground": "rgba(255,255,255,0.16) !important",
+      "--vscode-scrollbarSlider-activeBackground": "rgba(255,255,255,0.22) !important",
+
       "--vscode-focusBorder": "var(--frostpane-accent) !important",
-      "--vscode-list-focusOutline": "var(--frostpane-accent) !important",
       "--vscode-sash-hoverBorder": "var(--frostpane-accent) !important",
+      "--vscode-list-focusOutline": "var(--frostpane-accent) !important",
       "--vscode-settings-focusedRowBorder": "var(--frostpane-accent) !important",
+      "--vscode-settings-modifiedItemIndicator": "var(--frostpane-accent) !important",
       "--vscode-list-highlightForeground": "var(--frostpane-accent) !important",
       "--vscode-list-focusHighlightForeground": "var(--frostpane-accent) !important",
       "--vscode-quickInputList-focusHighlightForeground": "var(--frostpane-accent) !important",
@@ -154,1008 +99,43 @@
       "--vscode-textBlockQuote-border": "var(--frostpane-accent) !important",
       "--vscode-peekView-border": "var(--frostpane-accent) !important",
       "--vscode-panel-dropBorder": "var(--frostpane-accent) !important",
-      "--vscode-list-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
-      "--vscode-sideBar-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
-      "--vscode-terminal-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
-      "--vscode-editorGroup-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
-      "--vscode-panelSection-dropBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
+      "--vscode-panelTitle-activeBorder": "var(--frostpane-accent) !important",
+      "--vscode-activityBar-activeBorder": "var(--frostpane-accent) !important",
+      "--vscode-tab-activeBorderTop": "var(--frostpane-accent) !important",
+      "--vscode-menubar-selectionBackground": "var(--frostpane-accent) !important",
       "--vscode-notebook-focusedCellBorder": "var(--frostpane-accent) !important",
       "--vscode-notebook-selectedCellBorder": "var(--frostpane-accent) !important",
-      "--vscode-settings-modifiedItemIndicator": "var(--frostpane-accent) !important",
       "--vscode-notificationsInfoIcon-foreground": "var(--frostpane-accent) !important",
       "--vscode-problemsInfoIcon-foreground": "var(--frostpane-accent) !important",
       "--vscode-editorInfo-foreground": "var(--frostpane-accent) !important",
+      "--vscode-editorOverviewRuler-infoForeground": "var(--frostpane-accent) !important",
+      "--vscode-editorGutter-modifiedBackground": "var(--frostpane-accent) !important",
+      "--vscode-minimapGutter-modifiedBackground": "var(--frostpane-accent) !important",
+      "--vscode-gitDecoration-modifiedResourceForeground": "var(--frostpane-accent) !important",
+      "--vscode-gitDecoration-stageModifiedResourceForeground": "var(--frostpane-accent) !important",
       "--vscode-notebookStatusRunningIcon-foreground": "var(--frostpane-accent) !important",
       "--vscode-welcomePage-progress-foreground": "var(--frostpane-accent) !important",
-      "--vscode-textLink-activeForeground": "color-mix(in srgb, var(--frostpane-accent), #ffffff 18%) !important",
-      "--vscode-editorLink-activeForeground": "color-mix(in srgb, var(--frostpane-accent), #ffffff 18%) !important",
-      "--vscode-button-hoverBackground": "color-mix(in srgb, var(--frostpane-accent), #ffffff 18%) !important",
-      "--vscode-extensionButton-prominentHoverBackground": "color-mix(in srgb, var(--frostpane-accent), #ffffff 18%) !important",
-      "--vscode-activityBar-activeBackground": "color-mix(in srgb, var(--frostpane-accent) 8%, transparent) !important",
-      "--vscode-editorSuggestWidget-selectedBackground": "color-mix(in srgb, var(--frostpane-accent) 17%, transparent) !important",
+      "--vscode-editorCursor-foreground": "var(--frostpane-accent) !important",
+      "--vscode-terminalCursor-foreground": "var(--frostpane-accent) !important",
+
+      "--vscode-textLink-activeForeground": "var(--frostpane-accent-lift) !important",
+      "--vscode-editorLink-activeForeground": "var(--frostpane-accent-lift) !important",
+      "--vscode-button-hoverBackground": "var(--frostpane-accent-lift) !important",
+      "--vscode-extensionButton-prominentHoverBackground": "var(--frostpane-accent-lift) !important",
+
+      "--vscode-editor-selectionBackground": "var(--frostpane-accent-wash) !important",
+      "--vscode-list-dropBackground": "var(--frostpane-accent-wash) !important",
+      "--vscode-sideBar-dropBackground": "var(--frostpane-accent-wash) !important",
+      "--vscode-terminal-dropBackground": "var(--frostpane-accent-wash) !important",
+      "--vscode-editorGroup-dropBackground": "var(--frostpane-accent-wash) !important",
+      "--vscode-panelSection-dropBackground": "var(--frostpane-accent-wash) !important",
       "--vscode-menu-selectionBackground": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
-      "--vscode-editor-selectionBackground": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important",
+      "--vscode-editorSuggestWidget-selectedBackground": "color-mix(in srgb, var(--frostpane-accent) 17%, transparent) !important",
+      "--vscode-activityBar-activeBackground": "color-mix(in srgb, var(--frostpane-accent) 8%, transparent) !important",
       "--vscode-editor-wordHighlightBackground": "color-mix(in srgb, var(--frostpane-accent) 13%, transparent) !important",
       "--vscode-editor-findMatchBackground": "color-mix(in srgb, var(--frostpane-accent) 33%, transparent) !important",
       "--vscode-editor-findMatchHighlightBackground": "color-mix(in srgb, var(--frostpane-accent) 13%, transparent) !important",
-      "--frostpane-window-fill": "rgba(255,255,255,0.15)",
-      "background-color": "var(--frostpane-bg-canvas) !important"
-    },
-    ".part.sidebar, .part.editor, .part.auxiliarybar, .part.panel.bottom": {
-      "background": "var(--frostpane-window-fill) !important",
-      "background-color": "var(--frostpane-window-fill) !important"
-    },
-    ".part.editor .monaco-editor, .part.editor .monaco-editor-background, .part.editor .monaco-editor .margin, .part.editor .editor-container, .part.editor .editor-group-container, .part.editor .editor-instance, .part.editor .overflow-guard, .editor-group-container > .editor-container, .editor-group-container > .editor-container .overflow-guard": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".part.sidebar .content, .part.sidebar .composite, .part.sidebar .pane-body, .part.sidebar .monaco-list-rows, .part.sidebar .monaco-tree-sticky-container, .part.auxiliarybar .content, .part.auxiliarybar .composite, .part.auxiliarybar .pane-body, .part.auxiliarybar .monaco-list-rows, .part.panel.bottom .content, .part.panel.bottom .pane-body, .part.panel.bottom .terminal-outer-container, .part.panel.bottom .xterm-viewport, .part.panel.bottom .monaco-list-rows": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-workbench .monaco-button, .monaco-workbench .monaco-text-button": {
-      "background-color": "var(--frostpane-accent) !important"
-    },
-    ".monaco-workbench .monaco-button.secondary, .monaco-workbench .monaco-text-button.secondary": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-surface), #ffffff 10%) !important"
-    },
-    ".monaco-workbench .monaco-button.secondary:hover, .monaco-workbench .monaco-text-button.secondary:hover": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-surface), #ffffff 16%) !important"
-    },
-    ".monaco-workbench .interactive-session a.chat-scroll-down, .monaco-workbench .chat-todo-list-widget-container .monaco-button, .monaco-workbench .chat-used-context-label .monaco-button, .monaco-workbench .chat-confirmation-widget-title.monaco-button, .monaco-workbench .chat-editing-session-overview .monaco-button": {
-      "background-color": "transparent !important",
-      "border-color": "transparent !important"
-    },
-    ".monaco-workbench .interactive-session a.chat-scroll-down:hover, .monaco-workbench .chat-todo-list-widget-container .monaco-button:hover, .monaco-workbench .chat-used-context-label .monaco-button:hover, .monaco-workbench .chat-confirmation-widget-title.monaco-button:hover, .monaco-workbench .chat-editing-session-overview .monaco-button:hover": {
-      "background-color": "var(--vscode-toolbar-hoverBackground) !important"
-    },
-    ".monaco-workbench .interactive-session .monaco-list-row.request:hover, .monaco-workbench .interactive-session .monaco-list-row.response:hover": {
-      "background-color": "transparent !important"
-    },
-    ".monaco-workbench .interactive-session .chat-editing-session-container": {
-      "background-color": "transparent !important"
-    },
-    ".monaco-workbench .monaco-progress-container .progress-bit": {
-      "background-color": "var(--frostpane-accent) !important"
-    },
-    ".monaco-editor .selected-text": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 33%, transparent) !important"
-    },
-    ".monaco-editor .findMatch": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 33%, transparent) !important"
-    },
-    ".monaco-editor .currentFindMatch": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 55%, transparent) !important"
-    },
-    ".monaco-editor .wordHighlight": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important"
-    },
-    ".monaco-editor .cursor": {
-      "background-color": "var(--frostpane-accent) !important",
-      "border-color": "var(--frostpane-accent) !important",
-      "color": "var(--frostpane-accent) !important"
-    },
-    ".monaco-workbench .monaco-link": {
-      "color": "var(--frostpane-accent) !important"
-    },
-    ".monaco-workbench .monaco-count-badge, .monaco-workbench .badge .badge-content": {
-      "background-color": "var(--frostpane-accent) !important"
-    },
-    ".monaco-workbench .monaco-list .monaco-list-row .monaco-highlighted-label .highlight": {
-      "color": "var(--frostpane-accent) !important"
-    },
-    ".part.sidebar": {
-      "font-family": "'Bear Sans UI', sans-serif !important",
-      "margin": "0 calc(var(--frostpane-panel-gap) / 2) 0 var(--frostpane-panel-gap)",
-      "border-radius": "var(--frostpane-panel-radius) !important",
-      "overflow": "hidden !important",
-      "height": "100% !important",
-      "max-height": "100% !important",
-      "border-top": "none !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "none !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.22), inset 0 -1px 0 0 rgba(255,255,255,0.22), 0 2px 8px 0 rgba(0,0,0,0.3) !important"
-    },
-    ".part.sidebar .title-label h2": {
-      "font-family": "'Bear Sans UI Heading', sans-serif !important",
-      "font-size": "12px !important",
-      "font-weight": "700 !important",
-      "text-transform": "uppercase !important",
-      "letter-spacing": "1px !important"
-    },
-    ".part.sidebar .welcome-view-content": {
-      "max-width": "100% !important",
-      "box-sizing": "border-box !important"
-    },
-    ".part.sidebar .pane-header": {
-      "border-radius": "var(--frostpane-item-radius) !important",
-      "outline-offset": "-1px !important",
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".part.sidebar .monaco-tree-sticky-container": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".part.sidebar .monaco-tree-sticky-container .monaco-tree-sticky-row": {
-      "background-color": "var(--frostpane-bg-canvas) !important",
-      "background-image": "linear-gradient(var(--frostpane-window-fill), var(--frostpane-window-fill)) !important"
-    },
-    ".part.sidebar .monaco-tree-sticky-container:not(.empty)": {
-      "background-color": "var(--frostpane-bg-canvas) !important",
-      "background-image": "linear-gradient(var(--frostpane-window-fill), var(--frostpane-window-fill)) !important",
-      "box-shadow": "0 4px 8px -2px rgba(0,0,0,0.4) !important"
-    },
-    ".monaco-workbench .terminal-sticky-scroll": {
-      "background-color": "var(--frostpane-bg-canvas) !important",
-      "background-image": "linear-gradient(var(--frostpane-window-fill), var(--frostpane-window-fill)) !important",
-      "box-shadow": "0 4px 8px -2px rgba(0,0,0,0.4) !important"
-    },
-    ".explorer-viewlet .split-view-container": {
-      "margin-top": "-22px !important"
-    },
-    ".part.sidebar .header": {
-      "padding-right": "20px !important"
-    },
-    ".part.sidebar .label-name": {
-      "font-size": "13px !important"
-    },
-    ".part.sidebar .monaco-list-row.selected .monaco-icon-label[class*=monaco-decoration-itemColor], .part.sidebar .monaco-list-row.selected .monaco-icon-label[class*=monaco-decoration-itemColor] *, .part.sidebar .monaco-list-row.focused .monaco-icon-label[class*=monaco-decoration-itemColor], .part.sidebar .monaco-list-row.focused .monaco-icon-label[class*=monaco-decoration-itemColor] *": {
-      "color": "var(--vscode-gitDecoration-modifiedResourceForeground, #6cb4ff) !important"
-    },
-    ".part.sidebar .pane-header .title": {
-      "font-size": "10px !important"
-    },
-    ".explorer-folders-view .monaco-tl-row": {
-      "padding-top": "1px !important",
-      "padding-bottom": "1px !important"
-    },
-    ".part.sidebar .monaco-scrollable-element": {
-      "overflow-x": "hidden !important",
-      "width": "100% !important",
-      "max-width": "100% !important"
-    },
-    ".part.sidebar .monaco-list-rows": {
-      "width": "100% !important",
-      "max-width": "100% !important",
-      "min-width": "0 !important"
-    },
-    ".part.sidebar .scrollbar.horizontal": {
-      "display": "none !important"
-    },
-    ".part.sidebar .monaco-list-row": {
-      "border-radius": "var(--frostpane-item-radius) !important",
-      "box-sizing": "border-box !important",
-      "left": "6px !important",
-      "right": "16px !important",
-      "width": "auto !important",
-      "overflow": "hidden !important",
-      "transition": "background 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important"
-    },
-    ".part.sidebar .monaco-list-row.selected": {
-      "background": "transparent !important",
-      "box-shadow": "none !important",
-      "outline": "none !important"
-    },
-    ".part.sidebar .monaco-list-row.focused": {
-      "background": "rgba(255,255,255,0.05) !important",
-      "box-shadow": "none !important",
-      "outline": "none !important"
-    },
-    ".part.sidebar .monaco-list-row.focused.selected": {
-      "background": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
-      "box-shadow": "none !important",
-      "outline": "none !important"
-    },
-    ".part.sidebar .monaco-list:focus .monaco-list-row.focused": {
-      "background": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
-      "box-shadow": "none !important",
-      "outline": "none !important"
-    },
-    ".part.sidebar .monaco-list-row:hover": {
-      "background": "rgba(255,255,255,0.03) !important",
-      "border-radius": "var(--frostpane-item-radius) !important",
-      "outline": "none !important"
-    },
-    ".monaco-editor .view-overlays .current-line, .monaco-editor .view-overlays .current-line-exact, .monaco-editor .margin-view-overlays .current-line-margin, .monaco-editor .margin-view-overlays .current-line-exact-margin": {
-      "border-radius": "var(--frostpane-item-radius) !important",
-      "border": "none !important",
-      "outline": "none !important",
-      "box-shadow": "none !important"
-    },
-    ".monaco-editor .view-overlays div": {
-      "border": "none !important",
-      "outline": "none !important",
-      "box-shadow": "none !important"
-    },
-    ".monaco-editor .view-overlays .bracket-match": {
-      "border": "1px solid var(--vscode-editorBracketMatch-border) !important"
-    },
-    ".monaco-editor .native-edit-context, .monaco-editor .inputarea, .monaco-editor .native-edit-context:focus, .monaco-editor .inputarea:focus": {
-      "outline": "none !important",
-      "border": "none !important",
-      "box-shadow": "none !important"
-    },
-    ".part.editor": {
-      "margin": "0 calc(var(--frostpane-panel-gap) / 2) var(--frostpane-panel-gap) calc(var(--frostpane-panel-gap) / 2)",
-      "border-radius": "var(--frostpane-panel-radius) !important",
-      "overflow": "hidden !important",
-      "max-height": "calc(100% - var(--frostpane-panel-gap)) !important",
-      "border-top": "1px solid rgba(255,255,255,0.22) !important",
-      "border-left": "1px solid rgba(255,255,255,0.08) !important",
-      "border-bottom": "1px solid rgba(255,255,255,0.22) !important",
-      "border-right": "1px solid rgba(255,255,255,0.03) !important",
-      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
-    },
-    ".editor-actions": {
-      "padding-right": "20px !important",
-      "background-image": "none !important"
-    },
-    ".tabs-container": {
-      "background-image": "none !important"
-    },
-    ".editor-group-container > .title, .editor-group-container > .title .tabs-and-actions-container": {
-      "background-color": "var(--vscode-editor-background) !important",
-      "border-bottom": "none !important",
-      "box-shadow": "none !important"
-    },
-    ".tab": {
-      "position": "relative !important",
-      "z-index": "0 !important",
-      "margin": "0 !important",
-      "padding-right": "6px !important",
-      "border-right": "none !important",
-      "font-family": "'Bear Sans UI', sans-serif !important",
-      "display": "flex !important",
-      "align-items": "center !important",
-      "background": "transparent !important"
-    },
-    ".tab .tab-actions .action-label": {
-      "border-radius": "50% !important"
-    },
-    ".tab::after": {
-      "content": "'' !important",
-      "position": "absolute !important",
-      "top": "4px !important",
-      "left": "4px !important",
-      "right": "4px !important",
-      "bottom": "4px !important",
-      "border-radius": "9999px !important",
-      "background": "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 55%), var(--frostpane-window-fill) !important",
-      "backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "-webkit-backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 0 rgba(255,255,255,0.22), inset 0 -1px 0 0 rgba(255,255,255,0.04), 0 2px 8px 0 rgba(0,0,0,0.4) !important",
-      "z-index": "-1 !important",
-      "pointer-events": "none !important",
-      "opacity": "0 !important",
-      "transition": "opacity 0.25s ease !important"
-    },
-    ".tab.active::after": {
-      "opacity": "1 !important"
-    },
-    ".tab:not(.active)": {
-      "background": "transparent !important",
-      "box-shadow": "none !important"
-    },
-    ".tab:hover .label-name": {
-      "text-shadow": "0 0 5px rgba(255,255,255,0.15) !important",
-      "transition": "text-shadow 0.3s ease !important"
-    },
-    ".minimap canvas": {
-      "opacity": "0.6 !important",
-      "transition": "opacity 0.4s ease !important"
-    },
-    ".minimap:hover canvas": {
-      "opacity": "1 !important"
-    },
-    ".monaco-hover": {
-      "background-color": "var(--frostpane-bg-canvas, #111111) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important",
-      "overflow": "hidden !important"
-    },
-    ".monaco-hover .hover-row, .monaco-hover .hover-contents, .monaco-hover .hover-row.status-bar": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-breadcrumbs": {
-      "border-top": "none !important"
-    },
-    ".monaco-breadcrumbs *": {
-      "opacity": "0 !important",
-      "transition": "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
-    },
-    ".monaco-breadcrumbs:hover *": {
-      "opacity": "1 !important"
-    },
-    ".split-view-view:has(.terminal-tabs-entry)": {
-      "min-width": "220px !important",
-      "border-bottom": "none !important"
-    },
-    ".part.panel.bottom .tabs-container": {
-      "border-bottom": "none !important",
-      "background-image": "none !important"
-    },
-    ".split-view-view:has(.terminal-tabs-entry) .monaco-list-row": {
-      "border-radius": "var(--frostpane-item-radius) !important",
-      "margin-right": "20px !important",
-      "width": "calc(100% - 20px) !important"
-    },
-    ".split-view-view:has(.terminal-tabs-entry) .monaco-list-row.selected, .split-view-view:has(.terminal-tabs-entry) .monaco-list-row.focused": {
-      "background": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
-      "outline": "none !important"
-    },
-    ".viewpane-filter .monaco-inputbox": {
-      "border-radius": "var(--frostpane-input-radius) !important",
-      "background-color": "rgba(0,0,0,0.3) !important"
-    },
-    "select.monaco-select-box": {
-      "background-color": "rgba(0,0,0,0.3) !important",
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".repl .repl-input-wrapper": {
-      "background-color": "rgba(0,0,0,0.3) !important",
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".repl .repl-input-wrapper .monaco-editor, .repl .repl-input-wrapper .monaco-editor-background": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".search-widget .monaco-inputbox": {
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".search-view .search-widget .monaco-button.toggle-replace-button, .search-widget .toggle-replace-button": {
-      "background": "transparent !important",
-      "background-color": "transparent !important",
-      "border": "none !important",
-      "box-shadow": "none !important",
-      "color": "var(--vscode-foreground) !important"
-    },
-    ".part.sidebar .monaco-inputbox, .part.sidebar .suggest-input-container": {
-      "background-color": "rgba(0,0,0,0.3) !important"
-    },
-    ".part.sidebar .monaco-inputbox .input, .part.sidebar .monaco-inputbox textarea, .part.sidebar .suggest-input-container .monaco-editor, .part.sidebar .suggest-input-container .monaco-editor-background": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".search-widget .replace-input .monaco-findInput": {
-      "width": "228px !important",
-      "height": "26px !important"
-    },
-    ".search-widget .search-container .monaco-findInput": {
-      "width": "228px !important",
-      "height": "26px !important"
-    },
-    ".results.show-file-icons": {
-      "margin-bottom": "22px !important"
-    },
-    ".extensions-search-container": {
-      "transform": "translateX(-6px) !important"
-    },
-    ".extensions-search-container .suggest-input-container": {
-      "border-radius": "var(--frostpane-input-radius) !important",
-      "overflow": "hidden !important",
-      "font-size": "11px !important",
-      "--editor-font-size": "11px !important"
-    },
-    ".extensions-search-container .suggest-input-placeholder": {
-      "font-size": "11px !important"
-    },
-    ".scm-editor": {
-      "border-radius": "var(--frostpane-input-radius) !important",
-      "overflow": "hidden !important"
-    },
-    ".scm-input .scm-editor-container, .scm-editor-container": {
-      "background-color": "rgba(0,0,0,0.3) !important"
-    },
-    ".scm-editor-container .monaco-editor, .scm-editor-container .monaco-editor-background, .scm-editor-container .monaco-editor .margin": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".scm-input": {
-      "border-radius": "var(--frostpane-input-radius) !important",
-      "overflow": "hidden !important"
-    },
-    ".scm-input + .scm-editor-toolbar + .monaco-button": {
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".part.sidebar .monaco-button-dropdown": {
-      "gap": "4px !important"
-    },
-    ".part.sidebar .monaco-button-dropdown > .monaco-dropdown-button, .part.sidebar .monaco-button-dropdown > .monaco-button.monaco-dropdown-button": {
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".part.sidebar .monaco-button": {
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".part.panel.bottom": {
-      "margin": "0 calc(var(--frostpane-panel-gap) / 2) 0 calc(var(--frostpane-panel-gap) / 2) !important",
-      "border-radius": "var(--frostpane-panel-radius) !important",
-      "overflow": "hidden !important",
-      "box-sizing": "border-box !important",
-      "height": "100% !important",
-      "max-height": "100% !important",
-      "background": "var(--frostpane-window-fill) !important",
-      "background-color": "var(--frostpane-window-fill) !important",
-      "border-top": "none !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "none !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.22), inset 0 -1px 0 0 rgba(255,255,255,0.22), 0 2px 8px 0 rgba(0,0,0,0.3) !important"
-    },
-    ".part.panel.bottom > .composite.title": {
-      "position": "relative !important",
-      "z-index": "1 !important",
-      "height": "35px !important",
-      "min-height": "35px !important",
-      "max-height": "35px !important",
-      "box-sizing": "border-box !important",
-      "border-top-width": "0px !important",
-      "border-top-style": "solid !important",
-      "border-top-color": "transparent !important"
-    },
-    ".part.panel.bottom > .composite.title > .title-actions-container, .part.panel.bottom > .composite.title .panel-switcher-container, .part.panel.bottom > .composite.title .monaco-action-bar, .part.panel.bottom > .composite.title .actions-container": {
-      "height": "35px !important",
-      "min-height": "35px !important",
-      "max-height": "35px !important",
-      "align-items": "center !important"
-    },
-    ".part.panel.bottom .title, .part.panel.bottom .composite.title, .part.panel.bottom .composite.title *, .part.panel.bottom .title-actions-container, .part.panel.bottom .panel-switcher-container, .part.panel.bottom .panel-switcher-container *, .part.panel.bottom .monaco-action-bar, .part.panel.bottom .actions-container": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".part.panel.bottom .composite.title .badge .badge-content, .part.panel.bottom .composite.title .monaco-count-badge": {
-      "background-color": "var(--frostpane-accent) !important",
-      "color": "#0a1416 !important"
-    },
-    ".part.panel.bottom > .content": {
-      "position": "relative !important",
-      "border-radius": "0 0 calc(var(--frostpane-panel-radius) - 1px) calc(var(--frostpane-panel-radius) - 1px) !important",
-      "overflow": "hidden !important"
-    },
-    ".part.panel.bottom .pane": {
-      "border-bottom": "none !important"
-    },
-    ".part.panel.bottom .pane-body": {
-      "border-bottom": "none !important"
-    },
-    ".part.panel.bottom .split-view-view": {
-      "border-bottom": "none !important"
-    },
-    ".part.panel.bottom .composite": {
-      "border-bottom": "none !important"
-    },
-    ".part.panel.bottom .monaco-pane-view": {
-      "border-bottom": "none !important"
-    },
-    ".part.panel.bottom .output-view": {
-      "border-bottom": "none !important"
-    },
-    ".part.panel.bottom .terminal-outer-container": {
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-radius": "0 0 calc(var(--frostpane-panel-radius) - 1px) calc(var(--frostpane-panel-radius) - 1px) !important",
-      "box-sizing": "border-box !important",
-      "overflow": "hidden !important"
-    },
-    ".part.panel.bottom .terminal.xterm": {
-      "border-radius": "0 0 calc(var(--frostpane-panel-radius) - 1px) calc(var(--frostpane-panel-radius) - 1px) !important"
-    },
-    ".part.panel.bottom .message-box-container": {
-      "border-radius": "10px !important",
-      "margin": "4px !important",
-      "width": "calc(100% - 34px) !important",
-      "box-sizing": "border-box !important"
-    },
-    ".part.panel.bottom .welcome-view-content": {
-      "border-radius": "10px !important",
-      "margin": "4px !important",
-      "width": "calc(100% - 34px) !important",
-      "box-sizing": "border-box !important"
-    },
-    ".part.panel.bottom .monaco-table": {
-      "border-radius": "10px !important",
-      "width": "calc(100% - 14px) !important"
-    },
-    ".part.activitybar": {
-      "background": "transparent !important",
-      "margin": "0 calc(var(--frostpane-panel-gap) / 2) 0 var(--frostpane-panel-gap)",
-      "overflow": "visible !important",
-      "width": "54px !important",
-      "height": "100% !important"
-    },
-    ".part.activitybar .composite-bar": {
-      "background": "transparent !important",
-      "border": "none !important",
-      "border-radius": "0 !important",
-      "overflow": "visible !important",
-      "width": "100% !important",
-      "padding": "8px 0 !important",
-      "box-sizing": "border-box !important",
-      "display": "flex !important",
-      "flex-direction": "column !important",
-      "align-items": "center !important",
-      "box-shadow": "none !important"
-    },
-    ".part.activitybar .content > div:last-child": {
-      "transform": "translateY(-10px) !important"
-    },
-    ".part.activitybar .action-item .action-label": {
-      "font-size": "22px !important",
-      "width": "34px !important",
-      "height": "34px !important",
-      "line-height": "34px !important",
-      "display": "flex !important",
-      "align-items": "center !important",
-      "justify-content": "center !important",
-      "overflow": "visible !important"
-    },
-    ".part.activitybar .action-item .action-label .codicon": {
-      "font-size": "22px !important"
-    },
-    ".part.activitybar .action-item .action-label img": {
-      "max-width": "22px !important",
-      "max-height": "22px !important"
-    },
-    ".part.activitybar .action-item .active-item-indicator": {
-      "display": "none !important"
-    },
-    ".part.activitybar .action-item.checked .action-label": {
-      "background": "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 55%), var(--frostpane-window-fill) !important",
-      "backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "-webkit-backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "width": "34px !important",
-      "height": "34px !important",
-      "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 0 rgba(255,255,255,0.22), inset 0 -1px 0 0 rgba(255,255,255,0.04), 0 2px 8px 0 rgba(0,0,0,0.4) !important"
-    },
-    ".part.activitybar .actions-container": {
-      "align-items": "center !important",
-      "justify-content": "center !important",
-      "width": "100% !important",
-      "overflow": "visible !important"
-    },
-    ".part.activitybar .action-item": {
-      "display": "flex !important",
-      "justify-content": "center !important",
-      "width": "100% !important",
-      "overflow": "visible !important"
-    },
-    ".part.activitybar .badge": {
-      "z-index": "10 !important",
-      "overflow": "visible !important",
-      "transform": "scale(0.8) !important",
-      "transform-origin": "top right !important"
-    },
-    ".part.titlebar": {
-      "background-color": "transparent !important"
-    },
-    ".part.titlebar .titlebar-container": {
-      "background-color": "transparent !important",
-      "background": "transparent !important"
-    },
-    ".part.titlebar .window-controls-container": {
-      "background-color": "transparent !important"
-    },
-    ".part.titlebar .window-controls-container .window-icon": {
-      "background-color": "transparent !important"
-    },
-    ".part.statusbar": {
-      "background-color": "var(--frostpane-bg-canvas) !important",
-      "font-family": "'Bear Sans UI', sans-serif !important"
-    },
-    ".part.statusbar .statusbar-item-label": {
-      "color": "#9a9ea5 !important"
-    },
-    ".part.statusbar .codicon": {
-      "color": "#9a9ea5 !important"
-    },
-    ".part.statusbar .items-container": {
-      "margin-top": "-2px !important"
-    },
-    ".monaco-icon-label.file-icon::before": {
-      "filter": "drop-shadow(0 0 2.5px currentColor)",
-      "opacity": "1 !important"
-    },
-    ".letterpress": {
-      "opacity": "0.4 !important",
-      "filter": "brightness(0) drop-shadow(2px 2px 1px rgba(255,255,255,0.12)) drop-shadow(-2px -2px 1px rgba(0,0,0,1)) !important"
-    },
-    ".part.titlebar .action-label": {
-      "border-radius": "50% !important"
-    },
-    ".command-center-center": {
-      "font-family": "'Bear Sans UI', sans-serif !important",
-      "border-radius": "9999px !important",
-      "overflow": "hidden !important",
-      "border": "none !important",
-      "background": "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 55%), var(--frostpane-window-fill) !important",
-      "backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "-webkit-backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 0 rgba(255,255,255,0.22), inset 0 -1px 0 0 rgba(255,255,255,0.04), 0 2px 8px 0 rgba(0,0,0,0.4) !important",
-      "transition": "box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important"
-    },
-    ".command-center-center *": {
-      "border-radius": "9999px !important",
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".agent-status-pill": {
-      "border-radius": "9999px !important",
-      "border": "none !important",
-      "overflow": "hidden !important",
-      "background": "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 55%), var(--frostpane-window-fill) !important",
-      "backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "-webkit-backdrop-filter": "blur(14px) saturate(1.6) !important",
-      "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 0 rgba(255,255,255,0.22), inset 0 -1px 0 0 rgba(255,255,255,0.04), 0 2px 8px 0 rgba(0,0,0,0.4) !important"
-    },
-    ".agent-status-pill .agent-status-input-area": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".agent-status-badge-section": {
-      "display": "none !important"
-    },
-    ".notifications-toasts": {
-      "margin-right": "var(--frostpane-panel-gap) !important",
-      "margin-bottom": "var(--frostpane-panel-gap) !important"
-    },
-    ".notification-toast": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-surface) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important"
-    },
-    ".notifications-center": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-surface) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important"
-    },
-    ".notification-toast .notifications-list-container, .notifications-center .notifications-list-container, .notifications-center .notifications-center-header, .notification-toast .monaco-list, .notifications-center .monaco-list, .notification-toast .monaco-scrollable-element, .notifications-center .monaco-scrollable-element, .notification-toast .monaco-list-rows, .notifications-center .monaco-list-rows": {
-      "background": "transparent !important",
-      "background-color": "transparent !important",
-      "box-shadow": "none !important"
-    },
-    ".notification-list-item-actions-container": {
-      "border-radius": "var(--frostpane-item-radius) !important"
-    },
-    ".notification-list-item": {
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important"
-    },
-    ".notification-list-item.focused": {
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "outline": "none !important",
-      "outline-offset": "-1px !important"
-    },
-    ".monaco-list-row:has(.notification-list-item)": {
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important"
-    },
-    ".part.auxiliarybar": {
-      "margin": "0 var(--frostpane-panel-gap) 0 calc(var(--frostpane-panel-gap) / 2)",
-      "border-radius": "var(--frostpane-panel-radius) !important",
-      "overflow": "hidden !important",
-      "height": "100% !important",
-      "max-height": "100% !important",
-      "border-top": "none !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "none !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.22), inset 0 -1px 0 0 rgba(255,255,255,0.22), 0 2px 8px 0 rgba(0,0,0,0.3) !important"
-    },
-    ".part.auxiliarybar .content": {
-      "width": "100% !important"
-    },
-    ".part.auxiliarybar .split-view-view": {
-      "max-height": "calc(100% - 24px) !important"
-    },
-    ".part.auxiliarybar .header": {
-      "padding-left": "8px !important"
-    },
-    ".quick-input-widget": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-surface) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important"
-    },
-    ".quick-input-titlebar, .quick-input-header, .quick-input-description, .quick-input-message, .quick-input-list, .quick-input-tree, .quick-input-widget .monaco-list, .quick-input-widget .monaco-scrollable-element, .quick-input-widget .monaco-list-rows, .quick-input-widget .monaco-tree-sticky-container": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".quick-input-widget .quick-input-filter .monaco-inputbox, .quick-input-widget .quick-input-filter .monaco-inputbox input, .quick-input-widget .quick-input-filter .monaco-inputbox textarea": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".quick-input-widget .monaco-list-row": {
-      "border-radius": "var(--frostpane-item-radius) !important",
-      "margin-left": "4px !important",
-      "margin-right": "4px !important",
-      "width": "calc(100% - 8px) !important",
-      "transition": "background 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important"
-    },
-    ".quick-input-widget .monaco-list-row.focused": {
-      "background": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
-      "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.06) !important"
-    },
-    ".quick-input-widget .monaco-highlighted-label .highlight, .quick-input-widget .monaco-icon-label .highlight, .quick-input-widget .quick-input-list .highlight": {
-      "color": "var(--frostpane-accent) !important"
-    },
-    ".quick-input-widget .quick-input-list .monaco-scrollable-element:has(> .shadow.top)": {
-      "-webkit-mask-image": "linear-gradient(to bottom, transparent 0, black 24px) !important",
-      "mask-image": "linear-gradient(to bottom, transparent 0, black 24px) !important"
-    },
-    ".quick-input-widget .quick-input-list .shadow.top": {
-      "box-shadow": "none !important"
-    },
-    ".scrollbar .slider": {
-      "border-radius": "9999px !important",
-      "transition": "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important"
-    },
-    ".monaco-count-badge": {
-      "border-radius": "9999px !important",
-      "font-size": "12px !important",
-      "padding": "0 6px !important",
-      "min-height": "16px !important",
-      "line-height": "16px !important",
-      "transform": "scale(0.85) !important"
-    },
-    ".tab .tab-actions": {
-      "opacity": "0 !important",
-      "transition": "opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important"
-    },
-    ".tab:hover .tab-actions": {
-      "opacity": "1 !important"
-    },
-    ".tab.active .tab-actions": {
-      "opacity": "1 !important"
-    },
-    ".sticky-widget": {
-      "box-shadow": "0 4px 8px -2px rgba(0,0,0,0.4) !important",
-      "background-color": "var(--frostpane-bg-canvas) !important",
-      "background-image": "linear-gradient(var(--frostpane-window-fill), var(--frostpane-window-fill)) !important"
-    },
-    ".sticky-widget-lines-scrollable, .sticky-widget-lines": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-editor .sticky-line-content, .monaco-editor .sticky-line-number": {
-      "background-color": "var(--frostpane-bg-canvas) !important",
-      "background-image": "linear-gradient(var(--frostpane-window-fill), var(--frostpane-window-fill)) !important"
-    },
-    ".monaco-dialog-box": {
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important",
-      "border-top": "1px solid rgba(255,255,255,0.1) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "0 8px 24px 0 rgba(0,0,0,0.5) !important"
-    },
-    ".monaco-dialog-box .dialog-buttons .monaco-button": {
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".notebook-toolbar-container": {
-      "max-width": "calc(100% - 18px) !important"
-    },
-    ".notebookOverlay": {
-      "border-radius": "0 0 var(--frostpane-panel-radius) var(--frostpane-panel-radius) !important",
-      "clip-path": "inset(0 18px var(--frostpane-panel-gap) var(--frostpane-panel-gap) round 0 0 var(--frostpane-panel-radius) var(--frostpane-panel-radius)) !important"
-    },
-    ".interactive-session": {
-        "--vscode-focusBorder": "rgba(255,255,255,0.25) !important",
-        "--vscode-list-focusOutline": "rgba(255,255,255,0.25) !important",
-        "--vscode-list-highlightForeground": "#ffffff !important",
-        "--vscode-list-focusHighlightForeground": "#ffffff !important",
-        "--vscode-editorSuggestWidget-highlightForeground": "#ffffff !important",
-        "--vscode-editorSuggestWidget-focusHighlightForeground": "#ffffff !important",
-        "--vscode-editorSuggestWidget-selectedBackground": "rgba(255,255,255,0.08) !important",
-        "--vscode-pickerGroup-foreground": "#bcbec4 !important",
-        "--vscode-textLink-foreground": "#e6e9ee !important",
-        "--vscode-textLink-activeForeground": "#ffffff !important",
-        "--vscode-progressBar-background": "rgba(255,255,255,0.35) !important",
-        "--vscode-badge-background": "#3c3f41 !important",
-        "--vscode-badge-foreground": "#bcbec4 !important",
-        "--vscode-inputOption-activeBorder": "rgba(255,255,255,0.25) !important",
-        "--vscode-inputOption-activeForeground": "#bcbec4 !important",
-        "--vscode-inputOption-activeBackground": "rgba(255,255,255,0.08) !important",
-        "--vscode-inputValidation-infoBorder": "rgba(255,255,255,0.25) !important",
-        "--vscode-textBlockQuote-border": "rgba(255,255,255,0.18) !important",
-        "--vscode-editorInfo-foreground": "#7a7e85 !important",
-        "--vscode-chat-slashCommandForeground": "#bcbec4 !important",
-        "--vscode-chat-slashCommandBackground": "rgba(255,255,255,0.06) !important",
-        "--vscode-chat-avatarBackground": "#2b2d30 !important",
-        "--vscode-chat-requestBorder": "rgba(255,255,255,0.10) !important",
-        "--vscode-chat-requestBubbleBackground": "rgba(0,0,0,0.3) !important",
-        "--vscode-chat-requestBubbleHoverBackground": "var(--vscode-chat-requestBubbleBackground) !important"
-    },
-    ".chat-editing-session-container": {
-      "border-radius": "var(--frostpane-input-radius) !important",
-      "overflow": "hidden !important"
-    },
-    ".chat-confirmation-widget2": {
-      "border-radius": "var(--frostpane-input-radius) !important",
-      "overflow": "hidden !important"
-    },
-    ".chat-input-container": {
-      "background-color": "rgba(0,0,0,0.3) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "border-top": "1px solid rgba(255,255,255,0.1) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "--chat-input-working-border-color1": "transparent !important",
-      "overflow": "visible !important"
-    },
-    ".chat-input-container .monaco-inputbox, .chat-input-container .interactive-input-editor .monaco-editor, .chat-input-container .interactive-input-editor .monaco-editor .monaco-editor-background": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".chat-attached-context-attachment .monaco-button": {
-      "background-color": "rgba(0,0,0,0.3) !important"
-    },
-    ".chat-attached-context-attachment .monaco-icon-label .monaco-button.codicon": {
-      "background-color": "transparent !important"
-    },
-    ".interactive-input-part": {
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "visible !important"
-    },
-    ".monaco-button-dropdown-separator": {
-      "display": "none !important",
-      "background": "transparent !important",
-      "background-color": "transparent !important",
-      "width": "0 !important",
-      "opacity": "0 !important"
-    },
-    ".context-view": {
-      "z-index": "10000 !important"
-    },
-    ".monaco-menu-container": {
-      "z-index": "10000 !important",
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-canvas) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important",
-      "overflow": "visible !important"
-    },
-    ".monaco-submenu": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-canvas), #ffffff 5%) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important",
-      "overflow": "visible !important"
-    },
-    ".monaco-menu-container .monaco-scrollable-element, .monaco-menu-container .monaco-menu, .monaco-menu-container .monaco-action-bar, .monaco-menu-container .monaco-action-bar.vertical": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-modal-editor-block .modal-editor-shadow": {
-      "border-radius": "var(--frostpane-widget-radius) !important"
-    },
-    ".monaco-modal-editor-block .modal-editor-part": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-canvas) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12) !important"
-    },
-    ".monaco-modal-editor-block .modal-editor-header, .monaco-modal-editor-block .modal-editor-sidebar": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-modal-editor-block .modal-editor-part .monaco-editor, .monaco-modal-editor-block .modal-editor-part .monaco-editor .monaco-editor-background, .monaco-modal-editor-block .modal-editor-part .monaco-editor .margin": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-menu .monaco-action-bar.vertical": {
-      "padding": "4px !important"
-    },
-    ".monaco-menu .monaco-action-bar.vertical .action-item .action-menu-item": {
-      "border-radius": "var(--frostpane-item-radius) !important"
-    },
-    ".monaco-menu .monaco-action-bar.vertical .action-item.focused > .action-menu-item, .monaco-menu .monaco-action-bar.vertical .action-menu-item:hover": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
-      "border-radius": "var(--frostpane-item-radius) !important"
-    },
-    ".monaco-workbench .monaco-inputbox input, .monaco-workbench .monaco-inputbox textarea, .monaco-workbench .monaco-findInput input, .monaco-workbench .quick-input-filter input, .monaco-workbench .quick-input-box input, .monaco-workbench .select-box-input": {
-      "caret-color": "var(--frostpane-accent) !important"
-    },
-    ".terminal .xterm-fg-4, .terminal .xterm-fg-12": {
-      "color": "var(--frostpane-accent) !important"
-    },
-    ".monaco-workbench .terminal .xterm-rows .xterm-cursor.xterm-cursor-block:not(.xterm-cursor-blink)": {
-      "background-color": "var(--frostpane-accent) !important"
-    },
-    ".terminal .xterm-cursor-outline": {
-      "outline-color": "var(--frostpane-accent) !important"
-    },
-    ".terminal .xterm-cursor-bar": {
-      "box-shadow": "var(--frostpane-accent) 1px 0 0 inset !important"
-    },
-    ".terminal .xterm-cursor-underline": {
-      "box-shadow": "var(--frostpane-accent) 0 -1px 0 inset !important"
-    },
-    "// terminal selection now painted by theme-customizer.js via xterm options.theme - no CSS rule can catch the per-cell blend hexes": "",
-    "// drag-drop feedback: editor-group overlay is inline-JS-painted so the element rule must out-important it": "",
-    ".monaco-workbench .editor-group-overlay-indicator": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important"
-    },
-    "// list drop rules are runtime-injected with important + per-instance class - double class beats their specificity": "",
-    ".monaco-workbench .monaco-list.monaco-list.drop-target, .monaco-workbench .monaco-list.monaco-list .monaco-list-rows.drop-target, .monaco-workbench .monaco-list.monaco-list .monaco-list-row.drop-target": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 20%, transparent) !important"
-    },
-    ".monaco-workbench .terminal-initial-hint, .monaco-workbench .terminal-initial-hint a, .monaco-workbench .terminal-initial-hint .detail": {
-      "color": "var(--frostpane-accent) !important"
-    },
-    ".update-indicator.prominent": {
-      "background-color": "var(--frostpane-accent) !important",
-      "border-color": "var(--frostpane-accent) !important"
-    },
-    ".update-indicator.prominent:hover": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent), #ffffff 18%) !important",
-      "border-color": "color-mix(in srgb, var(--frostpane-accent), #ffffff 18%) !important"
-    },
-    ".monaco-select-box-dropdown-container .monaco-list .monaco-list-row.focused": {
-      "background-color": "color-mix(in srgb, var(--frostpane-accent) 30%, transparent) !important",
-      "color": "#ffffff !important",
-      "border-radius": "var(--frostpane-item-radius) !important"
-    },
-    ".monaco-select-box-dropdown-container": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-canvas) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important"
-    },
-    ".monaco-select-box-dropdown-container .select-box-dropdown-list-container, .monaco-select-box-dropdown-container .monaco-list, .monaco-select-box-dropdown-container .monaco-scrollable-element, .monaco-select-box-dropdown-container .monaco-list-rows, .monaco-select-box-dropdown-container .select-box-details-pane": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-editor .find-widget, .simple-find-part": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-canvas) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important"
-    },
-    ".monaco-editor .find-widget .monaco-inputbox, .simple-find-part .monaco-inputbox": {
-      "background-color": "rgba(0,0,0,0.3) !important",
-      "border-radius": "var(--frostpane-input-radius) !important"
-    },
-    ".monaco-editor .find-widget .monaco-inputbox .input, .monaco-editor .find-widget .monaco-inputbox textarea, .simple-find-part .monaco-inputbox .input": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-    ".monaco-workbench .debug-toolbar": {
-      "background-color": "color-mix(in srgb, var(--frostpane-bg-canvas) 38%, transparent) !important",
-      "backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "-webkit-backdrop-filter": "blur(12px) saturate(1.5) !important",
-      "border": "1px solid rgba(255,255,255,0.18) !important",
-      "border-radius": "var(--frostpane-widget-radius) !important",
-      "overflow": "hidden !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), 0 8px 24px 0 rgba(0,0,0,0.5) !important"
-    },
-    ".monaco-workbench .debug-toolbar .monaco-action-bar, .monaco-workbench .debug-toolbar .action-item": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
+      "--vscode-minimap-findMatchHighlight": "color-mix(in srgb, var(--frostpane-accent) 40%, transparent) !important"
     }
   },
   "custom-ui-style.external.imports": "__FROSTPANE_IMPORTS__"

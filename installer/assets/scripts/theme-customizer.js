@@ -1,16 +1,18 @@
 (function () {
   "use strict";
 
-  try { console.log("[theme-customizer] script executing (v7, color-only)"); } catch (e) {}
+  try { console.log("[theme-customizer] script executing (v8, colors only)"); } catch (e) {}
 
   try {
     if (window.__itcThemeCustomizerLoaded) return;
     window.__itcThemeCustomizerLoaded = true;
   } catch (e) { return; }
 
+  // Kept in step with the Frostpane colour theme: the extension paints these
+  // same two values statically, so an untouched install and a fresh pick agree.
   var DEFAULTS = {
     accent: "#6cb4ff",
-    bgColor: "#111111",
+    bgColor: "#181a1d",
   };
   var MAX_L = 0.16;
   var MAX_S = 0.6;
@@ -48,7 +50,7 @@
   ];
 
   var DARK_SWATCHES = [
-    "#080808", "#10131a", "#1e0d12", "#0f1714",
+    "#181a1d", "#080808", "#10131a", "#1e0d12", "#0f1714",
     "#161a10", "#0a1a0e", "#0a1f1e", "#1d100a",
     "#110f24", "#170f20", "#1c0d1e",
   ];
@@ -166,17 +168,6 @@
     bgColorRaw: DEFAULTS.bgColor,
   };
 
-  function scrubLegacyImageState() {
-    try {
-      for (var i = window.localStorage.length - 1; i >= 0; i--) {
-        var k = window.localStorage.key(i);
-        if (k && /^itc\.(f\..*\.)?(bgMode|bgImage)$/.test(k)) {
-          window.localStorage.removeItem(k);
-        }
-      }
-    } catch (e) {}
-  }
-
   function loadState() {
     ensureFolderKey();
     perFolder = folderKey ? (lsGet(fEnabledKey(), "") === "1") : false;
@@ -212,52 +203,52 @@
     refreshSelections();
   }
 
-  function workbench() {
-    try { return document.querySelector(".monaco-workbench"); } catch (e) { return null; }
-  }
-
+  // The stylesheet in settings.json maps these two variables onto every
+  // --vscode-* colour it cares about, so setting them here is the whole apply.
+  // They go on <html> as an inline style: that beats the :root defaults in the
+  // stylesheet and reaches the popup too, which lives outside .monaco-workbench.
   function applyState() {
     try {
-      try { document.documentElement.style.setProperty("--frostpane-accent", state.accent); } catch (e) {}
-      var wb = workbench();
-      if (!wb) return;
-      wb.style.setProperty("--frostpane-accent", state.accent);
-      wb.style.setProperty("--frostpane-bg-canvas", state.bgColor);
-      wb.style.setProperty("--frostpane-window-fill", "rgba(255,255,255,0.08)");
-
-      wb.style.removeProperty("--frostpane-bg-image");
-      wb.style.removeProperty("--frostpane-window-blur");
-      wb.classList.remove("itc-bg-image");
-      paintTerminalSelection();
+      var root = document.documentElement;
+      if (root) {
+        root.style.setProperty("--frostpane-accent", state.accent);
+        root.style.setProperty("--frostpane-bg", state.bgColor);
+      }
+      paintTerminal();
     } catch (e) {  }
   }
 
-  // Terminal selection cannot follow the accent through CSS alone: xterm
-  // resolves selection colors from its theme object and, for cells that carry
-  // their own background, BLENDS the two into a fresh hex that no attribute
-  // selector can anticipate. VSCode exposes the raw xterm instance on each
-  // .terminal-wrapper element, so the reliable path is to write the accent
-  // wash straight into every live terminal theme. VSCode occasionally
-  // reassigns options.theme itself (color theme or config changes), so this
-  // is re-asserted from applyState and from a slow guard interval; the
-  // equality check makes the repeat calls free.
+  // The terminal is the one surface CSS cannot reach: xterm reads its colours
+  // from a theme object and, for selection over cells that carry their own
+  // background, BLENDS the two into a fresh hex no selector can anticipate.
+  // VSCode exposes the raw xterm instance on each .terminal-wrapper element,
+  // so the accent and the background are written straight into every live
+  // terminal theme. VSCode reassigns options.theme itself now and then (colour
+  // theme or config changes), so this is re-asserted from applyState and from
+  // a slow guard interval; the equality check makes the repeat calls free.
   var TERM_SEL_ALPHA = "33";
 
-  function paintTerminalSelection() {
+  function paintTerminal() {
     try {
-      var wash = clampHex(state.accent);
-      if (!wash) return;
-      wash = wash + TERM_SEL_ALPHA;
+      var accent = clampHex(state.accent);
+      var bg = clampHex(state.bgColor);
+      if (!accent || !bg) return;
+      var wash = accent + TERM_SEL_ALPHA;
       var wrappers = document.querySelectorAll(".terminal-wrapper");
       for (var i = 0; i < wrappers.length; i++) {
         var term = wrappers[i].xterm;
         if (!term || !term.options) continue;
         var th = term.options.theme || {};
-        if (th.selectionBackground === wash && th.selectionInactiveBackground === wash) continue;
+        if (th.selectionBackground === wash
+            && th.selectionInactiveBackground === wash
+            && th.background === bg
+            && th.cursor === accent) continue;
         var next = {};
         for (var k in th) next[k] = th[k];
         next.selectionBackground = wash;
         next.selectionInactiveBackground = wash;
+        next.background = bg;
+        next.cursor = accent;
         term.options.theme = next;
       }
     } catch (e) {}
@@ -280,12 +271,11 @@
       "#" + BTN_ID + " .itc-sb-text{font-family:inherit;}" +
 
       "#" + POPUP_ID + "{position:fixed;right:14px;bottom:30px;width:294px;z-index:100000;" +
-      "padding:14px;border-radius:var(--frostpane-widget-radius, 10px);color:#eaf3ff;" +
-      "font-family:'Bear Sans UI', sans-serif;font-size:12px;" +
-      "border:1px solid rgba(255,255,255,0.18);" +
-      "background-color:color-mix(in srgb, var(--frostpane-bg-surface, #181a1d) 38%, transparent);" +
-      "backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);" +
-      "box-shadow:inset 0 1px 0 0 rgba(255,255,255,0.12), 0 12px 32px 0 rgba(0,0,0,0.55);}" +
+      "padding:14px;border-radius:6px;color:var(--vscode-foreground, #eaf3ff);" +
+      "font-family:var(--vscode-font-family, sans-serif);font-size:12px;" +
+      "border:1px solid rgba(255,255,255,0.14);" +
+      "background-color:var(--frostpane-bg-elev, #22242a);" +
+      "box-shadow:0 6px 20px 0 rgba(0,0,0,0.45);}" +
       "#" + POPUP_ID + " .itc-h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;" +
       "opacity:0.7;margin:0 0 6px 0;}" +
       "#" + POPUP_ID + " .itc-section{margin-bottom:14px;}" +
@@ -293,7 +283,7 @@
       "#" + POPUP_ID + " .itc-row{display:flex;align-items:center;gap:8px;}" +
 
       "#" + POPUP_ID + " .itc-swatches{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;width:294px;}" +
-      "#" + POPUP_ID + " .itc-sw{width:24px;height:24px;border-radius:6px;cursor:pointer;" +
+      "#" + POPUP_ID + " .itc-sw{width:24px;height:24px;border-radius:4px;cursor:pointer;" +
       "border:1px solid rgba(255,255,255,0.18);box-sizing:border-box;}" +
 
       "#" + POPUP_ID + " .itc-bg-swatches .itc-sw{width:44px;}" +
@@ -303,7 +293,7 @@
       "opacity:0;pointer-events:none;border:0;padding:0;margin:0;}" +
 
       "#" + POPUP_ID + " .itc-sw.itc-custom{display:flex;align-items:center;justify-content:center;" +
-      "background:rgba(255,255,255,0.08);color:#eaf3ff;}" +
+      "background:rgba(255,255,255,0.08);color:inherit;}" +
       "#" + POPUP_ID + " .itc-sw.itc-custom:hover{background:rgba(255,255,255,0.16);}" +
       "#" + POPUP_ID + " .itc-sw.itc-custom .itc-ic{width:13px;height:13px;display:block;" +
       "filter:drop-shadow(0 0 1px rgba(0,0,0,0.55));}" +
@@ -312,13 +302,12 @@
       "#" + POPUP_ID + " .itc-sw.itc-custom.has-color .itc-ic-edit{display:block;}" +
       "#" + POPUP_ID + " .itc-sw.itc-custom.has-color:hover{filter:brightness(1.08);}" +
       "#" + POPUP_ID + " .itc-btn{border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);" +
-      "color:#eaf3ff;font:inherit;padding:6px 10px;border-radius:var(--frostpane-input-radius, 8px);cursor:pointer;}" +
+      "color:inherit;font:inherit;padding:6px 10px;border-radius:4px;cursor:pointer;}" +
       "#" + POPUP_ID + " .itc-btn:hover{background:rgba(255,255,255,0.12);}" +
       "#" + POPUP_ID + " .itc-seg{display:flex;gap:4px;padding:3px;border:1px solid rgba(255,255,255,0.18);" +
-      "border-radius:var(--frostpane-input-radius, 8px);}" +
+      "border-radius:4px;}" +
       "#" + POPUP_ID + " .itc-seg-btn{flex:1;text-align:center;padding:6px 8px;cursor:pointer;" +
-      "font:inherit;color:#eaf3ff;background:transparent;border:0;border-radius:6px;" +
-      "transition:background 0.12s, color 0.12s;}" +
+      "font:inherit;color:inherit;background:transparent;border:0;border-radius:3px;}" +
       "#" + POPUP_ID + " .itc-seg-btn:hover{background:rgba(255,255,255,0.06);}" +
       "#" + POPUP_ID + " .itc-seg-btn.sel{background:var(--frostpane-accent, #6cb4ff);color:#0a1416;font-weight:600;}" +
       "#" + POPUP_ID + " .itc-seg-btn:disabled{opacity:0.4;cursor:default;}" +
@@ -328,7 +317,7 @@
       "#" + POPUP_ID + " label{display:flex;align-items:center;gap:6px;cursor:pointer;}" +
       "#" + POPUP_ID + " .itc-header{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px 0;}" +
       "#" + POPUP_ID + " .itc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:0.85;}" +
-      "#" + POPUP_ID + " .itc-close{cursor:pointer;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:17px;line-height:1;opacity:0.65;}" +
+      "#" + POPUP_ID + " .itc-close{cursor:pointer;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:17px;line-height:1;opacity:0.65;}" +
       "#" + POPUP_ID + " .itc-close:hover{background:rgba(255,255,255,0.12);opacity:1;}" +
       "#" + POPUP_ID + " .itc-hide{display:none !important;}" +
       "#" + POPUP_ID + ".itc-hide{display:none !important;}";
@@ -624,12 +613,11 @@
     } catch (e) {}
   }
 
-  try { scrubLegacyImageState(); } catch (e) {}
   try { loadState(); } catch (e) {}
 
   // Guard interval: catches terminals created after boot and any VSCode-side
   // options.theme reassignment. Cheap when nothing changed (equality check).
-  try { setInterval(paintTerminalSelection, 2500); } catch (e) {}
+  try { setInterval(paintTerminal, 2500); } catch (e) {}
 
   function reloadIfSettled() {
     try { if (!popupOpen) { loadState(); applyState(); } } catch (e) {}

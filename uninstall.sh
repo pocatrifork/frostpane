@@ -24,7 +24,7 @@ if [ -d "$EXT_DIR/$THEME_DIRNAME" ]; then
 fi
 # 2. injected scripts
 CUI="$USER_DIR/custom-ui-style"
-for s in menu-glass.js panel-anim.js theme-customizer.js; do rm -f "$CUI/$s"; done
+for s in menu-glass.js panel-anim.js theme-customizer.js; do rm -f "$CUI/$s"; done  # the first two are only shipped by older versions
 [ -d "$CUI" ] && rmdir "$CUI" 2>/dev/null || true
 say "Removed injected scripts."
 # 3. settings
@@ -34,12 +34,15 @@ if [ -f "$SETTINGS" ]; then
   DEFTHEME="$DEFAULT_THEME" SET="$SETTINGS" python3 - <<'PY'
 import json, os, sys
 settings=os.environ["SET"]; deftheme=os.environ["DEFTHEME"]
-MANAGED=["workbench.colorCustomizations","window.titleBarStyle","editor.fontFamily",
+# Current keys first, then the ones older Frostpane versions also wrote, so an
+# uninstall from any version leaves nothing behind.
+MANAGED=["terminal.integrated.minimumContrastRatio",
+ "custom-ui-style.stylesheet","custom-ui-style.external.imports",
+ "window.titleBarStyle","editor.fontFamily",
  "editor.fontSize","terminal.integrated.fontFamily","terminal.integrated.gpuAcceleration",
  "editor.lineHeight","breadcrumbs.enabled","workbench.tree.indent",
  "workbench.tree.renderIndentGuides","editor.minimap.showSlider","editor.minimap.enabled",
- "workbench.iconTheme","workbench.activityBar.location",
- "custom-ui-style.stylesheet","custom-ui-style.external.imports"]
+ "workbench.iconTheme","workbench.activityBar.location"]
 
 def _strip(s, mode):
     out=[]; i=0; n=len(s); instr=False; esc=False
@@ -72,6 +75,11 @@ except Exception:
     try: d=json.loads(_strip(_strip(s,'c'),','))
     except Exception as e: sys.exit("Could not parse settings.json (%s); it was backed up." % e)
 for k in MANAGED: d.pop(k, None)
+# Only our own scoped block goes; overrides for other themes stay.
+cc=d.get("workbench.colorCustomizations")
+if isinstance(cc,dict) and "[Frostpane]" in cc:
+    del cc["[Frostpane]"]
+    if not cc: d.pop("workbench.colorCustomizations",None)
 d["workbench.colorTheme"]=deftheme
 open(settings,"w",encoding="utf-8").write(json.dumps(d,indent=2)+"\n")
 print("  reset colorTheme -> %s; removed %d Frostpane keys" % (deftheme,len(MANAGED)))
@@ -82,7 +90,7 @@ fi
 say "Done."
 cat <<EOF
 
-To fully remove the glass layer (Custom UI Style patches the app):
+To fully remove the injected layer (Custom UI Style patches the app):
   1. Run 'Custom UI Style: Reload' so the injected CSS/scripts drop, OR
      disable/uninstall the 'subframe7536.custom-ui-style' extension and run
      'Custom UI Style: Restore' (then reload) to unpatch VS Code.

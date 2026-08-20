@@ -37,7 +37,7 @@ else
   SRC="$(mktemp -d)"
   say "Downloading assets from $REPO ..."
   mkdir -p "$SRC/scripts" "$SRC/frostpane-theme/themes"
-  for f in settings.frostpane.json scripts/menu-glass.js scripts/panel-anim.js scripts/theme-customizer.js \
+  for f in settings.frostpane.json scripts/theme-customizer.js \
            frostpane-theme/package.json frostpane-theme/themes/frostpane-color-theme.json; do
     curl -fsSL "$REPO/installer/assets/$f" -o "$SRC/$f" || die "download failed: $f"
   done
@@ -58,9 +58,9 @@ mkdir -p "$EXT_DIR/$THEME_DIRNAME/themes"
 cp "$SRC/frostpane-theme/package.json" "$EXT_DIR/$THEME_DIRNAME/"
 cp "$SRC/frostpane-theme/themes/frostpane-color-theme.json" "$EXT_DIR/$THEME_DIRNAME/themes/"
 
-# --- 3. injected scripts ---
-say "Copying injected scripts -> $CUI_DIR"
-cp "$SRC/scripts/menu-glass.js" "$SRC/scripts/panel-anim.js" "$SRC/scripts/theme-customizer.js" "$CUI_DIR/"
+# --- 3. injected script ---
+say "Copying injected script -> $CUI_DIR"
+cp "$SRC/scripts/theme-customizer.js" "$CUI_DIR/"
 
 # --- 4. merge settings (back up first; compute external.imports) ---
 SETTINGS="$USER_DIR/settings.json"
@@ -113,9 +113,19 @@ def parse_jsonc(p):
 
 cur=parse_jsonc(settings)
 frag=json.load(open(frag_path,encoding="utf-8"))
-imports=["file://%s/%s" % (cui, n) for n in ("menu-glass.js","panel-anim.js","theme-customizer.js")]
+imports=["file://%s/%s" % (cui, n) for n in ("theme-customizer.js",)]
 frag["custom-ui-style.external.imports"]=imports
 cur.update(frag)
+
+# Frostpane no longer ships a colorCustomizations block (the theme extension
+# carries the static colours now), so drop a stale one left by an older install
+# while leaving any other theme's overrides alone.
+cc=cur.get("workbench.colorCustomizations")
+if isinstance(cc,dict) and "[Frostpane]" in cc:
+    del cc["[Frostpane]"]
+    if not cc: cur.pop("workbench.colorCustomizations",None)
+    print("  removed the stale [Frostpane] colorCustomizations block")
+
 open(settings,"w",encoding="utf-8").write(json.dumps(cur,indent=2)+"\n")
 print("  wrote %d keys; external.imports -> %s" % (len(frag), cui))
 PY
@@ -129,6 +139,4 @@ Next steps:
      (Custom UI Style patches the app; you may see an 'installation corrupt'
       banner once — that is expected, click the gear and 'Don't show again'.)
   3. Theme is set to 'Frostpane'; the customizer button is on the status bar.
-  4. Fonts (optional, for the intended look): install 'IBM Plex Mono' and
-     'FiraCode Nerd Font Mono'. Without them, fallbacks (Consolas/Courier) apply.
 EOF

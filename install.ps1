@@ -27,7 +27,7 @@ if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "installer\assets\set
 $Src = if ($local) { $local } else { Join-Path ([System.IO.Path]::GetTempPath()) ("frostpane-" + [guid]::NewGuid().ToString("N")) }
 if (-not $local) {
   Say "Downloading assets from $Repo ..."
-  $files = @("settings.frostpane.json","scripts/menu-glass.js","scripts/panel-anim.js","scripts/theme-customizer.js",
+  $files = @("settings.frostpane.json","scripts/theme-customizer.js",
              "frostpane-theme/package.json","frostpane-theme/themes/frostpane-color-theme.json")
   foreach ($f in $files) {
     $dst = Join-Path $Src ($f -replace '/','\')
@@ -52,9 +52,9 @@ New-Item -ItemType Directory -Force -Path (Join-Path $themeTarget "themes") | Ou
 Copy-Item (Join-Path $Src "frostpane-theme\package.json") $themeTarget
 Copy-Item (Join-Path $Src "frostpane-theme\themes\frostpane-color-theme.json") (Join-Path $themeTarget "themes")
 
-# --- 3. injected scripts ---
-Say "Copying injected scripts -> $CuiDir"
-Copy-Item (Join-Path $Src "scripts\menu-glass.js"),(Join-Path $Src "scripts\panel-anim.js"),(Join-Path $Src "scripts\theme-customizer.js") $CuiDir
+# --- 3. injected script ---
+Say "Copying injected script -> $CuiDir"
+Copy-Item (Join-Path $Src "scripts\theme-customizer.js") $CuiDir
 
 # --- 4. merge settings (back up first; compute external.imports) ---
 $settings = Join-Path $UserDir "settings.json"
@@ -95,12 +95,19 @@ function ConvertFrom-Jsonc($p) {
 }
 $cur  = ConvertFrom-Jsonc $settings
 $frag = Get-Content -Raw (Join-Path $Src "settings.frostpane.json") | ConvertFrom-Json
-$imports = @("menu-glass.js","panel-anim.js","theme-customizer.js") | ForEach-Object {
-  "file:///" + ((Join-Path $CuiDir $_) -replace '\\','/')
-}
+$imports = @("file:///" + ((Join-Path $CuiDir "theme-customizer.js") -replace '\\','/'))
 $frag.'custom-ui-style.external.imports' = $imports
 foreach ($p in $frag.PSObject.Properties) {
   $cur | Add-Member -Force -NotePropertyName $p.Name -NotePropertyValue $p.Value
+}
+# Frostpane no longer ships a colorCustomizations block (the theme extension
+# carries the static colours now), so drop a stale one left by an older install
+# while leaving any other theme's overrides alone.
+$cc = $cur.'workbench.colorCustomizations'
+if ($cc -and ($cc.PSObject.Properties.Name -contains '[Frostpane]')) {
+  $cc.PSObject.Properties.Remove('[Frostpane]')
+  if (-not $cc.PSObject.Properties.Name) { $cur.PSObject.Properties.Remove('workbench.colorCustomizations') }
+  Say "  removed the stale [Frostpane] colorCustomizations block"
 }
 ($cur | ConvertTo-Json -Depth 100) | Set-Content -Encoding UTF8 $settings
 Say ("  wrote {0} keys; external.imports -> {1}" -f $frag.PSObject.Properties.Count, $CuiDir)
@@ -114,5 +121,4 @@ Next steps:
      (Custom UI Style patches the app; an 'installation corrupt' banner may
       appear once - that is expected, click the gear and 'Don't show again'.)
   3. Theme is set to 'Frostpane'; the customizer button is on the status bar.
-  4. Fonts (optional): install 'IBM Plex Mono' and 'FiraCode Nerd Font Mono'.
 "@ | Write-Host
