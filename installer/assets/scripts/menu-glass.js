@@ -16,7 +16,9 @@
   overflow: visible !important;
 }
 .monaco-submenu {
-  background-color: color-mix(in srgb, var(--vscode-menu-background), #ffffff 4%) !important;
+  background-color: color-mix(in srgb, var(--vscode-menu-background) 45%, transparent) !important;
+  backdrop-filter: blur(14px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.4) !important;
   overflow: visible !important;
 }
 .monaco-menu-container .monaco-scrollable-element,

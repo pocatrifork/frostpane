@@ -103,22 +103,25 @@ Opt in with `--blur` (bash) / `-Blur` (PowerShell), or `FROSTPANE_BLUR=1` when
 piping to a shell. Eight surfaces are frosted:
 
 - the command palette and quick input
-- menus and context menus, including the editor right-click menu
+- menus, submenus and context menus, including the editor right-click menu
 - select dropdowns
 - notification toasts and the notification centre
 - the find widget
 - the debug toolbar
 - the diff/modal editor
-- the command centre and agent pill in the top bar
 
-Each one gets a translucent background plus `backdrop-filter`, and a companion
-rule that keeps its own children from painting over the frost — a notification
-centre whose header and list rows stay opaque is a frosted panel you cannot see.
-The find widget's input keeps a dark wash so the field still reads against glass.
-Nothing here sets radii, borders or geometry.
+The layer does two things and nothing else: it frosts a floating surface, and it
+clears the background off children that **span** that surface and would hide the
+frost — a notification centre whose header and list rows stay opaque is a frosted
+panel you cannot see. Inputs, buttons and rows are not spanning children, so they
+keep the theme's own colours. No radii, borders, shadows or geometry.
 
 Translucency is read from the active `--vscode-*` colour, so the frost follows
 whatever the picker last derived.
+
+Things that stay exactly as the theme paints them, on purpose: the title bar and
+the command centre. Nothing sits behind them to blur, so there is no frost to
+add — pressing the command centre opens the quick input, and *that* is frosted.
 
 **The trade.** Blur exists only as injected CSS, which means Custom UI Style, which
 means patched app files. `product.json` carries a checksum for each file it
@@ -127,12 +130,8 @@ dismissible, but it can return after a VS Code update, since the extension
 re-patches the app on its own. If that annoys you, re-run the installer without
 `--blur` and uninstall Custom UI Style.
 
-Two notes on what blur can and cannot do:
-
-- The editor right-click menu renders in a shadow root that stylesheets cannot
-  reach, so it is frosted by `menu-glass.js`, the one injected script.
-- The top bar has nothing behind it but a flat colour, so there is no blur to
-  see. Those two pills get the frosted white fill that produced the look.
+The editor right-click menu renders in a shadow root that stylesheets cannot
+reach, so it is frosted by `menu-glass.js`, the one injected script.
 
 ## What gets installed where
 

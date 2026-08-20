@@ -9,11 +9,6 @@
       "background": "transparent !important",
       "background-color": "transparent !important"
     },
-    ".quick-input-widget .quick-input-filter .monaco-inputbox, .quick-input-widget .quick-input-filter .monaco-inputbox input, .quick-input-widget .quick-input-filter .monaco-inputbox textarea": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-
     ".monaco-menu-container": {
       "background-color": "color-mix(in srgb, var(--vscode-menu-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
@@ -21,14 +16,15 @@
       "overflow": "visible !important"
     },
     ".monaco-submenu": {
-      "background-color": "color-mix(in srgb, var(--vscode-menu-background), #ffffff 4%) !important",
+      "background-color": "color-mix(in srgb, var(--vscode-menu-background) 45%, transparent) !important",
+      "backdrop-filter": "blur(14px) saturate(1.4)",
+      "-webkit-backdrop-filter": "blur(14px) saturate(1.4)",
       "overflow": "visible !important"
     },
     ".monaco-menu-container .monaco-scrollable-element, .monaco-menu-container .monaco-menu, .monaco-menu-container .monaco-action-bar, .monaco-menu-container .monaco-action-bar.vertical": {
       "background": "transparent !important",
       "background-color": "transparent !important"
     },
-
     ".monaco-select-box-dropdown-container": {
       "background-color": "color-mix(in srgb, var(--vscode-dropdown-listBackground, var(--vscode-dropdown-background)) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
@@ -38,7 +34,6 @@
       "background": "transparent !important",
       "background-color": "transparent !important"
     },
-
     ".notification-toast, .notifications-center": {
       "background-color": "color-mix(in srgb, var(--vscode-notifications-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
@@ -49,20 +44,11 @@
       "background-color": "transparent !important",
       "box-shadow": "none !important"
     },
-
     ".monaco-editor .find-widget, .simple-find-part": {
       "background-color": "color-mix(in srgb, var(--vscode-editorWidget-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
       "-webkit-backdrop-filter": "blur(14px) saturate(1.4)"
     },
-    ".monaco-editor .find-widget .monaco-inputbox, .simple-find-part .monaco-inputbox": {
-      "background-color": "rgba(0,0,0,0.3) !important"
-    },
-    ".monaco-editor .find-widget .monaco-inputbox .input, .monaco-editor .find-widget .monaco-inputbox textarea, .simple-find-part .monaco-inputbox .input": {
-      "background": "transparent !important",
-      "background-color": "transparent !important"
-    },
-
     ".monaco-workbench .debug-toolbar": {
       "background-color": "color-mix(in srgb, var(--vscode-debugToolBar-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
@@ -72,7 +58,6 @@
       "background": "transparent !important",
       "background-color": "transparent !important"
     },
-
     ".monaco-modal-editor-block .modal-editor-part": {
       "background-color": "color-mix(in srgb, var(--vscode-editorWidget-background) 45%, transparent) !important",
       "backdrop-filter": "blur(14px) saturate(1.4)",
@@ -81,13 +66,6 @@
     ".monaco-modal-editor-block .modal-editor-header, .monaco-modal-editor-block .modal-editor-sidebar, .monaco-modal-editor-block .modal-editor-part .monaco-editor, .monaco-modal-editor-block .modal-editor-part .monaco-editor .monaco-editor-background, .monaco-modal-editor-block .modal-editor-part .monaco-editor .margin": {
       "background": "transparent !important",
       "background-color": "transparent !important"
-    },
-
-    ".command-center-center, .agent-status-pill": {
-      "background": "linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 55%) !important",
-      "backdrop-filter": "blur(14px) saturate(1.6)",
-      "-webkit-backdrop-filter": "blur(14px) saturate(1.6)",
-      "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.10), inset 0 1px 0 0 rgba(255,255,255,0.20) !important"
     }
   },
   "custom-ui-style.external.imports": "__FROSTPANE_IMPORTS__"
