@@ -96,15 +96,15 @@
     "editorGroupHeader.tabsBorder": "#181a1d00",
     "editorGroupHeader.noTabsBackground": "#242528",
     "tab.activeBackground": "#181a1d",
-    "tab.activeForeground": "#c8cdd6",
+    "tab.activeForeground": "#e8ecf2",
     "tab.inactiveBackground": "#242528",
     "tab.inactiveForeground": "#8b93a1",
     "tab.border": "#131517",
-    "tab.activeBorderTop": "#6cb4ff",
+    "tab.activeBorderTop": "#00000000",
     "tab.unfocusedActiveBackground": "#181a1d",
     "tab.unfocusedActiveForeground": "#8b93a1",
     "tab.unfocusedInactiveBackground": "#242528",
-    "tab.unfocusedInactiveForeground": "#6b7480",
+    "tab.unfocusedInactiveForeground": "#8b93a1",
     "tab.hoverBackground": "#131517",
     "tab.hoverForeground": "#e8ecf2",
     "tab.lastPinnedBorder": "#2a2c2f",
@@ -362,7 +362,9 @@
     "terminal.dropBackground": "#6cb4ff33",
     "panelSection.dropBackground": "#6cb4ff33",
     "activityBar.activeBackground": "#6cb4ff14",
-    "statusBarItem.remoteHoverBackground": "#ffffff17"
+    "statusBarItem.remoteHoverBackground": "#ffffff17",
+    "tab.unfocusedActiveBorderTop": "#00000000",
+    "tab.activeBorder": "#00000000"
   },
   "tokenColors": [
     {

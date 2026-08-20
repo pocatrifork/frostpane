@@ -106,6 +106,8 @@ function alpha(hex, a) {
 }
 
 var REMOTE_FOREGROUND = "#8b93a1";
+var FG_BRIGHT = "#e8ecf2";
+var FG_MUTED = "#8b93a1";
 
 // Text drawn on top of the accent. CSS cannot pick this - color-contrast() is
 // not shipped - so an accent-aware foreground is something the native route
@@ -250,7 +252,7 @@ var ACCENT_KEYS = [
   "inputOption.activeBorder", "inputValidation.infoBorder",
   "textBlockQuote.border", "peekView.border", "panel.dropBorder",
   "panelTitle.activeBorder", "activityBar.activeBorder",
-  "tab.activeBorderTop", "menubar.selectionBackground",
+  "menubar.selectionBackground",
   "notebook.focusedCellBorder", "notebook.selectedCellBorder",
   "notificationsInfoIcon.foreground", "problemsInfoIcon.foreground",
   "editorInfo.foreground", "editorOverviewRuler.infoForeground",
@@ -317,6 +319,17 @@ function expand(accentIn, backgroundIn) {
   Object.keys(ACCENT_WASH_KEYS).forEach(function (k) {
     out[k] = alpha(accent, ACCENT_WASH_KEYS[k]);
   });
+
+  // The active tab is picked out by its own background - it carries the window
+  // colour, so it reads as the opening into the editor below - and by brighter
+  // text. The stock accent line on top is removed rather than recoloured.
+  out["tab.activeBorderTop"] = "#00000000";
+  out["tab.unfocusedActiveBorderTop"] = "#00000000";
+  out["tab.activeBorder"] = "#00000000";
+  out["tab.activeForeground"] = FG_BRIGHT;
+  out["tab.inactiveForeground"] = FG_MUTED;
+  out["tab.unfocusedActiveForeground"] = FG_MUTED;
+  out["tab.unfocusedInactiveForeground"] = FG_MUTED;
 
   // The remote indicator ("WSL: Ubuntu") ships as a filled block in the
   // accent colour, which reads as a warning badge. It sits flat on the status

@@ -52,11 +52,16 @@ Lifting the chrome rather than darkening the windows is deliberate: a near-black
 pick has no room left to go darker, so the separation would vanish exactly where
 you most want it.
 
+The active tab carries the window colour, so it reads as the opening into the
+editor below it, and its label brightens. There is no accent line on top — the
+whole tab is the indicator.
+
 ### Changing them
 
 Click **Frostpane** on the status bar, or run **`Frostpane: Pick Colours`**. A
-quick pick offers accent, background, scope and reset; choosing accent or
-background lists the presets by name.
+popup offers accent, background, scope and reset; choosing accent or background
+lists every preset **with its colour swatch** — `QuickPickItem.iconPath` takes a
+generated one-rect SVG per colour, written once into the extension's storage.
 
 **Arrow through the list and the workbench repaints as you go.** Applying *is*
 the preview, since these are only settings — Enter keeps the colour, Escape puts

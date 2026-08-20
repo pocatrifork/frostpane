@@ -239,6 +239,37 @@ function openPicker(context) {
 
 // ---------------------------------------------------------------- quick pick
 
+// A quick pick can show a real swatch per row: QuickPickItem.iconPath is
+// forwarded to the widget, so a one-rect SVG per colour gives the popup the
+// same colour grid the old injected panel had, without injecting anything.
+// Written once into global storage and reused; if a write fails the list still
+// works, it just loses the squares.
+var swatchDir = null;
+
+function ensureSwatches(context, hexes) {
+  if (swatchDir) return Promise.resolve(swatchDir);
+  var dir = vscode.Uri.joinPath(context.globalStorageUri, "swatches");
+  return Promise.resolve(vscode.workspace.fs.createDirectory(dir)).then(function () {
+    return Promise.all(hexes.map(function (hex) {
+      var file = vscode.Uri.joinPath(dir, hex.slice(1) + ".svg");
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">'
+              + '<rect x="1" y="1" width="14" height="14" rx="3" fill="' + hex + '"'
+              + ' stroke="rgba(127,127,127,0.55)"/></svg>';
+      return Promise.resolve(vscode.workspace.fs.writeFile(file, new TextEncoder().encode(svg)))
+        .then(null, function () { return null; });
+    }));
+  }).then(function () {
+    swatchDir = dir;
+    return dir;
+  }, function () {
+    return null;   // no storage: fall back to plain rows
+  });
+}
+
+function swatchFor(dir, hex) {
+  return dir ? vscode.Uri.joinPath(dir, hex.slice(1) + ".svg") : undefined;
+}
+
 // Applying IS the preview: the colours are settings, so moving through the list
 // writes them and the workbench repaints. Backing out restores what was there.
 var previewTimer = null;
@@ -259,7 +290,14 @@ function commitNow(key, hex) {
   return setColors(patch, activeTarget());
 }
 
-function pickColour(key) {
+function pickColour(context, key) {
+  var presetList = key === "accent" ? palette.ACCENT_PRESETS : palette.BACKGROUND_PRESETS;
+  ensureSwatches(context, presetList).then(function (dir) {
+    showColourPick(key, dir);
+  });
+}
+
+function showColourPick(key, dir) {
   var colors = currentColors();
   var original = colors[key];
   var presets = key === "accent" ? palette.ACCENT_PRESETS : palette.BACKGROUND_PRESETS;
@@ -271,8 +309,8 @@ function pickColour(key) {
   var items = presets.map(function (hex) {
     return {
       label: palette.nameOf(hex),
-      description: hex,
-      detail: hex === original ? "current" : undefined,
+      description: hex === original ? hex + "  \u2022  current" : hex,
+      iconPath: swatchFor(dir, hex),
       hex: hex,
     };
   });
@@ -345,7 +383,7 @@ function openMenu(context) {
         : "No folder open, so global is the only option",
       action: "scope",
     },
-    { label: "$(layout) Grid picker", description: "swatches, in a tab", action: "grid" },
+    { label: "$(layout) Grid picker", description: "in a tab, with a colour wheel", action: "grid" },
     { label: "$(discard) Reset to defaults", action: "reset" },
   ];
   vscode.window.showQuickPick(items, {
@@ -353,7 +391,7 @@ function openMenu(context) {
     placeholder: "Pick what to change",
   }).then(function (choice) {
     if (!choice) return;
-    if (choice.action === "accent" || choice.action === "background") pickColour(choice.action);
+    if (choice.action === "accent" || choice.action === "background") pickColour(context, choice.action);
     else if (choice.action === "scope") { if (hasWorkspace()) setScope(scoped ? "global" : "workspace"); }
     else if (choice.action === "grid") openPicker(context);
     else if (choice.action === "reset") reset();
