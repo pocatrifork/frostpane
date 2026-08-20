@@ -2,7 +2,7 @@
   "name": "frostpane-theme",
   "displayName": "Frostpane",
   "description": "Frostpane - a dark colour theme with a pickable accent and background colour.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "publisher": "frostpane",
   "license": "MIT",
   "engines": {
@@ -18,6 +18,9 @@
     "accent"
   ],
   "main": "./extension.js",
+  "extensionKind": [
+    "ui"
+  ],
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -57,6 +60,11 @@
       {
         "command": "frostpane.pickColors",
         "title": "Frostpane: Pick Colours",
+        "category": "Frostpane"
+      },
+      {
+        "command": "frostpane.openPicker",
+        "title": "Frostpane: Open Grid Picker",
         "category": "Frostpane"
       },
       {

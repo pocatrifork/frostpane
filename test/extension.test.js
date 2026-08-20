@@ -85,8 +85,27 @@ const settle = () => new Promise((r) => setTimeout(r, 30));
   assert.strictEqual(b2["button.background"], "#ffe44d");
   assert.strictEqual(b2["button.foreground"], "#0a1014", "yellow accent gets dark text");
   assert.strictEqual(b2["editor.background"], "#181a1d");
-  assert.strictEqual(Object.keys(b2).length, 125);
+  assert.strictEqual(Object.keys(b2).length, 128);
   console.log("2 ok  pick derives", Object.keys(b2).length, "keys at global scope");
+
+  // 2b. the windows must read as darker than the chrome around them, at every
+  // preset, or a picked background just looks flat
+  const level = (h) => (parseInt(h.slice(1, 3), 16) + parseInt(h.slice(3, 5), 16) + parseInt(h.slice(5, 7), 16)) / 3;
+  for (const bg of palette.BACKGROUND_PRESETS) {
+    const x = palette.expand("#6cb4ff", bg);
+    const win = level(x["editor.background"]);
+    const chrome = level(x["titleBar.activeBackground"]);
+    const elev = level(x["menu.background"]);
+    assert.ok(chrome - win >= 8, `${bg}: chrome only ${(chrome - win).toFixed(1)} above the window`);
+    assert.ok(elev > chrome, `${bg}: elevated is not above the chrome`);
+    assert.strictEqual(x["editor.background"], bg, `${bg}: editor should keep the picked colour`);
+  }
+  console.log("2b ok windows sit below the chrome for all", palette.BACKGROUND_PRESETS.length, "presets");
+
+  // 2c. the remote indicator must not be an accent-filled block
+  assert.strictEqual(b2["statusBarItem.remoteBackground"], "#00000000");
+  assert.notStrictEqual(b2["statusBarItem.remoteForeground"], "#ffe44d");
+  console.log("2c ok remote (WSL) badge stays flat on the status bar");
 
   // 3. an unrelated theme's block survives
   store.global[CC]["[Some Other Theme]"] = { "editor.background": "#123456" };

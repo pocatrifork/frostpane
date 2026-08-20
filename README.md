@@ -34,7 +34,37 @@ Colour customizations apply instantly, so a pick lands without a reload.
 | Knob | Drives |
 |------|--------|
 | `frostpane.accent` | buttons, badges, links, focus borders, selection, find matches, cursors, progress, modified-file marks, terminal selection |
-| `frostpane.background` | editor, sidebar, panel, tabs, title bar, status bar, and — mixed lighter or darker — menus, widgets, quick input, the tab strip |
+| `frostpane.background` | every surface, through the three tones below |
+
+### Three tones
+
+Your pick lands on the windows — the surfaces you work in — and everything else
+steps up from there, so a chosen background reads as depth rather than one flat
+wash:
+
+| Tone | | Surfaces |
+|------|--|----------|
+| **window** | your pick, exactly | editor, sidebar, panel, terminal, breadcrumbs, active tab |
+| **chrome** | +5% white | title bar, status bar, activity bar, tab strip, inactive tabs |
+| **elevated** | +8% again | menus, widgets, quick input, dropdowns, notifications |
+
+Lifting the chrome rather than darkening the windows is deliberate: a near-black
+pick has no room left to go darker, so the separation would vanish exactly where
+you most want it.
+
+### Changing them
+
+Click **Frostpane** on the status bar, or run **`Frostpane: Pick Colours`**. A
+quick pick offers accent, background, scope and reset; choosing accent or
+background lists the presets by name.
+
+**Arrow through the list and the workbench repaints as you go.** Applying *is*
+the preview, since these are only settings — Enter keeps the colour, Escape puts
+back the one you started with, and `Custom hex...` takes anything you type.
+
+Prefer swatches? **`Frostpane: Open Grid Picker`** is the same thing as a tab
+with a colour grid and a native colour input. Its background swatches are drawn
+*brighter than they apply*, because a grid of near-black squares is unreadable.
 
 Three things fall out of deriving colours rather than injecting CSS:
 
@@ -102,6 +132,16 @@ the status bar — or run **`Frostpane: Pick Colours`**.
 > the `\\wsl.localhost\…` share are unsigned and blocked by default. The bash
 > installer targets native Linux/macOS VS Code.
 
+### Remotes
+
+The extension is declared `"extensionKind": ["ui"]`, so it runs only on the local
+side and VS Code never offers to install it into WSL, SSH or a container. Install
+it once locally and every remote window is themed.
+
+The remote indicator itself (`WSL: Ubuntu` in the status bar) ships as a filled
+block in the accent colour, which reads like a warning badge. Frostpane sets
+`statusBarItem.remoteBackground` transparent so it sits flat on the status bar.
+
 ## The blur layer
 
 Answer yes when the installer asks, or pass `--blur` / `-Blur` up front. Seven
@@ -148,7 +188,7 @@ Two limits worth knowing:
 
 | Item | Location |
 |------|----------|
-| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.0.0/` |
+| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.1.0/` |
 | Blur script (`--blur` only) | `<user>/custom-ui-style/menu-glass.js` |
 | Settings (merged) | `<user>/settings.json` (backup: `settings.json.frostpane-backup-<ts>`) |
 

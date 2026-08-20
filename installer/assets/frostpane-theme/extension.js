@@ -237,11 +237,137 @@ function openPicker(context) {
   postState();
 }
 
+// ---------------------------------------------------------------- quick pick
+
+// Applying IS the preview: the colours are settings, so moving through the list
+// writes them and the workbench repaints. Backing out restores what was there.
+var previewTimer = null;
+function preview(key, hex) {
+  if (previewTimer) clearTimeout(previewTimer);
+  previewTimer = setTimeout(function () {
+    previewTimer = null;
+    var patch = {};
+    patch[key] = hex;
+    setColors(patch, activeTarget());
+  }, 120);
+}
+
+function commitNow(key, hex) {
+  if (previewTimer) { clearTimeout(previewTimer); previewTimer = null; }
+  var patch = {};
+  patch[key] = hex;
+  return setColors(patch, activeTarget());
+}
+
+function pickColour(key) {
+  var colors = currentColors();
+  var original = colors[key];
+  var presets = key === "accent" ? palette.ACCENT_PRESETS : palette.BACKGROUND_PRESETS;
+  var qp = vscode.window.createQuickPick();
+  qp.title = key === "accent" ? "Frostpane accent" : "Frostpane background";
+  qp.placeholder = "Move to preview, Enter to keep, Escape to go back";
+  qp.matchOnDescription = true;
+
+  var items = presets.map(function (hex) {
+    return {
+      label: palette.nameOf(hex),
+      description: hex,
+      detail: hex === original ? "current" : undefined,
+      hex: hex,
+    };
+  });
+  items.push({ label: "$(pencil) Custom hex...", custom: true, alwaysShow: true });
+  qp.items = items;
+
+  var current = items.filter(function (i) { return i.hex === original; });
+  if (current.length) qp.activeItems = current;
+
+  var settled = false;
+  qp.onDidChangeActive(function (active) {
+    var it = active && active[0];
+    if (it && it.hex) preview(key, it.hex);
+  });
+  qp.onDidAccept(function () {
+    var it = qp.activeItems && qp.activeItems[0];
+    if (!it) return;
+    settled = true;
+    qp.hide();
+    if (it.custom) {
+      askHex(key, original);
+      return;
+    }
+    commitNow(key, it.hex);
+  });
+  qp.onDidHide(function () {
+    // Escape means "never mind", so put the colour back.
+    if (!settled) commitNow(key, original);
+    qp.dispose();
+  });
+  qp.show();
+}
+
+function askHex(key, original) {
+  vscode.window.showInputBox({
+    title: key === "accent" ? "Frostpane accent" : "Frostpane background",
+    prompt: key === "background"
+      ? "Hex colour. Light values are pulled back into the dark range."
+      : "Hex colour, for example #6cb4ff",
+    value: original,
+    validateInput: function (v) {
+      return palette.normalizeHex(v) ? null : "Not a hex colour, for example #6cb4ff";
+    },
+  }).then(function (v) {
+    if (!v) { commitNow(key, original); return; }
+    commitNow(key, palette.normalizeHex(v));
+  });
+}
+
+// The status bar button opens this: one short list, everything one keypress in.
+function openMenu(context) {
+  var colors = currentColors();
+  var scoped = activeTarget() === Target.Workspace;
+  var items = [
+    {
+      label: "$(paintcan) Accent",
+      description: palette.nameOf(colors.accent) + "  " + colors.accent,
+      action: "accent",
+    },
+    {
+      label: "$(color-mode) Background",
+      description: palette.nameOf(colors.background) + "  " + colors.background,
+      action: "background",
+    },
+    {
+      label: "$(folder) Scope",
+      description: scoped ? "This project" : "Global",
+      detail: hasWorkspace()
+        ? (scoped ? "Switch to global" : "Switch to this project only")
+        : "No folder open, so global is the only option",
+      action: "scope",
+    },
+    { label: "$(layout) Grid picker", description: "swatches, in a tab", action: "grid" },
+    { label: "$(discard) Reset to defaults", action: "reset" },
+  ];
+  vscode.window.showQuickPick(items, {
+    title: "Frostpane",
+    placeholder: "Pick what to change",
+  }).then(function (choice) {
+    if (!choice) return;
+    if (choice.action === "accent" || choice.action === "background") pickColour(choice.action);
+    else if (choice.action === "scope") { if (hasWorkspace()) setScope(scoped ? "global" : "workspace"); }
+    else if (choice.action === "grid") openPicker(context);
+    else if (choice.action === "reset") reset();
+  });
+}
+
 // ------------------------------------------------------------------ lifecycle
 
 function activate(context) {
   context.subscriptions.push(
     vscode.commands.registerCommand("frostpane.pickColors", function () {
+      openMenu(context);
+    }),
+    vscode.commands.registerCommand("frostpane.openPicker", function () {
       openPicker(context);
     }),
     vscode.commands.registerCommand("frostpane.reset", function () {

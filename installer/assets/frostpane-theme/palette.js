@@ -105,6 +105,8 @@ function alpha(hex, a) {
   return n + (v.length === 1 ? "0" + v : v);
 }
 
+var REMOTE_FOREGROUND = "#8b93a1";
+
 // Text drawn on top of the accent. CSS cannot pick this - color-contrast() is
 // not shipped - so an accent-aware foreground is something the native route
 // buys us: a yellow accent gets dark text, an indigo one gets white.
@@ -133,6 +135,26 @@ var BACKGROUND_PRESETS = [
   "#110f24", "#170f20", "#1c0d1e",
 ];
 
+// Names for the quick pick, which has no way to draw a swatch. Live preview
+// does the showing; these just make the list readable.
+var NAMES = {
+  "#6cb4ff": "Blue", "#8fc7ff": "Sky", "#6c7bff": "Indigo", "#39c5cf": "Cyan",
+  "#14c8a0": "Teal", "#21c25e": "Green", "#7ee787": "Mint", "#c3e645": "Lime",
+  "#ffe44d": "Yellow", "#c8a17a": "Sand", "#ffa657": "Orange",
+  "#ff7b72": "Salmon", "#de2b55": "Crimson", "#ff6ac1": "Pink",
+  "#c46bff": "Orchid", "#9d6bff": "Violet", "#d2a8ff": "Lilac",
+  "#a5adba": "Steel", "#ffffff": "White",
+  "#181a1d": "Slate", "#080808": "Ink", "#10131a": "Midnight",
+  "#1e0d12": "Wine", "#0f1714": "Pine", "#161a10": "Moss",
+  "#0a1a0e": "Forest", "#0a1f1e": "Deep sea", "#1d100a": "Ember",
+  "#110f24": "Indigo night", "#170f20": "Plum", "#1c0d1e": "Mulberry",
+};
+
+function nameOf(hex) {
+  var n = normalizeHex(hex);
+  return (n && NAMES[n]) || "Custom";
+}
+
 // Display-only lift: a grid of near-black squares is unreadable, so the swatch
 // is drawn brighter than the colour it applies.
 function brightenForDisplay(hex) {
@@ -149,20 +171,34 @@ function assign(target, keys, value) {
   return target;
 }
 
-// Surfaces, from the canvas outwards.
-var CANVAS_KEYS = [
+// Three tones, and the ordering is the point: the windows you work in are the
+// darkest surface, the chrome around them sits at the colour you picked, and
+// anything floating above goes lighter still. Flat surfaces read as muddy, so
+// the separation is what makes a picked background legible.
+// The picked colour IS the windows, and the chrome lifts away from it. Doing it
+// this way round rather than darkening the windows keeps the separation visible
+// at any darkness - a near-black pick has no room left to go darker - and it
+// leaves the colour you chose on the surface you look at most.
+var CHROME_LIFT = 0.05;
+var ELEVATED_LIFT = 0.08;
+
+// The windows: editor, sidebar, panel, terminal, and the active tab, which
+// wants to merge into the editor below it.
+var WINDOW_KEYS = [
   "editor.background", "editorGutter.background", "editorPane.background",
   "editorStickyScroll.background", "sideBar.background",
-  "sideBarSectionHeader.background", "activityBar.background",
-  "statusBar.background", "statusBar.noFolderBackground",
-  "titleBar.activeBackground", "titleBar.inactiveBackground",
-  "panel.background", "terminal.background", "breadcrumb.background",
-  "welcomePage.background", "notebook.editorBackground",
+  "sideBarSectionHeader.background", "panel.background", "terminal.background",
+  "breadcrumb.background", "welcomePage.background",
+  "notebook.editorBackground",
   "tab.activeBackground", "tab.unfocusedActiveBackground",
 ];
 
-// The tab strip and inactive tabs sit behind the canvas, so they go darker.
-var DIM_KEYS = [
+// The chrome around them, at the picked colour: title bar, status bar, activity
+// bar, and the tab strip the inactive tabs sit on.
+var CHROME_KEYS = [
+  "activityBar.background",
+  "statusBar.background", "statusBar.noFolderBackground",
+  "titleBar.activeBackground", "titleBar.inactiveBackground",
   "editorGroupHeader.tabsBackground", "editorGroupHeader.noTabsBackground",
   "tab.inactiveBackground", "tab.unfocusedInactiveBackground",
 ];
@@ -263,13 +299,14 @@ var ACCENT_WASH_KEYS = {
 function expand(accentIn, backgroundIn) {
   var accent = normalizeHex(accentIn) || DEFAULTS.accent;
   var bg = clampDark(backgroundIn);
-  var dim = mix(bg, "#000000", 0.20);
-  var elevated = mix(bg, "#ffffff", 0.08);
+  var window = bg;
+  var chrome = mix(bg, "#ffffff", CHROME_LIFT);
+  var elevated = mix(chrome, "#ffffff", ELEVATED_LIFT);
   var lift = mix(accent, "#ffffff", 0.18);
 
   var out = {};
-  assign(out, CANVAS_KEYS, bg);
-  assign(out, DIM_KEYS, dim);
+  assign(out, WINDOW_KEYS, window);
+  assign(out, CHROME_KEYS, chrome);
   assign(out, ELEVATED_KEYS, elevated);
   Object.keys(WASH_KEYS).forEach(function (k) {
     out[k] = alpha("#ffffff", WASH_KEYS[k]);
@@ -280,6 +317,13 @@ function expand(accentIn, backgroundIn) {
   Object.keys(ACCENT_WASH_KEYS).forEach(function (k) {
     out[k] = alpha(accent, ACCENT_WASH_KEYS[k]);
   });
+
+  // The remote indicator ("WSL: Ubuntu") ships as a filled block in the
+  // accent colour, which reads as a warning badge. It sits flat on the status
+  // bar instead, which is what the earlier hand-written theme did too.
+  out["statusBarItem.remoteBackground"] = "#00000000";
+  out["statusBarItem.remoteForeground"] = REMOTE_FOREGROUND;
+  out["statusBarItem.remoteHoverBackground"] = alpha("#ffffff", 0.09);
   return out;
 }
 
@@ -295,6 +339,7 @@ module.exports = {
   ACCENT_PRESETS: ACCENT_PRESETS,
   BACKGROUND_PRESETS: BACKGROUND_PRESETS,
   brightenForDisplay: brightenForDisplay,
+  nameOf: nameOf,
   normalizeHex: normalizeHex,
   clampDark: clampDark,
   mix: mix,
