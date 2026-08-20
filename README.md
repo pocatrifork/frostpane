@@ -58,11 +58,7 @@ global pick keeps applying everywhere else.
 
 ## Install
 
-> The one-liners fetch assets from this repo. Installing from a branch? Set
-> `FROSTPANE_REF` / `$env:FROSTPANE_REF` to the branch name, or the script and the
-> assets come from different refs. Forking? Point the installer at your copy with
-> `FROSTPANE_REPO` / `$env:FROSTPANE_REPO`. Running from a clone needs neither —
-> local files are used when present.
+One command, either platform. It asks whether you want the optional blur layer.
 
 **Windows (PowerShell):**
 ```powershell
@@ -77,14 +73,23 @@ curl -fsSL https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.
 **From a clone (either OS):**
 ```bash
 git clone https://github.com/pocatrifork/frostpane && cd frostpane
-bash install.sh                    # colours only
-bash install.sh --blur             # colours + the frosted glass layer
+bash install.sh                    # or:  .\install.ps1  on Windows
 ```
+
+To skip the question — in a script, or because you already know — pass `--blur` /
+`--no-blur` (bash) or `-Blur` / `-NoBlur` (PowerShell), or set `FROSTPANE_BLUR` to
+`1` or `0`. A non-interactive run never prompts and installs colours only.
 
 The installer installs the Frostpane extension and merges two keys into your
 `settings.json` (backing it up first and keeping your other settings). It also
 clears anything an older Frostpane left behind: previous extension versions, the
-old injected scripts, and the settings keys they used.
+old injected scripts, the settings keys they used, and any stale `.obsolete`
+entry that would otherwise make VS Code ignore the new install.
+
+> Installing from a branch? Set `FROSTPANE_REF` / `$env:FROSTPANE_REF` to the
+> branch name, or the script and the assets come from different refs. Forking?
+> Point the installer at your copy with `FROSTPANE_REPO` / `$env:FROSTPANE_REPO`.
+> Running from a clone needs neither — local files are used when present.
 
 ### After installing
 
@@ -99,8 +104,8 @@ the status bar — or run **`Frostpane: Pick Colours`**.
 
 ## The blur layer
 
-Opt in with `--blur` (bash) / `-Blur` (PowerShell), or `FROSTPANE_BLUR=1` when
-piping to a shell. Eight surfaces are frosted:
+Answer yes when the installer asks, or pass `--blur` / `-Blur` up front. Seven
+surfaces are frosted:
 
 - the command palette and quick input
 - menus and context menus, including the editor right-click menu
@@ -195,5 +200,21 @@ installer/assets/
 test/extension.test.js            run with: node test/extension.test.js
 ```
 
-The theme is a fork of [Islands Dark](https://github.com/bwya77/vscode-dark-islands)
-(bwya77, MIT).
+## The syntax palette
+
+The theme is authored here — 343 workbench colours and 60 token rules, all from
+one 13-colour syntax palette. It leans cool, with a single warm tone reserved for
+escapes and regex so they stand out inside a string:
+
+| Role | | Role | |
+|------|--|------|--|
+| comment | `#6b7480` | tag | `#7fb3ff` |
+| string | `#8fd6a9` | attribute | `#b3a0ff` |
+| number, constant | `#7fd1c8` | keyword, storage | `#9a8cff` |
+| type, class, namespace | `#5ec8d8` | function, method | `#74b1f0` |
+| variable | `#c8cdd6` | property, parameter | `#a9b4c4` |
+| operator, punctuation | `#8b93a1` | escape, regex | `#e8c07d` |
+| invalid, deleted | `#ff6b7a` | | |
+
+The 125 workbench keys `palette.js` derives are written into the theme file too,
+so the static theme and a fresh pick at the defaults are byte-identical.

@@ -3,10 +3,10 @@
     irm https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.ps1 | iex
     .\install.ps1              # colours only - VS Code is never patched
     .\install.ps1 -Blur        # also install the optional frosted-glass layer
-  Piping to iex cannot pass -Blur, so set $env:FROSTPANE_BLUR = '1' instead.
-  Installing from a branch: set $env:FROSTPANE_REF = 'simpler' as well.
+  Run with no arguments and it asks whether you want the optional blur layer.
+  -Blur / -NoBlur skip the question; so does $env:FROSTPANE_BLUR = '1' or '0'.
 #>
-param([switch]$Blur)
+param([switch]$Blur, [switch]$NoBlur)
 $ErrorActionPreference = "Stop"
 
 # Assets are fetched per file, so a branch install needs the ref too or it would
@@ -16,6 +16,8 @@ $Repo    = if ($env:FROSTPANE_REPO) { $env:FROSTPANE_REPO } else { "https://raw.
 $CuiExt   = "subframe7536.custom-ui-style"
 $ThemeDir = "frostpane.frostpane-theme-2.0.0"
 $WantBlur = $Blur.IsPresent -or ($env:FROSTPANE_BLUR -eq '1')
+$BlurSet  = $Blur.IsPresent -or $NoBlur.IsPresent -or -not [string]::IsNullOrEmpty($env:FROSTPANE_BLUR)
+if ($NoBlur.IsPresent) { $WantBlur = $false }
 
 function Say ($m)  { Write-Host "[frostpane] $m" -ForegroundColor Cyan }
 function Warn($m)  { Write-Host "[frostpane] WARN: $m" -ForegroundColor Yellow }
@@ -26,6 +28,20 @@ $ExtDir  = if ($env:FROSTPANE_EXT_DIR)  { $env:FROSTPANE_EXT_DIR }  else { Join-
 if (-not (Test-Path $UserDir)) { Die "VS Code user dir not found: $UserDir (set FROSTPANE_USER_DIR)" }
 $CuiDir = Join-Path $UserDir "custom-ui-style"
 New-Item -ItemType Directory -Force -Path $ExtDir | Out-Null
+
+# Ask, rather than making the blur layer something you have to know a flag for.
+# The script arrives over the pipeline, not on stdin, so Read-Host still works
+# when this is piped to iex.
+if (-not $BlurSet) {
+  if ([Environment]::UserInteractive -and -not [Console]::IsInputRedirected) {
+    Say "Optional blur layer: frosts dropdowns, menus, the palette and notifications."
+    Say "It patches VS Code, so expect a one-time 'installation corrupt' banner."
+    $reply = Read-Host "[frostpane] Install it? [y/N]"
+    $WantBlur = ($reply -match '^\s*(y|yes)\s*$')
+  } else {
+    $WantBlur = $false        # non-interactive: colours only
+  }
+}
 
 # --- resolve assets: local clone next to this script, else download ---
 $assets = @("settings.frostpane.json","frostpane-theme/package.json","frostpane-theme/extension.js",

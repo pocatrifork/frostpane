@@ -1,7 +1,7 @@
 {
   "name": "frostpane-theme",
   "displayName": "Frostpane",
-  "description": "Frostpane - a dark colour theme with a pickable accent and background colour. Built on Islands Dark (bwya77, MIT).",
+  "description": "Frostpane - a dark colour theme with a pickable accent and background colour.",
   "version": "2.0.0",
   "publisher": "frostpane",
   "license": "MIT",

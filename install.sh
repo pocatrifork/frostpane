@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Frostpane theme installer (Linux / macOS).
 # Usage:
-#   bash install.sh                 # colours only - VSCode is never patched
-#   bash install.sh --blur          # also install the optional frosted-glass layer
+#   bash install.sh                 # asks whether you want the optional blur layer
+#   bash install.sh --blur          # blur, no question asked
+#   bash install.sh --no-blur       # colours only, no question asked
 #   curl -fsSL https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.sh | bash
 # Windows users: use install.ps1 instead (irm https://raw.githubusercontent.com/pocatrifork/frostpane/main/install.ps1 | iex).
 set -euo pipefail
@@ -15,16 +16,31 @@ CUI_EXT="subframe7536.custom-ui-style"
 THEME_DIRNAME="frostpane.frostpane-theme-2.0.0"
 
 BLUR="${FROSTPANE_BLUR:-0}"
+BLUR_SET=0
+[ -n "${FROSTPANE_BLUR:-}" ] && BLUR_SET=1
 for arg in "$@"; do
   case "$arg" in
-    --blur) BLUR=1 ;;
-    --no-blur) BLUR=0 ;;
-    -h|--help) sed -n '2,6p' "$0"; exit 0 ;;
+    --blur) BLUR=1; BLUR_SET=1 ;;
+    --no-blur) BLUR=0; BLUR_SET=1 ;;
+    -h|--help) sed -n '2,7p' "$0"; exit 0 ;;
     *) printf 'unknown option: %s\n' "$arg" >&2; exit 2 ;;
   esac
 done
 
 say(){ printf '\033[36m[frostpane]\033[0m %s\n' "$*"; }
+ask_blur(){
+  if [ "$BLUR_SET" = "1" ]; then return 0; fi
+  # Probe the tty in a subshell: a failed redirect on `exec` would kill a
+  # non-interactive shell outright, and -r alone lies about openability.
+  if ! ( : </dev/tty ) 2>/dev/null; then return 0; fi   # scripted run: colours only
+  say "Optional blur layer: frosts dropdowns, menus, the palette and notifications."
+  say "It patches VS Code, so expect a one-time 'installation corrupt' banner."
+  printf '\033[36m[frostpane]\033[0m Install it? [y/N] '
+  reply=""
+  read -r -t 60 reply < /dev/tty || true                 # never hang
+  case "$reply" in [Yy]*) BLUR=1 ;; *) BLUR=0 ;; esac
+  return 0
+}
 warn(){ printf '\033[33m[frostpane] WARN:\033[0m %s\n' "$*"; }
 die(){ printf '\033[31m[frostpane] ERROR:\033[0m %s\n' "$*" >&2; exit 1; }
 
@@ -42,6 +58,8 @@ CUI_DIR="$USER_DIR/custom-ui-style"
 command -v python3 >/dev/null 2>&1 || die "python3 is required for the settings merge."
 
 # --- resolve assets: local clone next to this script, else download ---
+ask_blur
+
 ASSETS="settings.frostpane.json
 frostpane-theme/package.json
 frostpane-theme/extension.js
