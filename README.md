@@ -44,17 +44,22 @@ wash:
 
 | Tone | | Surfaces |
 |------|--|----------|
-| **window** | your pick, exactly | editor, sidebar, panel, terminal, breadcrumbs, active tab |
-| **chrome** | +5% white | title bar, status bar, activity bar, tab strip, inactive tabs |
+| **window** | your pick, exactly | editor, sidebar, panel, terminal, breadcrumbs, the tab strip and unselected tabs |
+| **chrome** | +5% white | title bar, status bar, activity bar, the selected tab |
 | **elevated** | +8% again | menus, widgets, quick input, dropdowns, notifications |
 
 Lifting the chrome rather than darkening the windows is deliberate: a near-black
 pick has no room left to go darker, so the separation would vanish exactly where
 you most want it.
 
-The active tab carries the window colour, so it reads as the opening into the
-editor below it, and its label brightens. There is no accent line on top — the
-whole tab is the indicator.
+The selected tab lifts to the chrome tone while the strip and the unselected
+tabs recede into the editor, so the whole tab is the highlight and its label
+brightens. There is no accent line on top.
+
+That line is worth a note if you fork this: current VS Code draws the active tab
+through the `tab.selected*` keys, and `tab.selectedBorderTop` **defaults to
+`focusBorder`** — the accent. Clearing `tab.activeBorderTop` does nothing,
+because in this build its dark default is already `null`.
 
 ### Changing them
 
@@ -193,7 +198,7 @@ Two limits worth knowing:
 
 | Item | Location |
 |------|----------|
-| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.1.1/` |
+| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.1.2/` |
 | Blur script (`--blur` only) | `<user>/custom-ui-style/menu-glass.js` |
 | Settings (merged) | `<user>/settings.json` (backup: `settings.json.frostpane-backup-<ts>`) |
 

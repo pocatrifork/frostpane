@@ -192,10 +192,10 @@ var WINDOW_KEYS = [
   "sideBarSectionHeader.background", "panel.background", "terminal.background",
   "breadcrumb.background", "welcomePage.background",
   "notebook.editorBackground",
-  "tab.activeBackground", "tab.unfocusedActiveBackground",
-  // Current VSCode paints the active tab through the *selected* keys, and
-  // tab.selectedBackground otherwise defaults to a translucent list wash.
-  "tab.selectedBackground",
+  // Unselected tabs and the strip they sit on carry the window colour, so they
+  // recede into the editor and only the selected tab lifts out of it.
+  "editorGroupHeader.tabsBackground", "editorGroupHeader.noTabsBackground",
+  "tab.inactiveBackground", "tab.unfocusedInactiveBackground",
 ];
 
 // The chrome around them, at the picked colour: title bar, status bar, activity
@@ -204,8 +204,11 @@ var CHROME_KEYS = [
   "activityBar.background",
   "statusBar.background", "statusBar.noFolderBackground",
   "titleBar.activeBackground", "titleBar.inactiveBackground",
-  "editorGroupHeader.tabsBackground", "editorGroupHeader.noTabsBackground",
-  "tab.inactiveBackground", "tab.unfocusedInactiveBackground",
+  // The selected tab is the one that lifts. Current VSCode paints it through
+  // the *selected* keys, and tab.selectedBackground otherwise falls back to a
+  // translucent list wash rather than anything we set.
+  "tab.activeBackground", "tab.unfocusedActiveBackground",
+  "tab.selectedBackground",
 ];
 
 // Anything that floats above the canvas goes lighter by the same step.

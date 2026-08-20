@@ -69,6 +69,8 @@ const CC = "workbench.colorCustomizations";
 const block = (b) => (store[b][CC] || {})["[Frostpane]"];
 const settle = () => new Promise((r) => setTimeout(r, 30));
 
+const level = (h) => (parseInt(h.slice(1, 3), 16) + parseInt(h.slice(3, 5), 16) + parseInt(h.slice(5, 7), 16)) / 3;
+
 (async () => {
   // 1. at the defaults, nothing is written to settings
   ext.activate({ subscriptions: [], extensionPath: EXT });
@@ -90,7 +92,6 @@ const settle = () => new Promise((r) => setTimeout(r, 30));
 
   // 2b. the windows must read as darker than the chrome around them, at every
   // preset, or a picked background just looks flat
-  const level = (h) => (parseInt(h.slice(1, 3), 16) + parseInt(h.slice(3, 5), 16) + parseInt(h.slice(5, 7), 16)) / 3;
   for (const bg of palette.BACKGROUND_PRESETS) {
     const x = palette.expand("#6cb4ff", bg);
     const win = level(x["editor.background"]);
@@ -106,8 +107,13 @@ const settle = () => new Promise((r) => setTimeout(r, 30));
   // tab.selectedBorderTop is the one current VSCode actually draws, and it
   // defaults to focusBorder (the accent) when unset
   assert.strictEqual(b2["tab.selectedBorderTop"], "#00000000");
-  assert.strictEqual(b2["tab.selectedBackground"], b2["editor.background"]);
   assert.strictEqual(b2["tab.activeBorderTop"], "#00000000");
+  // the selected tab lifts out of the strip; the unselected ones recede into
+  // the editor, so the highlight reads the same way round as the default theme
+  assert.strictEqual(b2["tab.inactiveBackground"], b2["editor.background"]);
+  assert.strictEqual(b2["editorGroupHeader.tabsBackground"], b2["editor.background"]);
+  assert.ok(level(b2["tab.selectedBackground"]) - level(b2["tab.inactiveBackground"]) >= 8,
+    "selected tab must lift clearly above the unselected ones");
   assert.strictEqual(b2["tab.activeBorder"], "#00000000");
   assert.notStrictEqual(b2["tab.activeBackground"], b2["tab.inactiveBackground"]);
   console.log("2bb ok active tab marked by background, no accent line");
