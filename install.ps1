@@ -55,6 +55,23 @@ Get-ChildItem $ExtDir -Directory -Filter "frostpane.frostpane-theme-*" -ErrorAct
   if ($_.Name -ne $ThemeDir) { Say "  removing older install: $($_.Name)" }
   Remove-Item -Recurse -Force $_.FullName
 }
+# VSCode records the folder name of an uninstalled extension in .obsolete and
+# then ignores any folder with that exact name, so reinstalling the same version
+# would copy the files in and never load them.
+$obs = Join-Path $ExtDir ".obsolete"
+if (Test-Path $obs) {
+  try {
+    $j = Get-Content -Raw $obs | ConvertFrom-Json
+    $stale = @(@($j.PSObject.Properties.Name) | Where-Object { $_ -like "frostpane.frostpane-theme-*" })
+    if ($stale.Count -gt 0) {
+      foreach ($n in $stale) { $j.PSObject.Properties.Remove($n) }
+      $txt = if (@($j.PSObject.Properties).Count -eq 0) { "{}" } else { $j | ConvertTo-Json -Compress }
+      Set-Content -Path $obs -Value $txt -Encoding UTF8 -NoNewline
+      Say ("  cleared " + $stale.Count + " stale .obsolete entry(ies) so the install is seen")
+    }
+  } catch { Warn "could not read .obsolete ($_)" }
+}
+
 $tgt = Join-Path $ExtDir $ThemeDir
 New-Item -ItemType Directory -Force -Path (Join-Path $tgt "themes"), (Join-Path $tgt "media") | Out-Null
 Copy-Item (Join-Path $Src "frostpane-theme\package.json"),(Join-Path $Src "frostpane-theme\extension.js"),(Join-Path $Src "frostpane-theme\palette.js") $tgt
@@ -183,7 +200,7 @@ Next steps:
   2. Theme is set to 'Frostpane'; the picker button is on the status bar
      (or run 'Frostpane: Pick Colours').
 
-  Want the frosted dropdowns and top bar back? Re-run with -Blur.
+  Want the frosted dropdowns, menus and palette back? Re-run with -Blur.
   If a previous version left the '$CuiExt' extension installed, uninstall it
   and run 'Custom UI Style: Restore' - it re-patches the app after every
   VS Code update on its own.

@@ -77,6 +77,28 @@ for old in "$EXT_DIR"/frostpane.frostpane-theme-*; do
   [ "$(basename "$old")" = "$THEME_DIRNAME" ] || say "  removing older install: $(basename "$old")"
   rm -rf "$old"
 done
+# VSCode records the folder name of an uninstalled extension in .obsolete and
+# then ignores any folder with that exact name, so reinstalling the same version
+# would copy the files in and never load them.
+OBS="$EXT_DIR/.obsolete"
+if [ -f "$OBS" ]; then
+  OBS="$OBS" python3 - <<'PYOBS'
+import json, os
+p = os.environ["OBS"]
+try:
+    d = json.load(open(p, encoding="utf-8"))
+except Exception:
+    d = None
+if isinstance(d, dict):
+    stale = [k for k in d if k.startswith("frostpane.frostpane-theme-")]
+    for k in stale:
+        del d[k]
+    if stale:
+        open(p, "w", encoding="utf-8").write(json.dumps(d, separators=(",", ":")))
+        print("  cleared %d stale .obsolete entry(ies) so the install is seen" % len(stale))
+PYOBS
+fi
+
 TGT="$EXT_DIR/$THEME_DIRNAME"
 mkdir -p "$TGT/themes" "$TGT/media"
 cp "$SRC/frostpane-theme/package.json" "$SRC/frostpane-theme/extension.js" "$SRC/frostpane-theme/palette.js" "$TGT/"
@@ -209,7 +231,7 @@ Next steps:
   2. Theme is set to 'Frostpane'; the picker button is on the status bar
      (or run 'Frostpane: Pick Colours').
 
-  Want the frosted dropdowns and top bar back? Re-run with --blur.
+  Want the frosted dropdowns, menus and palette back? Re-run with --blur.
   If a previous version left the '$CUI_EXT' extension installed, uninstall it
   and run 'Custom UI Style: Restore' - it re-patches the app after every
   VS Code update on its own.
