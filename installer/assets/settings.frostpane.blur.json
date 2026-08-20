@@ -16,9 +16,7 @@
       "overflow": "visible !important"
     },
     ".monaco-submenu": {
-      "background-color": "color-mix(in srgb, var(--vscode-menu-background) 45%, transparent) !important",
-      "backdrop-filter": "blur(14px) saturate(1.4)",
-      "-webkit-backdrop-filter": "blur(14px) saturate(1.4)",
+      "background-color": "var(--vscode-menu-background) !important",
       "overflow": "visible !important"
     },
     ".monaco-menu-container .monaco-scrollable-element, .monaco-menu-container .monaco-menu, .monaco-menu-container .monaco-action-bar, .monaco-menu-container .monaco-action-bar.vertical": {

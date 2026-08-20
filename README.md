@@ -103,7 +103,7 @@ Opt in with `--blur` (bash) / `-Blur` (PowerShell), or `FROSTPANE_BLUR=1` when
 piping to a shell. Eight surfaces are frosted:
 
 - the command palette and quick input
-- menus, submenus and context menus, including the editor right-click menu
+- menus and context menus, including the editor right-click menu
 - select dropdowns
 - notification toasts and the notification centre
 - the find widget
@@ -130,8 +130,14 @@ dismissible, but it can return after a VS Code update, since the extension
 re-patches the app on its own. If that annoys you, re-run the installer without
 `--blur` and uninstall Custom UI Style.
 
-The editor right-click menu renders in a shadow root that stylesheets cannot
-reach, so it is frosted by `menu-glass.js`, the one injected script.
+Two limits worth knowing:
+
+- The editor right-click menu renders in a shadow root that stylesheets cannot
+  reach, so it is frosted by `menu-glass.js`, the one injected script.
+- **Submenus are not frosted.** A submenu is a descendant of the menu it opens
+  from, and `backdrop-filter` makes that ancestor a *backdrop root* — a nested
+  blur has nothing left to sample, and past the parent's edge there is nothing
+  there at all. Submenus keep the theme's opaque menu colour instead.
 
 ## What gets installed where
 

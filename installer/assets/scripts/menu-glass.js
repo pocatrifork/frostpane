@@ -15,10 +15,11 @@
      overflow:hidden then clips side submenus out of existence. */
   overflow: visible !important;
 }
+/* A submenu is a descendant of the frosted container, and backdrop-filter makes
+   that ancestor a backdrop root - a nested blur has nothing left to sample, so
+   the submenu would just be see-through. It keeps the theme menu colour. */
 .monaco-submenu {
-  background-color: color-mix(in srgb, var(--vscode-menu-background) 45%, transparent) !important;
-  backdrop-filter: blur(14px) saturate(1.4) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.4) !important;
+  background-color: var(--vscode-menu-background) !important;
   overflow: visible !important;
 }
 .monaco-menu-container .monaco-scrollable-element,
