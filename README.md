@@ -193,7 +193,7 @@ Two limits worth knowing:
 
 | Item | Location |
 |------|----------|
-| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.1.0/` |
+| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.1.1/` |
 | Blur script (`--blur` only) | `<user>/custom-ui-style/menu-glass.js` |
 | Settings (merged) | `<user>/settings.json` (backup: `settings.json.frostpane-backup-<ts>`) |
 

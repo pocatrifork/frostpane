@@ -2,7 +2,7 @@
   "name": "frostpane-theme",
   "displayName": "Frostpane",
   "description": "Frostpane - a dark colour theme with a pickable accent and background colour.",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "publisher": "frostpane",
   "license": "MIT",
   "engines": {

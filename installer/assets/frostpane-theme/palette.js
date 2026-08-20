@@ -193,6 +193,9 @@ var WINDOW_KEYS = [
   "breadcrumb.background", "welcomePage.background",
   "notebook.editorBackground",
   "tab.activeBackground", "tab.unfocusedActiveBackground",
+  // Current VSCode paints the active tab through the *selected* keys, and
+  // tab.selectedBackground otherwise defaults to a translucent list wash.
+  "tab.selectedBackground",
 ];
 
 // The chrome around them, at the picked colour: title bar, status bar, activity
@@ -322,7 +325,14 @@ function expand(accentIn, backgroundIn) {
 
   // The active tab is picked out by its own background - it carries the window
   // colour, so it reads as the opening into the editor below - and by brighter
-  // text. The stock accent line on top is removed rather than recoloured.
+  // text, never by a line on top.
+  //
+  // tab.selectedBorderTop is the one that matters: current VSCode treats the
+  // active tab as "selected" and that key DEFAULTS TO focusBorder, which is the
+  // accent here. Clearing tab.activeBorderTop alone changes nothing, because in
+  // this build nothing draws it.
+  out["tab.selectedBorderTop"] = "#00000000";
+  out["tab.selectedForeground"] = FG_BRIGHT;
   out["tab.activeBorderTop"] = "#00000000";
   out["tab.unfocusedActiveBorderTop"] = "#00000000";
   out["tab.activeBorder"] = "#00000000";

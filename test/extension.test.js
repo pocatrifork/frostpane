@@ -85,7 +85,7 @@ const settle = () => new Promise((r) => setTimeout(r, 30));
   assert.strictEqual(b2["button.background"], "#ffe44d");
   assert.strictEqual(b2["button.foreground"], "#0a1014", "yellow accent gets dark text");
   assert.strictEqual(b2["editor.background"], "#181a1d");
-  assert.strictEqual(Object.keys(b2).length, 134);
+  assert.strictEqual(Object.keys(b2).length, 137);
   console.log("2 ok  pick derives", Object.keys(b2).length, "keys at global scope");
 
   // 2b. the windows must read as darker than the chrome around them, at every
@@ -103,6 +103,10 @@ const settle = () => new Promise((r) => setTimeout(r, 30));
   console.log("2b ok windows sit below the chrome for all", palette.BACKGROUND_PRESETS.length, "presets");
 
   // 2bb. the active tab is marked by its background, never by a tinted line
+  // tab.selectedBorderTop is the one current VSCode actually draws, and it
+  // defaults to focusBorder (the accent) when unset
+  assert.strictEqual(b2["tab.selectedBorderTop"], "#00000000");
+  assert.strictEqual(b2["tab.selectedBackground"], b2["editor.background"]);
   assert.strictEqual(b2["tab.activeBorderTop"], "#00000000");
   assert.strictEqual(b2["tab.activeBorder"], "#00000000");
   assert.notStrictEqual(b2["tab.activeBackground"], b2["tab.inactiveBackground"]);

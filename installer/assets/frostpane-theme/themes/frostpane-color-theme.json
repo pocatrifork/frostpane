@@ -364,7 +364,10 @@
     "activityBar.activeBackground": "#6cb4ff14",
     "statusBarItem.remoteHoverBackground": "#ffffff17",
     "tab.unfocusedActiveBorderTop": "#00000000",
-    "tab.activeBorder": "#00000000"
+    "tab.activeBorder": "#00000000",
+    "tab.selectedBackground": "#181a1d",
+    "tab.selectedBorderTop": "#00000000",
+    "tab.selectedForeground": "#e8ecf2"
   },
   "tokenColors": [
     {

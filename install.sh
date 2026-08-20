@@ -13,7 +13,7 @@ set -euo pipefail
 REF="${FROSTPANE_REF:-main}"
 REPO="${FROSTPANE_REPO:-https://raw.githubusercontent.com/pocatrifork/frostpane/$REF}"
 CUI_EXT="subframe7536.custom-ui-style"
-THEME_DIRNAME="frostpane.frostpane-theme-2.1.0"
+THEME_DIRNAME="frostpane.frostpane-theme-2.1.1"
 
 BLUR="${FROSTPANE_BLUR:-0}"
 BLUR_SET=0
