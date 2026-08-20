@@ -14,7 +14,7 @@ $ErrorActionPreference = "Stop"
 $Ref     = if ($env:FROSTPANE_REF) { $env:FROSTPANE_REF } else { "main" }
 $Repo    = if ($env:FROSTPANE_REPO) { $env:FROSTPANE_REPO } else { "https://raw.githubusercontent.com/pocatrifork/frostpane/$Ref" }
 $CuiExt   = "subframe7536.custom-ui-style"
-$ThemeDir = "frostpane.frostpane-theme-2.2.0"
+$ThemeDir = "frostpane.frostpane-theme-2.3.0"
 $WantBlur = $Blur.IsPresent -or ($env:FROSTPANE_BLUR -eq '1')
 $BlurSet  = $Blur.IsPresent -or $NoBlur.IsPresent -or -not [string]::IsNullOrEmpty($env:FROSTPANE_BLUR)
 if ($NoBlur.IsPresent) { $WantBlur = $false }
@@ -45,9 +45,9 @@ if (-not $BlurSet) {
 
 # --- resolve assets: local clone next to this script, else download ---
 $assets = @("settings.frostpane.json","frostpane-theme/package.json","frostpane-theme/extension.js",
-            "frostpane-theme/palette.js","frostpane-theme/media/picker.html",
+            "frostpane-theme/palette.js","frostpane-theme/bridge.js","frostpane-theme/media/picker.html",
             "frostpane-theme/themes/frostpane-color-theme.json")
-if ($WantBlur) { $assets += @("settings.frostpane.blur.json","scripts/menu-glass.js") }
+if ($WantBlur) { $assets += @("settings.frostpane.blur.json","scripts/menu-glass.js","scripts/frostpane-popup.js") }
 
 $local = $null
 if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot "installer\assets\settings.frostpane.json"))) {
@@ -94,7 +94,7 @@ if (Test-Path $obs) {
 
 $tgt = Join-Path $ExtDir $ThemeDir
 New-Item -ItemType Directory -Force -Path (Join-Path $tgt "themes"), (Join-Path $tgt "media") | Out-Null
-Copy-Item (Join-Path $Src "frostpane-theme\package.json"),(Join-Path $Src "frostpane-theme\extension.js"),(Join-Path $Src "frostpane-theme\palette.js") $tgt
+Copy-Item (Join-Path $Src "frostpane-theme\package.json"),(Join-Path $Src "frostpane-theme\extension.js"),(Join-Path $Src "frostpane-theme\palette.js"),(Join-Path $Src "frostpane-theme\bridge.js") $tgt
 Copy-Item (Join-Path $Src "frostpane-theme\themes\frostpane-color-theme.json") (Join-Path $tgt "themes")
 Copy-Item (Join-Path $Src "frostpane-theme\media\picker.html") (Join-Path $tgt "media")
 
@@ -107,11 +107,12 @@ if ($WantBlur) {
   } else {
     Warn "'code' CLI not found - install the '$CuiExt' extension manually from the Marketplace."
   }
-  Say "Copying blur script -> $CuiDir"
+  Say "Copying injected scripts -> $CuiDir"
   Copy-Item (Join-Path $Src "scripts\menu-glass.js") $CuiDir
+  Copy-Item (Join-Path $Src "scripts\frostpane-popup.js") $CuiDir
 } else {
   # Superseded by the extension; an old copy would keep injecting a picker.
-  foreach ($s in "theme-customizer.js","panel-anim.js","menu-glass.js") {
+  foreach ($s in "theme-customizer.js","panel-anim.js","menu-glass.js","frostpane-popup.js") {
     $p = Join-Path $CuiDir $s; if (Test-Path $p) { Remove-Item -Force $p }
   }
 }
@@ -170,7 +171,7 @@ if ($cc -and ($cc.PSObject.Properties.Name -contains '[Frostpane]')) {
   Say "  removed the [Frostpane] block an older version wrote (the extension derives it now)"
 }
 
-$ours = @("theme-customizer.js","menu-glass.js","panel-anim.js")
+$ours = @("theme-customizer.js","menu-glass.js","panel-anim.js","frostpane-popup.js")
 $imports = @($cur.'custom-ui-style.external.imports') | Where-Object { $_ }
 $importsAreOurs = (@($imports).Count -gt 0) -and -not ($imports | Where-Object {
   $entry = [string]$_
@@ -180,7 +181,13 @@ $importsAreOurs = (@($imports).Count -gt 0) -and -not ($imports | Where-Object {
 if ($WantBlur) {
   $bfrag = Get-Content -Raw (Join-Path $Src "settings.frostpane.blur.json") | ConvertFrom-Json
   # [string[]] so a single import still serialises as a JSON array.
-  [string[]]$imp = @("file:///" + ((Join-Path $CuiDir "menu-glass.js") -replace '\\','/'))
+  # menu-glass.js is the frosted glass; frostpane-popup.js is the colour popup,
+  # which reaches the extension over loopback because an injected script cannot
+  # write settings itself.
+  [string[]]$imp = @(
+    ("file:///" + ((Join-Path $CuiDir "menu-glass.js") -replace '\\','/')),
+    ("file:///" + ((Join-Path $CuiDir "frostpane-popup.js") -replace '\\','/'))
+  )
   $bfrag.'custom-ui-style.external.imports' = $imp
   foreach ($p in $bfrag.PSObject.Properties) {
     $cur | Add-Member -Force -NotePropertyName $p.Name -NotePropertyValue $p.Value

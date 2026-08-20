@@ -2,7 +2,7 @@
   "name": "frostpane-theme",
   "displayName": "Frostpane",
   "description": "Frostpane - a dark colour theme with a pickable accent and background colour.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "publisher": "frostpane",
   "license": "MIT",
   "engines": {
@@ -49,10 +49,15 @@
           "patternErrorMessage": "Use a hex colour, for example #181a1d.",
           "markdownDescription": "Background colour. Drives the editor, sidebar, panel, tabs, title bar and status bar, and is mixed lighter or darker for menus, widgets and the tab strip. Held in the dark range so the theme stays readable."
         },
-        "frostpane.floatingPicker": {
+        "frostpane.popup": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Open the picker in its own floating window instead of an editor tab. Needs a VS Code build with auxiliary windows; without one the picker stays a tab."
+          "markdownDescription": "Let the injected popup pick colours. The extension listens on `127.0.0.1` for it, since a script injected into the workbench cannot write settings itself. Only reachable with the blur layer installed; turn it off to close the listener and use the webview picker instead."
+        },
+        "frostpane.floatingPicker": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Open the webview picker in its own floating window instead of an editor tab. The webview only appears when the injected popup is not there, so this is the fallback's fallback."
         },
         "frostpane.statusBarButton": {
           "type": "boolean",

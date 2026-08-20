@@ -11,7 +11,7 @@ It comes in two layers, and the second one is optional:
 | Layer | What it does | Patches VS Code? |
 |-------|--------------|------------------|
 | **Colours** (default) | The theme, the picker, and every workbench colour derived from your two picks | **No** |
-| **Blur** (`--blur`) | Frosted glass on dropdowns, menus, the command palette, notifications and the top bar | **Yes** |
+| **Blur** (`--blur`) | Frosted glass on dropdowns, menus, the command palette, notifications and the top bar - and the **popup picker**, since injecting it needs the same patch | **Yes** |
 
 The colour layer is a plain extension writing plain settings, so there is no
 "installation appears to be corrupt" banner and nothing to redo after a VS Code
@@ -63,26 +63,43 @@ because in this build its dark default is already `null`.
 
 ### Changing them
 
-Click **Frostpane** on the status bar, or run **`Frostpane: Open Picker`**. The
-picker is a small panel — accent swatches, background swatches, scope, reset —
-and it opens **in its own floating window**, so it sits over the workbench
-instead of taking an editor tab. Escape closes it.
-
-That window is a plain VS Code auxiliary window: the picker is a webview editor,
-and the command moves it out on first paint. On a build without auxiliary
-windows the move fails harmlessly and the picker stays a tab. Set
-`"frostpane.floatingPicker": false` to keep it a tab on purpose.
+Click **Frostpane** on the status bar. With the blur layer installed you get the
+**popup** — an overlay above the status bar, accent swatches and background
+swatches, scope, reset. Escape or a click away closes it. Without the blur
+layer, the same controls open as a webview (`Frostpane: Open Picker`), and
+`Frostpane: Pick Colours (List)` is the keyboard route either way: it lists
+every preset **with its colour swatch**, arrowing through the list repaints the
+workbench as you go, Enter keeps, Escape puts back.
 
 Background swatches are drawn *brighter than they apply*, because a grid of
 near-black squares is unreadable.
 
-Prefer the keyboard? **`Frostpane: Pick Colours (List)`** is the same controls as
-a quick pick, listing every preset **with its colour swatch** —
-`QuickPickItem.iconPath` takes a generated one-rect SVG per colour, written once
-into the extension's storage. **Arrow through the list and the workbench
-repaints as you go.** Applying *is* the preview, since these are only settings —
-Enter keeps the colour, Escape puts back the one you started with, and
-`Custom hex...` takes anything you type.
+#### How the popup reaches the extension
+
+The popup is injected into the workbench, so it can draw anywhere — but it
+cannot write `settings.json`, and settings are what the colours are derived
+from. The renderer is sandboxed (no `fs`, no `require`) and the workbench
+Content-Security-Policy allows it one outbound protocol:
+
+```
+connect-src 'self' https: ws:
+```
+
+So `http://127.0.0.1` is blocked, `https://127.0.0.1` dies on the self-signed
+certificate, and **`ws:` is the only door left**. The extension listens on
+loopback (`127.0.0.1`, first free port in `39847-39856`) and the popup connects;
+picks travel as JSON, the extension writes the two settings, and the derived
+block follows. The handshake and the frames are written by hand in `bridge.js` —
+an extension host has no `ws` module — which is 150 lines because the messages
+are tiny and single-frame text is the only case that has to work.
+
+Three guards, since anything on the machine could knock on that port: the
+listener binds `127.0.0.1` only, the request path must be `/frostpane`, and the
+`Origin` must be `vscode-file://vscode-app`, which a page in a browser cannot
+forge. Each window's extension host takes its own port, and each one answers
+with the folder it has open, so a popup finds the window it belongs to rather
+than picking colours for the window next door. `"frostpane.popup": false` closes
+the listener and falls back to the webview.
 
 Three things fall out of deriving colours rather than injecting CSS:
 
@@ -206,8 +223,8 @@ Two limits worth knowing:
 
 | Item | Location |
 |------|----------|
-| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.2.0/` |
-| Blur script (`--blur` only) | `<user>/custom-ui-style/menu-glass.js` |
+| Frostpane extension (theme + picker) | `<extensions>/frostpane.frostpane-theme-2.3.0/` |
+| Injected scripts (`--blur` only) | `<user>/custom-ui-style/menu-glass.js`, `frostpane-popup.js` |
 | Settings (merged) | `<user>/settings.json` (backup: `settings.json.frostpane-backup-<ts>`) |
 
 Merged keys: `workbench.colorTheme` and

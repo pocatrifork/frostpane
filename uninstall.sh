@@ -25,8 +25,9 @@ for d in "${EXT_DIR:?}"/$THEME_GLOB; do
 done
 # 2. injected scripts
 CUI="$USER_DIR/custom-ui-style"
-# menu-glass.js is the blur layer; the other two are only shipped by older versions
-for s in menu-glass.js theme-customizer.js panel-anim.js; do rm -f "$CUI/$s"; done
+# menu-glass.js is the blur layer and frostpane-popup.js the colour popup;
+# the other two are only shipped by older versions
+for s in menu-glass.js frostpane-popup.js theme-customizer.js panel-anim.js; do rm -f "$CUI/$s"; done
 [ -d "$CUI" ] && rmdir "$CUI" 2>/dev/null || true
 say "Removed injected scripts."
 # 3. settings

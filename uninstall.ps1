@@ -44,8 +44,9 @@ Get-ChildItem $ExtDir -Directory -Filter $ThemeGlob -ErrorAction SilentlyContinu
 }
 # 2. injected scripts
 $cui = Join-Path $UserDir "custom-ui-style"
-# menu-glass.js is the blur layer; the other two are only shipped by older versions
-foreach ($s in "menu-glass.js","theme-customizer.js","panel-anim.js") {
+# menu-glass.js is the blur layer and frostpane-popup.js the colour popup;
+# the other two are only shipped by older versions
+foreach ($s in "menu-glass.js","frostpane-popup.js","theme-customizer.js","panel-anim.js") {
   $p = Join-Path $cui $s; if (Test-Path $p) { Remove-Item -Force $p }
 }
 if ((Test-Path $cui) -and -not (Get-ChildItem $cui -Force)) { Remove-Item -Force $cui }

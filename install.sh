@@ -13,7 +13,7 @@ set -euo pipefail
 REF="${FROSTPANE_REF:-main}"
 REPO="${FROSTPANE_REPO:-https://raw.githubusercontent.com/pocatrifork/frostpane/$REF}"
 CUI_EXT="subframe7536.custom-ui-style"
-THEME_DIRNAME="frostpane.frostpane-theme-2.2.0"
+THEME_DIRNAME="frostpane.frostpane-theme-2.3.0"
 
 BLUR="${FROSTPANE_BLUR:-0}"
 BLUR_SET=0
@@ -64,12 +64,14 @@ ASSETS="settings.frostpane.json
 frostpane-theme/package.json
 frostpane-theme/extension.js
 frostpane-theme/palette.js
+frostpane-theme/bridge.js
 frostpane-theme/media/picker.html
 frostpane-theme/themes/frostpane-color-theme.json"
 if [ "$BLUR" = "1" ]; then
   ASSETS="$ASSETS
 settings.frostpane.blur.json
-scripts/menu-glass.js"
+scripts/menu-glass.js
+scripts/frostpane-popup.js"
 fi
 
 SRC=""
@@ -123,7 +125,8 @@ fi
 
 TGT="$EXT_DIR/$THEME_DIRNAME"
 mkdir -p "$TGT/themes" "$TGT/media"
-cp "$SRC/frostpane-theme/package.json" "$SRC/frostpane-theme/extension.js" "$SRC/frostpane-theme/palette.js" "$TGT/"
+cp "$SRC/frostpane-theme/package.json" "$SRC/frostpane-theme/extension.js" \
+   "$SRC/frostpane-theme/palette.js" "$SRC/frostpane-theme/bridge.js" "$TGT/"
 cp "$SRC/frostpane-theme/themes/frostpane-color-theme.json" "$TGT/themes/"
 cp "$SRC/frostpane-theme/media/picker.html" "$TGT/media/"
 
@@ -136,11 +139,12 @@ if [ "$BLUR" = "1" ]; then
   else
     warn "'code' CLI not found - install the '$CUI_EXT' extension manually from the Marketplace."
   fi
-  say "Copying blur script -> $CUI_DIR"
-  cp "$SRC/scripts/menu-glass.js" "$CUI_DIR/"
+  say "Copying injected scripts -> $CUI_DIR"
+  cp "$SRC/scripts/menu-glass.js" "$SRC/scripts/frostpane-popup.js" "$CUI_DIR/"
 else
   # Superseded by the extension; an old copy would keep injecting a picker.
-  rm -f "$CUI_DIR/theme-customizer.js" "$CUI_DIR/panel-anim.js" "$CUI_DIR/menu-glass.js" 2>/dev/null || true
+  rm -f "$CUI_DIR/theme-customizer.js" "$CUI_DIR/panel-anim.js" "$CUI_DIR/menu-glass.js" \
+        "$CUI_DIR/frostpane-popup.js" 2>/dev/null || true
 fi
 
 # --- 3. merge settings (back up first) ---
@@ -207,7 +211,7 @@ if isinstance(cc,dict) and "[Frostpane]" in cc:
     if not cc: cur.pop("workbench.colorCustomizations",None)
     print("  removed the [Frostpane] block an older version wrote (the extension derives it now)")
 
-OURS=("theme-customizer.js","menu-glass.js","panel-anim.js")
+OURS=("theme-customizer.js","menu-glass.js","panel-anim.js","frostpane-popup.js")
 def imports_are_ours():
     v=cur.get("custom-ui-style.external.imports")
     items=v if isinstance(v,list) else ([v] if isinstance(v,str) else [])
@@ -215,7 +219,10 @@ def imports_are_ours():
 
 if blur:
     bfrag=json.load(open(blur_path,encoding="utf-8"))
-    bfrag["custom-ui-style.external.imports"]=["file://%s/menu-glass.js" % cui]
+    bfrag["custom-ui-style.external.imports"]=[
+        "file://%s/menu-glass.js" % cui,
+        "file://%s/frostpane-popup.js" % cui,   # the colour popup; talks to the extension over loopback
+    ]
     cur.update(bfrag)
     written+=len(bfrag)
     print("  blur layer enabled (%d CSS rules)" % len(bfrag["custom-ui-style.stylesheet"]))

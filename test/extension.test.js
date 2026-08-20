@@ -37,7 +37,9 @@ function getConfiguration(section) {
   };
 }
 
-const DEFAULTS = { "frostpane.accent": "#6cb4ff", "frostpane.background": "#181a1d", "frostpane.statusBarButton": true };
+// popup false keeps the loopback bridge (and its listening socket) out of the
+// test run; bridge.js has its own test.
+const DEFAULTS = { "frostpane.accent": "#6cb4ff", "frostpane.background": "#181a1d", "frostpane.statusBarButton": true, "frostpane.popup": false };
 
 const fake = {
   ConfigurationTarget: Target,
@@ -71,9 +73,11 @@ const settle = () => new Promise((r) => setTimeout(r, 30));
 
 const level = (h) => (parseInt(h.slice(1, 3), 16) + parseInt(h.slice(3, 5), 16) + parseInt(h.slice(5, 7), 16)) / 3;
 
+const subs = [];
+
 (async () => {
   // 1. at the defaults, nothing is written to settings
-  ext.activate({ subscriptions: [], extensionPath: EXT });
+  ext.activate({ subscriptions: subs, extensionPath: EXT });
   await settle();
   assert.strictEqual(store.global[CC], undefined, "defaults should write no block");
   console.log("1 ok  defaults leave settings.json alone");
@@ -175,5 +179,8 @@ const level = (h) => (parseInt(h.slice(1, 3), 16) + parseInt(h.slice(3, 5), 16) 
   assert.strictEqual(palette.expand("#6cb4ff", "#ffffff")["editor.background"], "#292929");
   console.log("7 ok  light background clamped dark");
 
+  // activate() registers disposables; without disposing them a live bridge
+  // would hold the event loop open and the run would never end.
+  subs.forEach((d) => d && typeof d.dispose === "function" && d.dispose());
   console.log("\nall extension tests passed");
 })().catch((e) => { console.error("FAILED:", e.message); process.exit(1); });

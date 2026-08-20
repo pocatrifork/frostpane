@@ -13,6 +13,7 @@ var vscode = require("vscode");
 var fs = require("fs");
 var path = require("path");
 var palette = require("./palette.js");
+var bridgeMod = require("./bridge.js");
 
 var SECTION = "frostpane";
 var SCOPE_KEY = "[Frostpane]";
@@ -164,7 +165,7 @@ function refreshStatusItem() {
   }
   if (!statusItem) {
     statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0);
-    statusItem.command = "frostpane.openPicker";
+    statusItem.command = "frostpane.open";
     statusItem.name = "Frostpane";
   }
   statusItem.text = "$(symbol-color) Frostpane";
@@ -421,10 +422,95 @@ function openMenu(context) {
   });
 }
 
+// -------------------------------------------------------------------- bridge
+
+// The popup that Custom UI Style injects into the workbench cannot write
+// settings itself, so it talks to us over loopback and we do the writing. See
+// bridge.js for why a WebSocket is the only channel the workbench CSP leaves
+// open. Without the blur layer there is no popup and nothing ever connects,
+// which is why the webview picker stays the fallback.
+
+var bridge = null;
+var bridgePort = 0;
+
+function popupEnabled() {
+  return vscode.workspace.getConfiguration(SECTION).get("popup") !== false;
+}
+
+function stateMessage() {
+  var s = pickerState();
+  s.type = "state";
+  return s;
+}
+
+function broadcast() {
+  if (bridge) bridge.send(stateMessage());
+}
+
+function startBridge() {
+  if (bridge || !popupEnabled()) return;
+  bridge = bridgeMod.createBridge({
+    // A popup connects to every port in the range until it finds the window it
+    // belongs to, so the first thing each server says is which folder it is.
+    onHello: function (client) {
+      client.send({
+        type: "hello",
+        folder: hasWorkspace() ? vscode.workspace.workspaceFolders[0].name : "",
+        hasWorkspace: hasWorkspace(),
+      });
+      client.send(stateMessage());
+    },
+    onMessage: function (msg, client) {
+      if (msg.type === "set") {
+        var patch = {};
+        if (msg.accent) patch.accent = palette.normalizeHex(msg.accent) || undefined;
+        // The popup has a free colour input, so a light background is pulled
+        // back into the dark range here rather than painting an unreadable UI.
+        if (msg.background) patch.background = palette.clampDark(msg.background);
+        setColors(patch, activeTarget()).then(broadcast);
+        return;
+      }
+      if (msg.type === "scope") { setScope(msg.value).then(broadcast); return; }
+      if (msg.type === "reset") { reset().then(broadcast); return; }
+      if (msg.type === "state") { client.send(stateMessage()); return; }
+    },
+  });
+  bridge.start().then(function (port) {
+    bridgePort = port;
+    console.log("[frostpane] popup bridge listening on 127.0.0.1:" + port);
+  }, function (err) {
+    var dead = bridge;
+    bridge = null;
+    bridgePort = 0;
+    if (dead) dead.dispose();
+    console.error("[frostpane] could not start the popup bridge", err);
+  });
+}
+
+function stopBridge() {
+  if (!bridge) return;
+  bridge.dispose();
+  bridge = null;
+  bridgePort = 0;
+}
+
+// One entry point for the status bar: the popup if it is there, the webview if
+// it is not.
+function open(context) {
+  if (bridge && bridge.count()) {
+    bridge.send({ type: "open" });
+    return;
+  }
+  openPicker(context);
+}
+
 // ------------------------------------------------------------------ lifecycle
 
 function activate(context) {
   context.subscriptions.push(
+    vscode.commands.registerCommand("frostpane.open", function () {
+      open(context);
+    }),
     vscode.commands.registerCommand("frostpane.pickColors", function () {
       openMenu(context);
     }),
@@ -432,21 +518,25 @@ function activate(context) {
       openPicker(context);
     }),
     vscode.commands.registerCommand("frostpane.reset", function () {
-      return reset().then(postState);
+      return reset().then(postState).then(broadcast);
     }),
     vscode.workspace.onDidChangeConfiguration(function (e) {
       if (e.affectsConfiguration(SECTION + ".statusBarButton")) refreshStatusItem();
+      if (e.affectsConfiguration(SECTION + ".popup")) {
+        if (popupEnabled()) startBridge(); else stopBridge();
+      }
       if (e.affectsConfiguration(SECTION + ".accent")
           || e.affectsConfiguration(SECTION + ".background")
           || e.affectsConfiguration(CUSTOMIZATIONS)) {
-        sync().then(postState);
+        sync().then(postState).then(broadcast);
       }
     }),
-    vscode.workspace.onDidChangeWorkspaceFolders(function () { sync().then(postState); }),
-    { dispose: function () { if (statusItem) statusItem.dispose(); } }
+    vscode.workspace.onDidChangeWorkspaceFolders(function () { sync().then(postState).then(broadcast); }),
+    { dispose: function () { if (statusItem) statusItem.dispose(); stopBridge(); } }
   );
 
   refreshStatusItem();
+  startBridge();
   sync();
 }
 
